@@ -177,6 +177,11 @@ typedef struct
 	int32_t			imem;	// integral term memory
 }	pi_cntrl_t;
 
+typedef struct
+{
+    int32_t s32i, s32p, s32t;
+	int16_t	s16e, s16t;
+} pi_cntrl_iv_t;
 /* measurement units conversion constants (referred to internal representation
 	of physical quantities) */
 #define K_ANGLE		((float32_t)(TWOPI / (2.0 * FLOAT_PI)))

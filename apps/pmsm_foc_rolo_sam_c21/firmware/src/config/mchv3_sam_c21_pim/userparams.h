@@ -69,10 +69,21 @@
 /* Defining RAM_EXECUTE executes key motor control functions from RAM and thereby allowing faster execution at the expense of data memory.
  Please note, instruction breakpoint will not be asserted if that particular instruction is being executed from RAM
 *Undefining RAM_EXECUTE executes key motor control functions from Flash and thereby reducing data memory consumption at the expense of time */
-#undef RAM_EXECUTE
+#define RAM_EXECUTE
 
 /*Defining USE_DIVAS uses the DIVAS peripheral for division and square root operatons*/
 #define USE_DIVAS
+
+
+/* Field weakening */
+#define FIELD_WEAKENING
+
+/* Define MTPA */
+#undef MTPA
+
+/*Defining this macro enables Windmilling detect*/
+#undef WINDMILLING_ENABLE
+
 
 
 
@@ -85,58 +96,21 @@ Macro definitions
 
 #define HALF_HPER_TICKS  (PWM_HPER_TICKS>>1)
 
-/* motor and application related parameters */
-/* Note: only one motor has to be selected! */
-
-
-#ifdef  SMALL_HURST                      /* Small Hurst motor */
-#define MAX_FRE_HZ      (   250 )       /* maximum frequency [Hz] - 3000RPM */
-#define MIN_FRE_HZ      (    30 )       /* minimum frequency [Hz] - 360RPM  */
-#define POLAR_COUPLES   (     5 )       /* number of polar couples */
-#define R_STA           (   2.1 )       /* stator phase resistance [Ohm] */
-#define L_SYN           (     0.00192 ) /* synchronous inductance 0.00192 [Hen] (note: >0!) */
-#define MAX_CUR_AMP     (     2.0 )     /* peak maximum current [A] */
-#define START_CUR_AMP   (     0.4 )     /* peak startup current [A] */
-#define KP_V_A          (     5.0 )     /* current loop proportional gain [Volt/Amp] */
-#define KI_V_AS         (   1467.0 )    /* current loop integral gain [Volt/(Amp*sec)] */
-#define KP_AS_R         (  0.0016 )  	/* speed loop proportional gain [Amp/(rad/sec)] */
-#define KI_A_R          (  0.002  )    	/* speed loop integral gain [Amp/((rad/sec)*sec)] */
-#define ACC_RPM_S       (  1000.0 )     /* acceleration ramp [rpm/s] */
-#define DEC_RPM_S       (   500.0 )     /* acceleration ramp [rpm/s] */
-#define STUP_ACCTIME_S  (     2.0 )     /* startup acceleration time [sec] */
-#define CUR_RISE_T      (     1 )       /* current rising time [s] during startup alignment */
-#define CUR_FALL_T      (     1.0 )     /* direct current falling time [s] after startup */
-#define TORQUE_MODE_MIN_CUR_AMP 0.08     /* Minimum Torque Mode Reference in A */
-#endif  /* ifdef SMALL_HURST */
-
-
-
-#ifdef  LONG_HURST                      /* Long Hurst motor */
-#define MAX_FRE_HZ      (   250 )       /* maximum frequency [Hz] - 3000RPM */
-#define MIN_FRE_HZ      (    30 )       /* minimum frequency [Hz] - 360RPM  */
-#define POLAR_COUPLES   (     5 )       /* number of polar couples */
-#define R_STA           (     0.285 )   /* stator phase resistance [Ohm] */
-#define L_SYN           (     0.00032 ) /* synchronous inductance 0.00192 [Hen] (note: >0!) */
-#define MAX_CUR_AMP     (     2.0 )     /* peak maximum current [A] */
-#define START_CUR_AMP   (     0.8 )     /* peak startup current [A] */
-#define KP_V_A          (     0.71 )     /* current loop proportional gain [Volt/Amp] 0.36*/
-#define KI_V_AS         (   917.0 )      /* current loop integral gain [Volt/(Amp*sec)]550 */
-#define KP_AS_R         (     0.003 )   /* speed loop proportional gain [Amp/(rad/sec)] */  
-#define KI_A_R          (     0.002 )    /* speed loop integral gain [Amp/((rad/sec)*sec)] */
-#define ACC_RPM_S       (  1000.0 )     /* acceleration ramp [rpm/s] */
-#define DEC_RPM_S       (   500.0 )     /* acceleration ramp [rpm/s] */
-#define STUP_ACCTIME_S  (     2.0 )     /* startup acceleration time [sec] */
-#define CUR_RISE_T      (     1.5 )     /* current rising time [s] during startup alignment */
-#define CUR_FALL_T      (     1 )     /* direct current falling time [s] after startup */
-#define TORQUE_MODE_MIN_CUR_AMP 0.2     /* Minimum Torque Mode Reference in A */
-#endif  /* ifdef LONG_HURST */
-
 #ifdef  LEADSHINE_EL5_M0400_1_24                      /* LEAD SHINE (EL5-M0400-1-24) */
-#define MAX_FRE_HZ      (   250 )      /* maximum frequency [Hz] - 3000 RPM*/
-#define MIN_FRE_HZ      (    40 )      /* minimum frequency [Hz] - 480 RPM*/
+#define ISOTROPIC_MOTOR
+#define RATED_FRE_HZ      (   250 )       /* maximum frequency [Hz] - 3000RPM */
+#ifdef FIELD_WEAKENING
+#define MAX_FRE_HZ          (   416       )     /* maximum frequency [Hz] - 5000RPM                 */
+#else
+#define MAX_FRE_HZ         RATED_FRE_HZ         /* maximum frequency [Hz] - 3000RPM                 */
+#endif
+#define MIN_FRE_HZ      (    30 )      /* minimum frequency [Hz] - 360 RPM*/
 #define POLAR_COUPLES   (     5 )      /* number of polar couples */
 #define R_STA           (     1.375 )  /* stator phase resistance [Ohm] */
 #define L_SYN           (     0.00253 )/* synchronous inductance 0.00192 [Hen] (note: >0!) */
+#define LD_SYN                 (     0.00192 )     /* synchronous inductance  0.032 [Hen]                   */
+#define LQ_SYN                 (     0.00192 )     /* synchronous inductance  0.044 [Hen]  */
+#define BEMF_CONST      ( 44.82 )   /* Back EMF constant in Vpeak/kRPM */
 #define MAX_CUR_AMP     (     3.0 )    /* peak maximum current [A] */
 #define START_CUR_AMP   (     0.4 )    /* peak startup current [A] */
 #define KP_V_A          (     6.1 )    /* current loop proportional gain [Volt/Amp] */
@@ -148,10 +122,18 @@ Macro definitions
 #define STUP_ACCTIME_S  (     2.0 )     /* startup acceleration time [sec] */
 #define CUR_RISE_T      (     1.5 )    /* current rising time [s] during startup alignment */
 #define CUR_FALL_T      (     1 )     /* direct current falling time [s] after startup */
+#define MIN_WM_FRE_HZ   (    30 )       /* Minimum Windmilling Frequency [Hz] - 360RPM*/
+#define WINDMILL_CUR_AMP (     0.4 )    /* Post Windmill startup current [A] */
+#define RGN_BRK_CUR_AMP (     0.4 )     /*Regenerative Braking current*/
+#define WINDMILLING_TIME_SEC  (0.3)     /* Windmilling Time in Seconds*/
+#define PASSIVE_BRAKING_TIME_SEC       (2) /*Motor Braking Time in Seconds*/
 #define TORQUE_MODE_MIN_CUR_AMP 0.2     /* Minimum Torque Mode Reference in A */
 #endif  /* ifdef LEADSHINE_EL5_M0400_1_24 */
 /* board related parameters */
 /* Note: only one board type has to be selected! */
+
+/* Determine air gap flux */
+#define AIR_GAP_FLUX           (     120 * M_PI * BEMF_CONST / ( 1000 * 1.414 * POLAR_COUPLES  )) 
 
 /* dsPICDEM MCLV-2 Board related parameters */
 #ifdef MCLV2
@@ -215,6 +197,8 @@ Macro definitions
 #define MAX_SPE_RS      (2.0f * FLOAT_PI * (float32_t)MAX_FRE_HZ)   
 /* minimum speed considered */
 #define MIN_SPE_RS      (2.0f * FLOAT_PI * (float32_t)MIN_FRE_HZ)   
+/*minimum windmilling speed in Rad/S */
+#define MIN_WM_SPE_RS      (2.0f * FLOAT_PI * (float32_t)MIN_WM_FRE_HZ)   
 /* no deep flux weakening: all the voltages considered are lesser than vbus */
 #define BASE_VOLTAGE    ((float32_t)1 * MAX_VOL)      
 /*      deep flux weakening: bemf level can be much higher than max vbus */
@@ -241,6 +225,14 @@ Macro definitions
 #define K_SPEED_L       ((uint16_t)(BASE_SPEED * (32768.0f / FLOAT_PI) / K_TIME)) 
 /* speed[second internal speed unit] = K_SPEED_L * speed[internal speed unit] */
 
+/* Maximum angle step in internal unit per sample at maximum speed*/
+#define MAX_ANGLE_STEP_PER_SAMPLE  ((uint16_t)((32768/FLOAT_PI)*(BASE_SPEED/SAMPLING_FREQ)))
+
+/* Blanking for 'BEMF_ANGLE_BLANK_COUNT' samples is started after the angle roll over from 2*PI to 0 or 0 to 2*PI
+ * This blanking helps in removing an possible noise which would masquerade as angle roll over
+ * The blanking count is set at half the number of control samples needed for a true angle roll over at max speed
+ * ( 0 -> 65535, translates to 0 -> 2*PI) */
+#define BEMF_ANGLE_BLANK_COUNT ((uint16_t)(65535/(2*MAX_ANGLE_STEP_PER_SAMPLE)))
 
 /* due to chosen base values, the conversion constants from the A/D result to the internal
  representation are particularly simple:
@@ -297,6 +289,7 @@ Macro definitions
 /* used in position lost alarm management */
 #define MAX_SPE_PLOST   ((uint16_t)(1.25f * BASE_VALUE_FL))        
 #define MIN_SPE         ((uint16_t)(BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED))
+#define MIN_WM_SPE      ((uint16_t)(BASE_VALUE_FL * MIN_WM_SPE_RS / BASE_SPEED)) 
 /* used in position lost alarm management */
 #define MIN_SPE_PLOST   ((uint16_t)(0.3f * (BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED))) 
 /* position lost alarm counter limit */
@@ -314,6 +307,14 @@ Macro definitions
 /* 333.32 micro second = 1, hence 3000 for 1s */
 #define SYN_VAL1000MS    ((uint16_t)3000U) 
 
+/* Internal Unit calculation for Windmilling Time*/
+#define WINDMILLING_TIME_IU      ((uint16_t)(SAMPLING_FREQ * (float32_t)WINDMILLING_TIME_SEC)) 
+
+/* Internal Unit calculation for Braking Time*/
+#define BRAKING_TIME_IU      ((uint16_t)(SAMPLING_FREQ * (float32_t)PASSIVE_BRAKING_TIME_SEC)) 
+
+/*This value provides half the value of expected angle rollovers i.e. 2*PI->0 or 0 -> 2*PI*/
+#define HALF_MIN_ANGLE_ROLLOVER  ((uint16_t)(MIN_WM_FRE_HZ*WINDMILLING_TIME_SEC*0.5))
 
 /* from the required acceleration ramps in rpm we derive the quantities 
    to add to the reference each main loop (10ms) cycle */
@@ -329,12 +330,18 @@ Macro definitions
 #ifdef TORQUE_MODE
 #define TORQUE_MODE_MIN_CUR       ((int16_t)((float32_t)TORQUE_MODE_MIN_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
 #endif
+#define WINDMILL_START_CUR ((int16_t)((float32_t)WINDMILL_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
+
+#define REGEN_BRAKE_CURRENT ((int16_t)((float32_t)RGN_BRK_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
 /* amplified (to increase resolution) startup current */
 #define START_CURL      ((int32_t)(START_CUR * (int32_t)BASE_VALUE_INT))      
 /* startup current rising ramp (amplified) */
 #define CUR_RAMP_AL     ((int32_t)(START_CURL / (int32_t)((SAMPLING_FREQ * (float32_t)CUR_RISE_T)))) 
 /* direct current falling ramp (amplified) */
 #define CUR_RAMP_RU     ((int32_t)(START_CURL / (int32_t)((SAMPLING_FREQ * (float32_t)CUR_FALL_T)))) 
+/* Regenerative Braking Unit ramp rate in Internal unit per sample.*/
+#define RGN_BRK_RAMP_IU ((int16_t) 1) 
+
 /* current loop proportional gain [int] */
 #define KP_CURPIF       ((K_VOLTAGE * (float32_t)KP_V_A / K_CURRENT))    
 /* current loop integral gain [int] */
@@ -376,7 +383,44 @@ Macro definitions
 #define OVERCURRENT_RESET_DELAY_SEC     3
 #define OVERCURRENT_RESET_DELAY_COUNT  (uint32_t) (OVERCURRENT_RESET_DELAY_SEC*100)  // Delay coun value calculated based 10mS unit.
 
+#ifdef WINDMILLING_ENABLE
+/*Defining ACTIVE_VECTOR_WINDMILLING enables Windmilling in active vector mode : This mode results in low braking torque but can have noisy angle tracking 
+  * Undefining ACTIVE_VECTOR_WINDMILLING enables Windmilling in null vector mode: This mode results in high braking torque which increases with speed but has relatively noise free angle tracking */
+#define ACTIVE_VECTOR_WINDMILLING
 
+/*Defining WINDMILLING_CALIBRATION puts the algorithm in Windmilling state perpetually. This mode is mainly used to debug 
+   angle and speed tracking in windmilling mode*/
+//#define WINDMILLING_CALIBRATION
+#endif // WINDMILLING_ENABLE
+
+
+#if ( defined NON_ISOTROPIC_MOTOR )  && ( defined MTPA )
+#define ENABLE_MTPA
+#define PMSM_INDUCTANCE_D_PHYS                LD_SYN
+#define PMSM_INDUCTANCE_D_SCALED            (int16_t)(0.5f + (BASE_VALUE_FL * PMSM_INDUCTANCE_D_PHYS / BASE_INDUCTANCE))
+#define PMSM_INDUCTANCE_Q_PHYS                LQ_SYN
+#define PMSM_INDUCTANCE_Q_SCALED           (int16_t)(0.5f + (BASE_VALUE_FL * PMSM_INDUCTANCE_Q_PHYS / BASE_INDUCTANCE))
+#define PMSM_MTPA_CONSTANT1_PHYS           (float)(0.5 * AIR_GAP_FLUX / (PMSM_INDUCTANCE_Q_PHYS - PMSM_INDUCTANCE_D_PHYS))
+#define PMSM_MTPA_CONSTANT1_SCALED       (uint32_t)(PMSM_MTPA_CONSTANT1_PHYS * K_CURRENT )
+#define PMSM_MTPA_CONSTANT2_SCALED       (uint32_t)(PMSM_MTPA_CONSTANT1_SCALED * PMSM_MTPA_CONSTANT1_SCALED )
+#else
+#undef ENABLE_MTPA
+#endif
+
+#ifdef FIELD_WEAKENING
+#define BASE_IMPEDENCE                                   (float)(BASE_VOLTAGE/BASE_CURRENT)
+#define BASE_INDUCTANCE                                (float)(BASE_IMPEDENCE/BASE_SPEED)
+
+#define PMSM_RATED_SPEED_PHYS                    (float)(2.0f * FLOAT_PI * (float)RATED_FRE_HZ)
+#define PMSM_RATED_SPEED_SCALED                (int16_t)( 0.5f + K_SPEED * PMSM_RATED_SPEED_PHYS)
+
+#define PMSM_RESISTANCE_PHYS                        R_STA
+#define PMSM_RESISTANCE_SCALED                   (int16_t)(0.5f + (BASE_VALUE_FL * R_STA / BASE_IMPEDENCE))
+#define PMSM_INDUCTANCE_PHYS                      L_SYN
+#define PMSM_INDUCTANCE_SCALED                  (int16_t)(0.5f + (BASE_VALUE_FL * L_SYN / BASE_INDUCTANCE))
+#define PMSM_MAX_NEGATIVE_IDREF_PHYS      (float)(-2.0f)
+#define PMSM_MAX_NEGATIVE_IDREF_SCALED  (int16_t)(K_CURRENT * PMSM_MAX_NEGATIVE_IDREF_PHYS)
+#endif
 
 #endif // USERPARAMS_H
 

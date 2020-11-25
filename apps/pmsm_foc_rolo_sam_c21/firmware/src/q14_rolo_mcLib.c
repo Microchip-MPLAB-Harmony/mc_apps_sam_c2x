@@ -5,10 +5,10 @@
     Microchip Technology Inc.
 
   File Name:
-    q14_rolo_mcLib.c
+    q14_rolo_wm_mcLib.c
 
   Summary:
-    Reduced Order Luenberger Observer related functions and variables
+    Reduced Order Luenberger Observer and windmilling related functions and variables
  *  implemented in Q14 fixed point arithmetic.
 
   Description:
@@ -41,14 +41,23 @@
  *******************************************************************************/
 // DOM-IGNORE-END
 
+
 /*******************************************************************************
 Headers inclusions
 *******************************************************************************/
 
 #include "q14_generic_mcLib.h"
 #include "q14_rolo_mcLib.h"
-#include "definitions.h"
 #include "userparams.h"
+
+
+/*******************************************************************************
+MISRA violations
+*******************************************************************************/
+/* 10.1:
+shift operations on signed numbers is used to benefit optimization.
+arithmetic shift is used by the compiler in those cases
+*/
 
 /*******************************************************************************
 Private global variables
@@ -116,19 +125,23 @@ static int32_t
  sp_fir_acc,  /* speed fir filter accumulator */
  sp_iir1_mem, /* speed iir filter memory (first iir) */
  sp_iir2_mem, /* speed iir filter memory (second iir) */
- sp_iir3_mem; /* speed iir filter memory (third iir) */
+ sp_iir3_mem, /* speed iir filter memory (third iir) */
+ sp_iir3_mem_abs; /*speed iir filter memory absolute (third iir)*/
 
-static uint16_t
+ uint16_t
  dph_min,     /* minimum delta phase */
          
 #ifdef PH_CLAMP
  max_dspeed,  /* maximum speed variation in one sampling period */
 #endif // ifdef PH_CLAMP
  flx_arg,  /* estimated permanent magnets flux position */
- flx_arg_mem, /* estimated permanent magnets flux position memory */
+
  dph_abs_fil; /* filtered one-step phase difference */
 
-uint16_t dph_global;
+uint16_t  flx_arg_mem, /* estimated permanent magnets flux position memory */
+          bemf_arg,
+         bemf_arg_mem;
+int16_t dph_global;
 static int16_t
  k_spe12,  /* internal conversion constant */
  speed_min,  /* minimum speed [internal units] */
@@ -137,6 +150,12 @@ static int16_t
  speed_abs,  /* speed absolute value */
  sp_fir_ind,  /* index in fir speed filter memories vector */
  sp_fir_vec[8]; /* speed fir filter memories vector */
+
+
+int16_t dph_mem;
+int32_t delta_u16a;
+uint32_t blanking_count = 0;
+uint16_t angle_rollover_count = 0;
 
 /*******************************************************************************
 Functions (private and public)
@@ -450,7 +469,6 @@ void obs_coef_calc(int16_t spref)
   m21.val = -m21.val;
   k21.val = -k21.val;
  }
-
  #endif  /* ifdef CROSS_COUPLING_ENABLED */
 
 }
@@ -528,7 +546,6 @@ static inline int32_t mulshr(int16_t a, const coef_t *c)
  int32_t r;
 
  r = ((int32_t)a) * ((int32_t)(c->val));
-
  r >>= (c->shr);
 
  return (r);
@@ -552,17 +569,17 @@ void lunberger_observer(const vec2_t *v, const vec2_t *i)
  int32_t luzx, luzy;
  #endif 
 
- s32x =  mulshr(obs_z.x, &l11);
- s32x +=  mulshr((i->x), &m11);
+ s32x = mulshr(obs_z.x, &l11);
+ s32x += mulshr((i->x), &m11);
  #ifdef  CROSS_COUPLING_ENABLED
  s32x -= mulshr((i->y), &m21); /* m12 = -m21 */
  #endif  // ifdef CROSS_COUPLING_ENABLED
- s32x +=  mulshr((v->x), &n11);
+ s32x += mulshr((v->x), &n11);
  #ifdef  CROSS_COUPLING_ENABLED
  s32x -= mulshr((v->y), &n21); /* n12 = -n21 */
  #endif  // ifdef CROSS_COUPLING_ENABLED
 
- s32y = mulshr(obs_z.y, &l11); /* l22 = l11 */
+ s32y =  mulshr(obs_z.y, &l11); /* l22 = l11 */
  #ifdef  CROSS_COUPLING_ENABLED
  s32y += mulshr((i->x), &m21);
  #endif  // ifdef CROSS_COUPLING_ENABLED
@@ -613,6 +630,72 @@ void lunberger_observer(const vec2_t *v, const vec2_t *i)
  obs_e.y = (int16_t)s32y;
 
 }
+
+/*******************************************************************************
+Function:  bemf_phase_estimation
+Description: estimation of bemf angle 
+Input:   nothing (uses global variable bemf vector)
+Output:   nothing (modifies global variable flx_arg)
+*******************************************************************************/
+
+#ifdef RAM_EXECUTE
+void __ramfunc__ bemf_phase_estimation(void)
+#else
+void bemf_phase_estimation(void)
+#endif
+{
+ uint16_t u16a;
+
+ #ifdef PH_CLAMP
+ uint16_t u16b;
+ uint16_t u16c;
+ #endif /* ifdef PH_CLAMP */
+
+ #ifdef PH_CLAMP
+ /* phase variation limits calculation */
+ u16a = dph_abs_fil >> 1;
+ if(max_dspeed < u16a)
+ {
+  u16b = dph_abs_fil - max_dspeed;
+  u16c = dph_abs_fil + max_dspeed;
+ }
+ else
+ {
+  u16b = dph_abs_fil - u16a;
+  u16c = dph_abs_fil + u16a;
+ }
+ #endif /* ifdef PH_CLAMP */
+
+ library_xy_rt(&obs_e, &bemf);  /* extract angular position */
+ u16a = bemf.t.ang;
+ delta_u16a = ((int32_t)u16a) - ((int32_t)bemf_arg);
+
+  
+    if((delta_u16a>((int32_t)PI))||(delta_u16a<((int32_t)-PI)))
+    {
+ /* Blanking for 'BEMF_ANGLE_BLANK_COUNT' samples is started "after" the angle roll over from 2*PI to 0 or 0 to 2*PI
+  * This blanking helps in removing an possible noise which would masquerade as angle roll over 
+  * The reason blanking is trigger "after" the roll over because it was observed that an erroneous glitch 
+  * appeared immediately after a valid angle roll over */       
+        if(blanking_count>0) 
+        {
+            u16a = bemf_arg; // CPU comes here if there is a glitch during the blanking. Ignore the erroneous value and use the previous value 
+        }
+        else
+        {
+            blanking_count = BEMF_ANGLE_BLANK_COUNT;  //when blanking_count == 0, CPU enters here and the high delta in angle is assumed to be caused due to angle roll over. Hence, bemf.t.ang is accepted as valid angle
+            angle_rollover_count++; // counts the angle rollovers during windmilling
+        }
+    }
+
+  if(blanking_count!=0)
+  {
+    blanking_count--; 
+  }
+  
+   bemf_arg = u16a;
+}
+
 
 /*******************************************************************************
 Function:  phase_estimation
@@ -713,6 +796,20 @@ void phase_estimation_init(void)
 }
 
 /*******************************************************************************
+Function:  bemf_phase_estimation_init
+Description: init routine for use of phase estimation
+Input:   nothing (uses global variable bemf vector)
+Output:   nothing (modifies global variable flx_arg)
+*******************************************************************************/
+void bemf_phase_estimation_init(void)
+{
+ library_xy_rt(&obs_e, &bemf);
+ 
+  bemf_arg = bemf.t.ang;
+ 
+}
+
+/*******************************************************************************
 Function:  speed_filter
 Description: speed estimation, using a fourth order low-pass filter
 Input:   nothing (uses delta position in one step)
@@ -726,20 +823,118 @@ void speed_filter(void)
 {
  int16_t dph;
 
- /* sign management and delta ang clamp */
- if(0 > speed_sgn)
+ dph = (int16_t)flx_arg - (int16_t)flx_arg_mem;
+
+ flx_arg_mem = flx_arg;
+ 
+ // k_spe12 also comes out to be equal to delta_angle max electrical speed(MAX_FREQ_HZ).
+ // If the delta_angle is greater than k_spe12 then that is due to noise/ angle roll over. 
+ // In such an event, we use the previous dph value which was within the limit of max angle step.
+ 
+ if((dph < (int16_t)-k_spe12)||(dph > (int16_t)k_spe12)) // covering both speed directions
  {
-  dph = (int16_t)flx_arg_mem - (int16_t)flx_arg;
+     dph= dph_mem; // if the delta_angle is greater than the limit then use the last valid value
  }
  else
  {
- dph = (int16_t)flx_arg - (int16_t)flx_arg_mem;
+     dph_mem = dph; // if delta_angle is under the limit then save this value for next cycle evaluation
  }
- flx_arg_mem = flx_arg;
- if(1 > dph)
+ 
+
+ dph_global = dph;
+ /* first filter (FIR) */
+ /* since we use as output the accumulator undivided, the amplification is
+  4=2^2 if we calculate the speed over 4 samples; if the speed is
+  calculated over a different number of samples, the amplification has
+  to be adapted in consequence, since at the end we want a total amp of
+  2^14 */
+ sp_fir_acc += dph;
+ sp_fir_acc -= sp_fir_vec[sp_fir_ind];
+ sp_fir_vec[sp_fir_ind] = dph;  /* max speed: pi[rad/s]/Ts[s] */
+    sp_fir_ind++;
+ /* sp_fir_ind &= 0x07; speed calculated over 8 samples */
+ sp_fir_ind &= 0x03; /* speed calculated over 4 samples */
+
+ /* now we will apply three IIR in cascade configuration;
+  the IIR time constant is ((2^4)-1)*Ts, so the cut-off frequency is Fs/(30pi)
+  (around 85Hz if Fs=8kHz) */
+
+ /* second filter (IIR) */
+ /* since we use as output the filter memory, the amplification is 2^4=16 */
+ /*sp_iir1_mem -= shfdw2(sp_iir1_mem, 4);*/ /* sp_iir1_mem -= sp_iir1_mem >> 4; */
+
+    sp_iir1_mem -= sp_iir1_mem >> 4;
+ /* sp_iir1_mem += shfdw1(sp_fir_acc, 1); speed calculated over 8 samples */
+ sp_iir1_mem += sp_fir_acc; /* speed calculated over 4 samples */
+
+ /* third filter (IIR) */
+ /* since we use as output the filter memory, the amplification is 2^4=16 */
+ /*sp_iir2_mem -= shfdw2(sp_iir2_mem, 4);*/ /* sp_iir2_mem -= sp_iir2_mem >> 4; */
+ sp_iir2_mem -= sp_iir2_mem >> 4;
+ sp_iir2_mem += sp_iir1_mem;
+
+ /* fourth filter (IIR) */
+ /* since we use as output the filter memory, the amplification is 2^4=16 */
+ /*sp_iir3_mem -= shfdw2(sp_iir3_mem, 4);*/ /* sp_iir3_mem -= sp_iir3_mem >> 4; */
+ sp_iir3_mem -= sp_iir3_mem >> 4;
+ sp_iir3_mem += sp_iir2_mem;
+
+ /* the total amplification is 2^(2+3*4=14); now come back to the internal units */
+ speed_est = (int16_t)(sp_iir3_mem / k_spe12);
+ 
+ 
+ if(speed_sgn < 0)
  {
-  dph = dph_min;
+     speed_abs = -speed_est;
+     sp_iir3_mem_abs = -sp_iir3_mem;
  }
+ else
+ {
+     speed_abs = speed_est;
+     sp_iir3_mem_abs = sp_iir3_mem;
+ }    
+ 
+ #ifdef PH_CLAMP
+ dph_abs_fil = (int16_t)(sp_iir3_mem_abs >> 14);
+ #endif
+}
+
+
+/*******************************************************************************
+Function:  bemf_speed_filter
+Description: speed estimation, using a fourth order low-pass filter
+Input:   nothing (uses delta position in one step)
+Output:   nothing (modifies global variable speed_est)
+*******************************************************************************/
+#ifdef RAM_EXECUTE
+void __ramfunc__ bemf_speed_filter(void)
+#else
+void bemf_speed_filter(void)
+#endif
+{
+ int16_t dph;
+
+
+ dph = (int16_t)bemf_arg - (int16_t)bemf_arg_mem;
+ 
+ bemf_arg_mem = bemf_arg;
+ 
+ // k_spe12 also comes out to be equal to delta_angle max electrical speed(MAX_FREQ_HZ).
+ // If the delta_angle is greater than k_spe12 then that is due to noise/ angle roll over. 
+ // In such an event, we use the previous dph value which was within the limit of max angle step.
+ 
+
+    if((dph < (int16_t)-k_spe12)||(dph > (int16_t)k_spe12)) // covering both speed directions
+    {
+        dph= dph_mem; // if the delta_angle is greater than the limit then use the last valid value
+    }
+    else
+    {
+        dph_mem = dph; // if delta_angle is under the limit then save this value for next cycle evaluation
+    }
+
+ 
+
   dph_global = dph;
  /* first filter (FIR) */
  /* since we use as output the accumulator undivided, the amplification is
@@ -779,19 +974,25 @@ void speed_filter(void)
  sp_iir3_mem += sp_iir2_mem;
 
  /* the total amplification is 2^(2+3*4=14); now come back to the internal units */
- speed_abs = (int16_t)(sp_iir3_mem / k_spe12);
- #ifdef PH_CLAMP
- dph_abs_fil = (int16_t)(sp_iir3_mem >> 14);
- #endif 
- if(0 > speed_sgn)
+
+speed_est = (int16_t)(sp_iir3_mem / k_spe12);
+
+ if(speed_est < 0)
  {
-  speed_est = -speed_abs;
+     speed_abs = -speed_est;
+     sp_iir3_mem_abs = -sp_iir3_mem;
  }
  else
  {
-  speed_est = speed_abs;
+     speed_abs = speed_est;
+     sp_iir3_mem_abs = sp_iir3_mem;
  }
+
+#ifdef PH_CLAMP
+dph_abs_fil = (int16_t)(sp_iir3_mem_abs >> 14);
+#endif 
 }
+
 
 /******************************************************************************
 Function:  speed_filter_init
@@ -836,7 +1037,7 @@ void speed_filter_init(int16_t speed)
 Function:  delay_comp
 Description: calculation of the phase error due to algorithm medium delay
 Input:   nothing (uses internal speed filter memory)
-Output:   phase delay (medium time delay is 1 sampling periods)
+Output:   phase delay (medium time delay is 1.5 sampling periods)
 ******************************************************************************/
 #ifdef RAM_EXECUTE
 uint16_t __ramfunc__ delay_comp(void)
@@ -846,22 +1047,22 @@ uint16_t delay_comp(void)
 {
  int32_t s32a;
  int16_t s16a;
- uint16_t retval;
+        uint16_t retval;
 
- /*sp_iir3_mem = change in angle per sample*2^14
-  *s32a = sp_iir3_mem for  1 sampling period delay.  s32a= 2*sp_iir3_mem for 2 sampling period delay*/
- s32a = sp_iir3_mem;  /* always positive */
+ /*sp_iir3_mem_abs = change in angle per sample*2^14
+  *s32a = sp_iir3_mem_abs for  1 sampling period delay.  s32a= 2*sp_iir3_mem_abs for 2 sampling period delay*/
+ s32a = sp_iir3_mem_abs;  /* always positive */
  if((int32_t)BASE_VALUE_INT <= s32a)
  {
   if(0 > speed_sgn)
   {
      s16a = (int16_t)(-(s32a >> SH_BASE_VALUE));
-     retval = ((uint16_t)s16a);
+         retval = ((uint16_t)s16a);
   }
   else
   {
          s16a = (int16_t)((s32a >> SH_BASE_VALUE));
-         retval = ((uint16_t)s16a);
+                   retval = ((uint16_t)s16a);
   }
  }
  else
@@ -891,6 +1092,27 @@ void position_and_speed_estimation(int16_t rs, const vec2_t *v, const vec2_t *i)
  speed_filter();
 }
 
+/******************************************************************************
+Function:  bemf_position_and_speed_estimation
+Description: performs the position and speed estimation
+Input:   reference speed [internal_speed_unit] rs
+    applied voltage vector (in stationary reference frame)
+    measured current vector (in stationary reference frame)
+Output:   nothing (updates internal variables)
+******************************************************************************/
+
+
+#ifdef RAM_EXECUTE
+void __ramfunc__ bemf_position_and_speed_estimation(int16_t rs, const vec2_t *v, const vec2_t *i)
+#else
+void bemf_position_and_speed_estimation(int16_t rs, const vec2_t *v, const vec2_t *i)
+#endif
+{
+ obs_coef_calc(rs);
+ lunberger_observer(v, i);
+ bemf_phase_estimation();
+ bemf_speed_filter();
+}
 
 /******************************************************************************
 Function:  estimation_alignment
@@ -905,6 +1127,22 @@ void estimation_alignment(int16_t rs, const vec2_t *v, const vec2_t *i)
  obs_coef_calc(rs);
  lunberger_observer(v, i);
  phase_estimation_init();
+ speed_filter_init(rs);
+}
+
+/******************************************************************************
+Function:  bemf_estimation_alignment
+Description: aligns the observer
+Input:   reference speed [internal_speed_unit] rs
+    applied voltage vector (in stationary reference frame)
+    measured current vector (in stationary reference frame)
+Output:   nothing (updates internal variables)
+******************************************************************************/
+void bemf_estimation_alignment(int16_t rs, const vec2_t *v, const vec2_t *i)
+{
+ obs_coef_calc(rs);
+ lunberger_observer(v, i);
+ bemf_phase_estimation_init();
  speed_filter_init(rs);
 }
 
@@ -924,6 +1162,21 @@ uint16_t get_angular_position(void)
 }
 
 /******************************************************************************
+Function:  get_bemf_angular_position
+Description: returns the estimated position [internal_angle_unit]
+Input:   nothing
+Output:   compensated estimated position
+******************************************************************************/
+#ifdef RAM_EXECUTE
+uint16_t __ramfunc__ get_bemf_angular_position(void)
+#else
+uint16_t get_bemf_angular_position(void)
+#endif
+{
+ return(bemf_arg);
+}
+
+/******************************************************************************
 Function:  get_angular_speed
 Description: returns the estimated speed [internal_speed_unit]
 Input:   nothing
@@ -936,4 +1189,22 @@ int16_t get_angular_speed(void)
 #endif
 {
  return(speed_est);
+}
+
+
+/******************************************************************************
+Function:  get_Bemf_magnitude
+Description: returns the back emf magnitude
+Input:   nothing
+Output:   compensated estimated position
+******************************************************************************/
+#ifdef RAM_EXECUTE
+uint16_t __ramfunc__ get_Bemf_magnitude(void)
+#else
+uint16_t get_Bemf_magnitude(void)
+#endif
+{
+    uint16_t bemf_rms;
+    bemf_rms = (uint32_t)bemf.r;
+    return bemf_rms;
 }

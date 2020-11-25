@@ -50,7 +50,7 @@
           <itemPath>../src/config/mclv2_sam_c21_pim/definitions.h</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <logicalFolder name="f4"
+      <logicalFolder name="f5"
                      displayName="Motor Control Library"
                      projectFiles="true">
         <itemPath>../src/q14_generic_mcLib.h</itemPath>
@@ -115,7 +115,7 @@
           </logicalFolder>
         </logicalFolder>
       </logicalFolder>
-      <logicalFolder name="f5" displayName="X2C Scope" projectFiles="true">
+      <logicalFolder name="f4" displayName="X2C Scope" projectFiles="true">
         <itemPath>../src/X2CScope.h</itemPath>
         <itemPath>../src/X2CScopeCommunication.h</itemPath>
       </logicalFolder>
@@ -175,13 +175,13 @@
           <itemPath>../src/config/mclv2_sam_c21_pim/libc_syscalls.c</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <logicalFolder name="f2"
+      <logicalFolder name="f3"
                      displayName="Motor Control Library"
                      projectFiles="true">
         <itemPath>../src/q14_generic_mcLib.c</itemPath>
         <itemPath>../src/q14_rolo_mcLib.c</itemPath>
       </logicalFolder>
-      <logicalFolder name="f3" displayName="X2C Scope" projectFiles="true">
+      <logicalFolder name="f2" displayName="X2C Scope" projectFiles="true">
         <itemPath>../src/X2CScope.c</itemPath>
         <itemPath>../src/X2CScopeCommunication.c</itemPath>
       </logicalFolder>
@@ -193,7 +193,6 @@
                    projectFiles="false">
       <itemPath>Makefile</itemPath>
       <itemPath>../src/config/mclv2_sam_c21_pim/harmony.prj</itemPath>
-      <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.xml</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -207,7 +206,7 @@
         <targetDevice>ATSAMC21J18A</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool></platformTool>
+        <platformTool>AtmelIceTool</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>2.41</languageToolchainVersion>
         <platform>3</platform>
@@ -215,6 +214,8 @@
       <packs>
         <pack name="SAMC21_DFP" vendor="Microchip" version="3.3.72"/>
       </packs>
+      <ScriptingSettings>
+      </ScriptingSettings>
       <compileType>
         <linkerTool>
           <linkerLibItems>
@@ -233,6 +234,7 @@
       </compileType>
       <makeCustomizationType>
         <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeUseCleanTarget>false</makeUseCleanTarget>
         <makeCustomizationPreStep></makeCustomizationPreStep>
         <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
         <makeCustomizationPostStep></makeCustomizationPostStep>
@@ -243,7 +245,7 @@
       <AtmelIceTool>
         <property key="AutoSelectMemRanges" value="auto"/>
         <property key="communication.interface" value="swd"/>
-        <property key="communication.speed" value="2"/>
+        <property key="communication.speed" value="4.000"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>

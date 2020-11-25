@@ -48,10 +48,10 @@ Headers inclusions
 #include <math.h>
 #include <stdint.h>
 #include "q14_generic_mcLib.h"
-#include "definitions.h"
 #include "userparams.h"
+#include "definitions.h"
 
-int16_t result_soft,result_divas;
+
 /*******************************************************************************
 Macro definitions
 *******************************************************************************/
@@ -70,6 +70,8 @@ Macro definitions
 /******************************************************************************
 Private global variables
 ******************************************************************************/
+int32_t g_s32i, g_s32p, g_s32t;
+	int16_t	g_s16e, g_s16t;
 
 /* table y = BASE_VALUE * sin((pi/2) * x / TRITAB_DIM)
  0 <= x <= TRITAB_DIM, 0 <= y <= BASE_VALUE (first quarter) */
@@ -392,17 +394,13 @@ uint16_t library_atan2(int16_t x, int16_t y)
 		else if(b < a)
 		{
 			u32a = (uint32_t)b * (uint32_t)BASE_VALUE_INT;
-
-            u16a = (uint16_t)(u32a / a);
-
+			u16a = (uint16_t)(u32a / a);
 			u16a = (uint16_t)library_tbact[u16a >> (uint16_t)SH_ACTTAB];
 		}
 		else
 		{
 			u32a = (uint32_t)a * (uint32_t)BASE_VALUE_INT;
-
-            u16a = (uint16_t)(u32a / b);
-
+			u16a = (uint16_t)(u32a / b);
 			u16a = (uint16_t)library_tbact[u16a >> (uint16_t)SH_ACTTAB];
 			u16a = PIHALVES - u16a;	
                         /* overflow is OK here! */
@@ -524,7 +522,6 @@ void library_ab_uvw(const vec2_t *ab, vec3_t *uvw)
 	s32a = ((int32_t)(ab->y)) * SQRT3;
     s32a >>= SH_BASE_VALUE;
 	s32a -= (ab->x);
-	
     (uvw->v) = (int16_t)(s32a >> 1);
 
 	/* w */
@@ -623,7 +620,7 @@ void library_xy_rt(const vec2_t *xy, vecp_t *rt)
 	else
 	{	/* |sin(ang)|<=|cos(ang)|*/
 		s32a = ((int32_t)(xy->x)) * (int32_t)BASE_VALUE_INT;
-        temp =  (int16_t)(s32a / ((rt->t).cos)) ;
+		temp =  (int16_t)(s32a / ((rt->t).cos)) ;
         (rt->r) = (uint16_t)temp;
 	}
 }
@@ -694,12 +691,12 @@ int16_t library_pi_control(int32_t erl, pi_cntrl_t *pi)
 
 		/* proportional term */
 		s32p = (int32_t)s16e * (int32_t)(pi->kp);
-
+        
 		/* total control */
 		s32t = s32i + s32p;
 		s16t = (int16_t)(s32t >> (pi->shp));
-
-		/* result clamp and integral memory update */
+       
+       		/* result clamp and integral memory update */
 		if(s16t > (pi->hlim))
 		{
 			s16t = (pi->hlim);
@@ -784,5 +781,7 @@ int16_t library_pi_control(int32_t erl, pi_cntrl_t *pi)
                   /* no action */
                 }
 	}
+
         return(s16t);
 }
+

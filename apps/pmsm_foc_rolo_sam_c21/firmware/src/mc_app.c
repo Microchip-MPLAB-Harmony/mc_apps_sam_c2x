@@ -44,6 +44,7 @@
 /*******************************************************************************
 Headers inclusions
 *******************************************************************************/
+
 #include "q14_generic_mcLib.h"
 #include "q14_rolo_mcLib.h"
 #include "device.h"
@@ -96,9 +97,9 @@ uint16_t spe_rpm_abs;
 its dependent filters */
 /* counter in main loop (10ms) synchronization function */
 uint16_t     syn_cnt;  
-
-uint8_t phaseindex[3] = {0,1,2};
-uint8_t vis_cnt = 0;
+/* switch in visualization data management */
+uint16_t     vis_cnt;  
+uint16_t     angle_dac;
 /* Debug variables */
 #ifdef  MACRO_DEBUG
 uint16_t     acc_ramp;
@@ -126,8 +127,8 @@ uint16_t
     start_cur,     /* startup current [internal current unit] */
     cur_ramp_al,   /* current ramp during alignment */
     cur_ramp_ru;   /* direct current variation ramp during normal running */
-
-
+uint32_t loop_count;
+uint32_t trigger = 0;
 uint32_t state_count = 1;
 uint16_t state_windmilling =0;
 uint16_t state_decide =0;
@@ -141,10 +142,30 @@ uint16_t state_closedloop =0;
 int16_t min_test=MIN_SPE;
 uint16_t start_count = 0;
 uint16_t stop_count = 0;
-int32_t delta_duty = 0;
+int32_t err = 0;
+
+uint16_t     acc_ramp;
+uint16_t     dec_ramp;
+/* Field weakening debug variables */
+int16_t     rated_scaled_rpm;
+int16_t     scaled_resistance;
+#ifdef NON_ISOTROPIC_MOTOR
+int16_t     scaled_inductance_d;
+int16_t     scaled_inductance_q;
+#endif
+int16_t     scaled_inductance;
+int16_t     scaled_fw_current;
 #endif
 
-
+#ifdef ENABLE_MTPA
+   int32_t dcurref_mtpa = 0;
+#endif
+#ifdef FIELD_WEAKENING
+   int32_t dcurref_fw = 0;
+   int32_t VdSquare, Vqref;
+   int32_t Numerator, Denominator;
+   int16_t iqref_abs;
+#endif
 
 /******************************************************************************
 Safety variables
@@ -159,6 +180,11 @@ pi_cntrl_t
     iq_pi,
     sp_pi;
 
+pi_cntrl_iv_t
+    id_pi_var,
+    iq_pi_var,
+    sp_pi_var;
+
 int16_t
     spe_ref_sgn,  /* speed reference sign (speed_ramp routine output) */
     ref_sgn,      /* speed reference sign (speed_ramp routine input, 
@@ -170,7 +196,7 @@ uint16_t
     ref_abs,      /* speed reference absolute value 
                      (speed_ramp routine input, derived from GUI data) 
                      [internal speed unit] */
-    ext_spe_ref_fil,  /*Filtered Speed reference in RPM*/    
+    ext_spe_ref_fil,  /*Filtered Speed reference in RPM*/   
     espabs_fil;   /* filtered estimated electrical speed absolute value 
                     [internal speed unit] */
 int16_t
@@ -185,9 +211,14 @@ uint16_t  uall_cnt,  /* u-phase phase lost alarm counter */
   wall_cnt;  /* w-phase phase lost alarm counter */
 
 /* status variable in motor management state machine */
-
+#ifdef WINDMILLING_ENABLE
+run_status_t
+    motor_status = WINDMILLING,  
+    prev_motor_status = WINDMILLING;
+#else
 run_status_t
     motor_status = STOPPED;  
+#endif
 
 stop_source_t motor_stop_source = NO_START_CMD;
 /* variables used for phase lost check */
@@ -232,7 +263,8 @@ static int16_t
     dv,        /* v-phase duty cycle */
     dw;        /* w-phase duty cycle */
 
-static int16_t
+ int16_t
+    bemfspeed,
     elespeed,    /* (estimated or imposed) electrical speed [internal speed unit] */
     plost_cnt,   /* counter in position lost alarm management */
     vbus,        /* bus voltage value [internal voltage unit] */
@@ -262,6 +294,31 @@ uint16_t spe_adc_rpm; // This register holds the Potentiometer value scaled to M
 uint32_t  torque_adc_ref_var; // Intermediate variable to convert POT  - ADC value to Torque Ref
 uint16_t  torque_adc_ref_abs; // This register holds the absolute torque ref scaled to MAX_CUR
 int16_t  torque_adc_ref; // This register holds the signed torque ref scaled to MAX_CUR
+
+uint16_t test_va1 = HALF_MIN_ANGLE_ROLLOVER;
+uint16_t test_va2,test_va3;
+uint16_t windmilling_count = 0;
+uint16_t braking_count = 0;
+uint16_t assert_active_vector = 0;
+int32_t elespeed_ref = 0;
+int16_t elespeed_actual=0;
+int16_t torque_ref = 0;
+int16_t vx,vy;
+extern uint16_t angle_rollover_count;
+
+/*******************************************************************************
+Function Prototype
+*******************************************************************************/
+#ifdef ENABLE_MTPA
+__STATIC_INLINE int32_t MCAPP_idmaxTorquePerAmpere(void);
+#endif
+
+#ifdef FIELD_WEAKENING 
+__STATIC_INLINE int32_t MCAPP_fieldWeakening(void);
+#endif
+
+extern int32_t __aeabi_idiv(int32_t numerator, int32_t denominator);
+
 /*******************************************************************************
 Functions
 *******************************************************************************/
@@ -295,19 +352,32 @@ void macro_debug(void)
     cur_ramp_al = CUR_RAMP_AL;
     cur_ramp_ru = CUR_RAMP_RU;
     spe_ref_abs = (uint16_t)MIN_SPE;
+    
+    
+#ifdef FIELD_WEAKENING
+    /* Debug parameters for field weakening */
+    rated_scaled_rpm  = PMSM_RATED_SPEED_SCALED;
+    scaled_resistance =  PMSM_RESISTANCE_SCALED;
+#ifdef NON_ISOTROPIC_MOTOR
+    scaled_inductance_d =  PMSM_INDUCTANCE_D_SCALED;
+    scaled_inductance_q =  PMSM_INDUCTANCE_Q_SCALED;
+#endif
+    scaled_inductance =  PMSM_INDUCTANCE_SCALED;
 
+    scaled_fw_current =  PMSM_MAX_NEGATIVE_IDREF_SCALED;
+#endif
 }
 #endif
 
 
 /******************************************************************************
-Function:       syn10ms
-Description:    main loop (10ms) synchronization function
-Input:          nothing (uses global variable syn_cnt)
-Output:         nothing (modifies global variable syn_cnt)
-Note:           to be used in a while loop; it becomes false only every 10ms,
-                and in this case it resets the counter;
-                the counter itself is managed by the main interrupt
+Function:    syn10ms
+Description:  main loop (10ms) synchronization function
+Input:      nothing (uses global variable syn_cnt)
+Output:      nothing (modifies global variable syn_cnt)
+Note:      to be used in a while loop; it becomes false only every 10ms,
+        and in this case it resets the counter;
+        the counter itself is managed by the main interrupt
 ******************************************************************************/
 uint8_t syn10ms(void)
 {
@@ -359,7 +429,7 @@ Note:      to be called once before starting the interrupts;
 void motorcontrol_vars_init(void)
 {
   uint32_t u32a;
-
+test_va1 = HALF_MIN_ANGLE_ROLLOVER;
 #ifdef MACRO_DEBUG
     macro_debug();
 #endif  /* ifdef MACRO_DEBUG */
@@ -444,7 +514,7 @@ void motor_stop(void)
     dc[0] =  (int32_t)HALF_HPER_TICKS;
     dc[1] =  (int32_t)HALF_HPER_TICKS;
     dc[2] =  (int32_t)HALF_HPER_TICKS;
-    
+	
     TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)dc[0]);
     TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)dc[1]);
     TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)dc[2]);
@@ -454,12 +524,7 @@ void motor_stop(void)
             |TCC_PATT_PGE4_Msk|TCC_PATT_PGE5_Msk|TCC_PATT_PGE6_Msk),
             (TCC_PATT_PGE0(0)|TCC_PATT_PGE1(0)|TCC_PATT_PGE2(0)|TCC_PATT_PGE4(0)
             |TCC_PATT_PGE5(0)|TCC_PATT_PGE6(0)));
-
-    
     state_run = 0;
-    stop_count++;
-
-    
 }
 
 /******************************************************************************
@@ -471,10 +536,10 @@ Note:      to be called to enable pwm outputs
 ******************************************************************************/
 void motor_start(void)
 {
-
+    /* Rules 11.4, 11.6 violated access to register */
     TCC0_PWMPatternSet(0x00,0x00);/*Disable PWM override*/
     state_run = 1;
-    start_count++;
+
 }
 
 /******************************************************************************
@@ -534,14 +599,14 @@ static inline void phase_lost_filters(void)
 }
 
 /******************************************************************************
-Function:       phase_lost_filters_reset
-Description:    reset of the filters used for the phase lost check and also
-                of the related alarm counters
-Input:          nothing (uses global variables)
-Output:         nothing (modifies global variables)
-Note:           to be called in the main interrupt, when the output frequency
-                is lesser than the minimum required for the routine (ex. when
-                aligning)
+Function:    phase_lost_filters_reset
+Description:  reset of the filters used for the phase lost check and also
+        of the related alarm counters
+Input:      nothing (uses global variables)
+Output:      nothing (modifies global variables)
+Note:      to be called in the main interrupt, when the output frequency
+        is lesser than the minimum required for the routine (ex. when
+        aligning)
 ******************************************************************************/
 static inline void phase_lost_filters_reset(void)
 {
@@ -557,24 +622,25 @@ static inline void phase_lost_filters_reset(void)
 }
 
 /******************************************************************************
-Function:     speed_ramp
+Function:    speed_ramp
 Description:  calculation of internal speed reference (in internal units)
-Input:        nothing
-Output:       nothing
-Note1:        the global variable ext_speed_ref_rpm is used as ramp input
-              reference,
-              the global variable spe_ref is modified as routine output
-Note2:        the routine has to be called every 10ms to assure correct ramps
+Input:      nothing
+Output:      nothing
+Note1:      the global variable ext_speed_ref_rpm is used as ramp input
+                reference,
+        the global variable spe_ref is modified as routine output
+Note2:      the routine has to be called every 10ms to assure correct ramps
 ******************************************************************************/
  void speed_ramp(void)
 {
-  
+
      uint32_t    u32a;
     /* speed reference absolute value (actual ramp value) [internal speed unit] */
     uint16_t    ram_abs;    
     /* reference speed sign (actual ramp value) */
     int16_t     ram_sgn;    
-
+    
+    /* interface with PC GUI */
     if(0U == start_toggle)
     {
         ext_speed_ref_rpm = 0;
@@ -618,7 +684,7 @@ Note2:        the routine has to be called every 10ms to assure correct ramps
             #endif
         }
         else
-        {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+        {
             ext_speed_ref_rpm = -((int16_t)rpm_ref_abs);
             #ifdef TORQUE_MODE
                 torque_adc_ref = -((int16_t)torque_adc_ref_abs); 
@@ -643,7 +709,6 @@ Note2:        the routine has to be called every 10ms to assure correct ramps
     }
     else if(CPT_CNT_VAL > cpt_cnt)
     {
-        
         cpt_cnt++;
         motor_start();
     }
@@ -721,9 +786,8 @@ Note2:        the routine has to be called every 10ms to assure correct ramps
         {
             if (start_toggle == 1U && !state_run)
             {
-              /* if motor is not already started */
-              motor_start();
-              LED1_OC_FAULT_Clear();
+            /* if motor is not already started */
+                motor_start();
             }
             if(STOPPED == motor_status)
             {
@@ -795,27 +859,27 @@ Note:      calculates the third phase value from the other two samles;
 ******************************************************************************/
  void current_measurement_management(void)
 {
-    int32_t s32a;
-    int16_t cur[3];
+	int32_t s32a;
+	int16_t cur[3];
 
-    /* currents */
-    s32a = ((int32_t)cur_mea[0]) * ((int32_t)KAD_CUR);
-    #if (0 != SH_KAD_CUR)
-    cur[0] = (int16_t)(s32a >> SH_KAD_CUR);
-    #else
-    cur[0] = (int16_t)s32a;
-    #endif
-    s32a = ((int32_t)cur_mea[1]) * ((int32_t)KAD_CUR);
-    #if (0 != SH_KAD_CUR)
-    cur[1] = (int16_t)(s32a >> SH_KAD_CUR);
-    #else
-    cur[1] = (int16_t)s32a;
-    #endif  /* else if(0 != SH_KAD_CUR) */
-    cur[2] = -cur[0] - cur[1];
-    cur3m.u = cur[0];
-    cur3m.v = cur[1];
-    cur3m.w = cur[2];
-    library_uvw_ab(&cur3m, &curabm);
+	/* currents */
+	s32a = ((int32_t)cur_mea[0]) * ((int32_t)KAD_CUR);
+	#if (0 != SH_KAD_CUR)
+	cur[0] = (int16_t)(s32a >> SH_KAD_CUR);
+	#else
+	cur[0] = (int16_t)s32a;
+	#endif
+	s32a = ((int32_t)cur_mea[1]) * ((int32_t)KAD_CUR);
+	#if (0 != SH_KAD_CUR)
+	cur[1] = (int16_t)(s32a >> SH_KAD_CUR);
+	#else
+	cur[1] = (int16_t)s32a;
+	#endif  /* else if(0 != SH_KAD_CUR) */
+	cur[2] = -cur[0] - cur[1];
+	cur3m.u = cur[0];
+	cur3m.v = cur[1];
+	cur3m.w = cur[2];
+	library_uvw_ab(&cur3m, &curabm);
 
 
 }
@@ -843,8 +907,6 @@ static inline void pwm_modulation_reset(void)
     TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)dutycycle[0]);
     TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)dutycycle[1]);
     TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)dutycycle[2]);
-        
-
 }
 
 /******************************************************************************
@@ -884,7 +946,7 @@ void pwm_modulation(void)
   while(s16a >= vbus)
   {
       /* compiler ensures a arithmetic shift is done in these cases.
-      MISRA 10.1 violated for optimziation purpose */
+      MISRA 10.1 violated for optimization purpose */
       s16a >>= 1;
      n_shft--;
   }
@@ -981,9 +1043,7 @@ void pwm_modulation(void)
   {
     /* duties clamp */
     s32a = (int32_t)(*amed) * (int32_t)DELMAX_TICKS;
-
     (*amed) = (int16_t)(s32a / (*amax));
-
     (*amax) = (int16_t)DELMAX_TICKS;
 
     /* duties update */
@@ -997,11 +1057,13 @@ void pwm_modulation(void)
     dutycycle[0] = (int32_t)du;
     dutycycle[1] = (int32_t)dv;
     dutycycle[2] = (int32_t)dw;
-    /*Using register address of TCC0 */  
+    /*Using register address of TCC0 */
+    	
     TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)dutycycle[0]);
     TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)dutycycle[1]);
     TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)dutycycle[2]);
-    
+	
+
     /* output voltages re-calculation 
       (necessary because a clamp has been executed);
       the formula is vout = vbus * (halfper - duty) / halfper, 
@@ -1029,7 +1091,6 @@ void pwm_modulation(void)
     /* update output voltage after modulation
      clamping (Clarke transformation) */
     library_uvw_ab(&outv3, &outvab);
-
   }
   else
   {
@@ -1053,10 +1114,11 @@ void pwm_modulation(void)
     dutycycle[1] = dv;
     dutycycle[2] = dw;
     /*Using register address of TCC0 */
+    	
     TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)dutycycle[0]);
     TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)dutycycle[1]);
     TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)dutycycle[2]);
-
+	
   }
 
 }  /* end of function pwm_modulation()*/
@@ -1084,7 +1146,7 @@ Modifies:    global alarm, if needed
 ******************************************************************************/
 static inline void pos_lost_control(void)
 {
-    uint16_t u16a;
+  uint16_t u16a;
 
   if(POS_LOST_CNTMX <= plost_cnt)
   {
@@ -1289,15 +1351,296 @@ void motorcontrol(void)
         /* current transformations (previous angle) */
         library_ab_dq(&sysph, &curabm, &curdqm);
 
-    
-        
-        #ifndef  CURPI_TUN
+#ifndef CURPI_TUN
         /* motor control state machine */
         switch(motor_status)
         {
+#ifdef WINDMILLING_ENABLE
+    
+    #ifndef ACTIVE_VECTOR_WINDMILLING
+            case WINDMILLING:
+                
+                
+                trigger = 200; // debug variable
+                state_windmilling = state_count;// debug variable
+                outvab.x = 0;
+                outvab.y = 0;
+                assert_active_vector = 0;
+                if(windmilling_count< WINDMILLING_TIME_IU)
+                {
+                    motor_status = WINDMILLING;
+                    windmilling_count++;
+                }
+                else
+                {
+        #ifdef WINDMILLING_CALIBRATION
+                    motor_status = WINDMILLING;
 
+        #else                                           
+                    motor_status = WINDMILLING_DECIDE;
+        #endif 
+                    state_count++;// debug variable
+                } 
+       
+                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
+                newsysph = position_offset + get_bemf_angular_position();
+
+
+                /* estimated speed */
+                elespeed = get_angular_speed(); 
+
+                TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)(PWM_HPER_TICKS>>1));
+                TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)(PWM_HPER_TICKS>>1));
+                TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)(PWM_HPER_TICKS>>1));
+
+                break;
+    #else
+            case WINDMILLING:
+                
+                
+                trigger = 200; // debug variable
+                state_windmilling = state_count; // debug variable
+                curdqr.x = 0;
+                curdqr.y = 0;
+                assert_active_vector = 1;
+                if(windmilling_count< WINDMILLING_TIME_IU)
+                {
+                    motor_status = WINDMILLING;
+                    windmilling_count++;
+                }
+                else
+                {
+        #ifdef WINDMILLING_CALIBRATION
+                    motor_status = WINDMILLING;
+
+        #else                                           
+                    motor_status = WINDMILLING_DECIDE;
+        #endif 
+                    state_count++; // debug variable
+                } 
+
+                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
+                newsysph = position_offset + get_bemf_angular_position();
+
+
+                /* estimated speed */
+                elespeed = get_angular_speed(); 
+
+                
+                break;
+    #endif
+                
+            case WINDMILLING_DECIDE:
+                
+                trigger = 400; // debug variable
+                state_decide = state_count;// debug variable
+                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
+                newsysph = position_offset + get_bemf_angular_position();
+                /* estimated speed */
+                elespeed = get_angular_speed(); 
+
+    #ifndef ACTIVE_VECTOR_WINDMILLING
+                assert_active_vector = 0;
+    #else
+                assert_active_vector = 1;    
+    #endif
+/* This if else loop determines if the electric speed is higher than minimum windmilling speed in both directions 
+ * It also checks if the counted angle roll overs are more than half the expected angle rollovers at minimum windmilling speed.
+ * If the speed or angle rollover conditions are not met, then it assumes that motor speed is too low to be able to faithfully track the angle
+ * It observed that at certain instances when rotor was stationary, the angle tracking was noisy which resulted in non zero speed which at times 
+ * was higher than Minimum windmilling speed which resulted in algorithm to enter erroneously in closed loop state. 
+ * Angle roll over count was introduced to make the decision making more robust as it would not only check for electrical speed as well as angle rollovers */
+                if((angle_rollover_count > HALF_MIN_ANGLE_ROLLOVER)&&((elespeed > MIN_WM_SPE)||(elespeed < -MIN_WM_SPE)))
+                {
+                    if(spe_ref_sgn> 0)
+                    {
+                        if(elespeed<0) // If Command direction is +ve and windmilling direction is -ve then brake
+                        {
+                            
+                            motor_status = WINDMILLING_DECIDE;
+                            //During Windmilling, the DQ reference frame is aligned to Back EMF Vector
+                            //Hence, injecting negative D axis current wrt BEMF Vector would result in regenerative braking
+                            if(curdqr.x > -REGEN_BRAKE_CURRENT) // Ramping the regen brake current reference
+                            {
+                                curdqr.x -= RGN_BRK_RAMP_IU;
+                            }
+                            else
+                            {
+                               curdqr.x = (int32_t)-REGEN_BRAKE_CURRENT; 
+                            }
+
+                        }
+                        else // If Command direction is +ve and windmilling direction is +ve then switch to closed loop windmilling
+                        {
+                            motor_status = CLOSINGLOOP_WINDMILLING;
+                            state_count++; // debug variable
+                            
+
+                        }
+                    }
+                    else
+                    {
+                        if(elespeed>0) // If Command direction is -ve and windmilling direction is +ve then brake
+                        {
+
+                            
+                            motor_status = WINDMILLING_DECIDE;
+                            if(curdqr.x > -REGEN_BRAKE_CURRENT) // Ramping the regenerative brake current reference
+                            {
+                                curdqr.x -=RGN_BRK_RAMP_IU;
+                            }
+                            else
+                            {
+                               curdqr.x = (int32_t)-REGEN_BRAKE_CURRENT; 
+                            }
+
+
+                        }
+                        else// If Command direction is -ve and windmilling direction is -ve then switch to closed loop windmilling
+                        {
+                            
+                            motor_status = CLOSINGLOOP_WINDMILLING;
+                            state_count++; // debug variable
+
+                        }   
+                    }
+
+                }
+                else
+                {
+                    motor_status = WINDMILLING_PASSIVE_BRAKE;
+                    state_count++; // debug variable
+
+                    
+                }                     
+
+                break;
+            
+            case WINDMILLING_PASSIVE_BRAKE:
+                
+                trigger = 600; // debug variable
+                state_brake = state_count;// debug variable
+                assert_active_vector = 0;
+                outvab.x = 0;
+                outvab.y = 0;
+                curdqr.x = 0;
+                curdqr.y = 0;
+                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
+                newsysph = position_offset + get_bemf_angular_position();
+                                /* estimated speed */
+                elespeed = get_angular_speed(); 
+                if(braking_count < BRAKING_TIME_IU)
+                {
+                    TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)(PWM_HPER_TICKS>>1));
+                    TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)(PWM_HPER_TICKS>>1));
+                    TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)(PWM_HPER_TICKS>>1));
+                    braking_count++; // debug variable
+                    motor_status = WINDMILLING_PASSIVE_BRAKE;
+                }
+                else
+                {
+                    motor_status = STOPPED;
+                    state_count++; // debug variable
+                }
+                break;
+            
+            case CLOSINGLOOP_WINDMILLING:
+                
+    #ifndef ACTIVE_VECTOR_WINDMILLING
+                assert_active_vector = 0;
+    #else
+                assert_active_vector = 1;    
+    #endif
+                trigger = 1800; // debug variable
+                state_closingloopwindmilling = state_count; // debug variable
+                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
+                if(spe_ref_sgn >0)
+                {
+                    flx_arg_mem = (bemf_arg_mem - PIHALVES);
+                    flx_arg = (bemf_arg - PIHALVES);
+                    /* speed PI control memory setting */
+                sp_pi.imem = WINDMILL_START_CUR;/* speed PI integral term */
+                }
+                else
+                {
+                    flx_arg_mem = (bemf_arg_mem + PIHALVES);
+                    flx_arg = (bemf_arg + PIHALVES);
+                    /* speed PI control memory setting */
+                sp_pi.imem = -WINDMILL_START_CUR;/* speed PI integral term */
+                }
+
+                newsysph = flx_arg;
+                #ifdef  SPREF_FIL_ALIGN
+                elespeed = get_angular_speed();
+                if(0 >= elespeed)
+                {
+                    spe_ref_fil = (uint16_t)(-elespeed);
+                }
+                else
+                {
+                    spe_ref_fil = (uint16_t)elespeed;
+                }
+                spe_ref_mem = spe_ref_fil;
+                spe_ref_mem <<= SH_REFSPEED_FIL;
+                #endif  /* ifdef SPREF_FIL_ALIGN */
+
+                /* control memories calc and setting */
+                /* compiler ensures a arithmetic shift is done in these cases.
+                    MISRA 10.1 violated for optimziation purpose */
+                outvdq.x = (int16_t)(id_pi.imem >> id_pi.shp); //Copying the integral output of D axis PI Controller to D axis output voltage
+                outvdq.y = (int16_t)(iq_pi.imem >> iq_pi.shp); //Copying the integral output of Q axis PI Controller to Q axis output voltage
+                library_dq_ab(&sysph, &outvdq, &outvab);
+                library_dq_ab(&sysph, &curdqr, &curabr);
+
+                /* new phase alignment */
+                sysph.ang = newsysph;
+                library_sincos(&sysph);
+
+                /* control memories setting in the new reference */
+                library_ab_dq(&sysph, &outvab, &outvdq);
+                library_ab_dq(&sysph, &curabr, &curdqr);
+
+                id_pi.imem = outvdq.x;
+                /* d current PI integral term in new ref. frame */
+                id_pi.imem <<= id_pi.shp;  
+                iq_pi.imem = outvdq.y;
+                /* q current PI integral term in new ref. frame */
+                iq_pi.imem <<= iq_pi.shp;  
+                dcurref_l = curdqr.x;
+                dcurref_l <<= SH_BASE_VALUE;
+
+
+                /* position loss control reset */
+                pos_lost_control_reset();
+
+                /* status change */
+                if(0 != ref_sgn)
+                {
+                    motor_status = RUNNING;
+                    state_count++; // debug variable
+                }
+                else
+                {
+                    curdqr.x =  0;
+                    curdqr.y = 0;
+                    elespeed =  0;
+                    elespeed_abs = 0;
+                    motor_status = STOPPED;
+
+                }
+
+                /* phase lost check filters reset */
+                phase_lost_filters_reset();
+                
+                break;
+                    
+#endif                 
+            
             case STOPPED:
-                state_stopped = state_count;
+                 
+                trigger = 1000; // debug variable
+                state_stopped = state_count; // debug variable
+                assert_active_vector = 1;
                 dcurref_l = 0;
                 curdqr.x = 0;
                 curdqr.y = 0;
@@ -1306,15 +1649,24 @@ void motorcontrol(void)
                 elespeed = 0;
                 elespeed_abs = 0;
                 elespeed_l = 0;
+                #ifdef ENABLE_MTPA 
+                dcurref_mtpa = 0;
+                #endif
+                #ifdef FIELD_WEAKENING
+                dcurref_fw = 0;
+                #endif
                 if(0 != spe_ref_sgn)
                 {
                     motor_status = ALIGNING;
-                    state_count++;
+                    state_count++; // debug variable
                 }
+
                 break;
             case ALIGNING:
-                state_align = state_count;
+                trigger = 1200; // debug variable
+                state_align = state_count; // debug variable
                
+                assert_active_vector = 1;
                 if(0 == ref_sgn)
                 {
                     curdqr.x = 0;
@@ -1328,30 +1680,26 @@ void motorcontrol(void)
                 else
                 {
                 #ifdef Q_AXIS_STARTUP
-                    
                         /* current rising ramp */
                         if(START_CUR > curdqr.y)
                         {
                             dcurref_l += CUR_RAMP_AL;
-
                             curdqr.y = (int16_t)(dcurref_l >> SH_BASE_VALUE);
-
                         }
                         else
                         {
                             curdqr.y = START_CUR;
                             motor_status = STARTING;
-                            state_count++;
+                            state_count++; // debug variable
                         }
 
                 #else
+
                         /* current rising ramp */
                         if(START_CUR > curdqr.x)
                         {
                             dcurref_l += CUR_RAMP_AL;
-  
                             curdqr.x = (int16_t)(dcurref_l >> SH_BASE_VALUE);
-
                         }
                         else
                         {
@@ -1360,22 +1708,23 @@ void motorcontrol(void)
                             /* status change */
                             motor_status = STARTING;
 
-                    }
+                        }
+
                 #endif     
                 }
                 break;
             case STARTING:
-                state_start = state_count;
+                trigger = 1400; // debug variable
+                state_start = state_count; // debug variable
+                assert_active_vector = 1;
                 /* observer alignment */
                 if((MIN_SPE >> 2) > elespeed_abs)
                 {
-                  estimation_alignment(elespeed, &outvab, &curabm);
-                  
-
+                    estimation_alignment(elespeed, &outvab, &curabm);
                 }
                 else
                 {
-                  position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
+                    position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
                 }
 
                 /* speed rising ramp */
@@ -1426,13 +1775,16 @@ void motorcontrol(void)
 
                 /* feed-forward angle management */
                 newsysph = (uint16_t)(ampsysph >> (uint32_t)SH_BASE_VALUE);
-
                 break;
             case CLOSINGLOOP:
-                state_closingloop = state_count;
+                trigger = 1600; // debug variable
+                state_closingloop = state_count; // debug variable
+                assert_active_vector = 1;
+
                 /* position and speed estimation (Luenberger) */
                 position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
                 newsysph = position_offset + get_angular_position();
+
                 #ifdef  SPREF_FIL_ALIGN
                 elespeed = get_angular_speed();
                 if(0 >= elespeed)
@@ -1450,18 +1802,17 @@ void motorcontrol(void)
                 /* control memories calc and setting */
                 /* compiler ensures a arithmetic shift is done in these cases.
                     MISRA 10.1 violated for optimziation purpose */
-
                 outvdq.x = (int16_t)(id_pi.imem >> id_pi.shp); //Copying the integral output of D axis PI Controller to D axis output voltage
                 outvdq.y = (int16_t)(iq_pi.imem >> iq_pi.shp); //Copying the integral output of Q axis PI Controller to Q axis output voltage
                 library_dq_ab(&sysph, &outvdq, &outvab);
                 library_dq_ab(&sysph, &curdqr, &curabr);
-
+                               
                 /* new phase alignment */
                 sysph.ang = newsysph;
                 library_sincos(&sysph);
 
                 /* control memories setting in the new reference */
-                library_ab_dq(&sysph, &outvab, &outvdq);
+                library_ab_dq(&sysph, &outvab, &outvdq );
                 library_ab_dq(&sysph, &curabr, &curdqr);
                 #ifdef Q_AXIS_STARTUP
                 curdqr.x = 0 ; 
@@ -1472,11 +1823,15 @@ void motorcontrol(void)
                 iq_pi.imem = outvdq.y;
                 /* q current PI integral term in new ref. frame */
                 iq_pi.imem <<= iq_pi.shp;  
+
                 dcurref_l = curdqr.x;
+
                 dcurref_l <<= SH_BASE_VALUE;
 
                 /* speed PI control memory setting */
+
                 sp_pi.imem = curdqr.y;
+
                 sp_pi.imem <<= sp_pi.shp;  /* speed PI integral term */
                 /* position loss control reset */
                 pos_lost_control_reset();
@@ -1485,7 +1840,7 @@ void motorcontrol(void)
                 if(0 != ref_sgn)
                 {
                     motor_status = RUNNING;
-                    state_count++;
+                    state_count++; // debug variable
                 }
                 else
                 {
@@ -1499,14 +1854,16 @@ void motorcontrol(void)
 
                 /* phase lost check filters reset */
                 phase_lost_filters_reset();
-
                 break;
                 
             
             case RUNNING:
+                assert_active_vector = 1; 
+                state_closedloop = state_count; // debug variable
                 
-                state_closedloop = state_count;
-               /* reference speed filter */
+                trigger = 2000; // debug variable
+               
+                /* reference speed filter */
                 spe_ref_mem += spe_ref_abs;
                 spe_ref_mem -= spe_ref_fil;
                 spe_ref_fil = (uint16_t)(spe_ref_mem >> SH_REFSPEED_FIL);
@@ -1514,9 +1871,11 @@ void motorcontrol(void)
                 /* position and speed estimation (Luenberger) */
                 position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
                 /* estimated position */
-                newsysph = position_offset + get_angular_position();    
+                newsysph = position_offset + get_angular_position();
+
+
                 /* estimated speed */
-                elespeed = get_angular_speed(); 
+               elespeed = get_angular_speed(); 
                 if(0 > elespeed)
                 {
                     elespeed_abs = (uint16_t)(-elespeed);
@@ -1527,98 +1886,106 @@ void motorcontrol(void)
                 }
 
                 /* speed control */
+                #ifdef FIELD_WEAKENING
+                #ifdef USE_DIVAS
+                if( (MAX_CUR > curdqr.x) || ( MAX_CUR > -curdqr.x ))
+                {
+                     sp_pi.hlim = (int32_t)DIVAS_SquareRoot((uint32_t)( MAX_CUR_SQUARED - (int32_t)((int32_t)curdqr.x*(int32_t)curdqr.x)));
+                }
+                else
+                {
+                    sp_pi.hlim = 0;
+                }
+                #else
+                sp_pi.hlim = library_scat(MAX_CUR, curdqr.x);
+                #endif
+                sp_pi.llim = -sp_pi.hlim;
+                #else
                 sp_pi.hlim = MAX_CUR;
                 sp_pi.llim = -MAX_CUR;
+                #endif
                 s32a = (int32_t)spe_ref_fil;
+
                 if(0 > spe_ref_sgn)
                 {
                     s32a = -s32a;
                 }
+                elespeed_ref = s32a;
                 s32a -= elespeed;
                 #ifdef TORQUE_MODE
                 curdqr.y = torque_adc_ref;
                 #else // Speed Control
-                curdqr.y = library_pi_control(s32a, &sp_pi); 
+                curdqr.y = library_pi_control(s32a, &sp_pi);
                 #endif
-                curdqr.x = 0;
-                /* d current reduction */
-                if(0 != curdqr.x)
-                {
-                    /* idmax calc and d reference clamping */
-#ifdef USE_DIVAS
-                    if(MAX_CUR > curdqr.y) 
-                    {
-                        s32a = (int32_t)DIVAS_SquareRoot((uint32_t)((uint32_t)(MAX_CUR_SQUARED)- (uint32_t)(curdqr.y*curdqr.y)));
-                    }
-                    else
-                    {
-                        s32a = 0;
-                    }
-#else
-                    s32a = library_scat(MAX_CUR, curdqr.y);
-#endif 
-                    s32a <<= SH_BASE_VALUE;
-                    if(s32a < dcurref_l)
-                    {
-                        dcurref_l = s32a;
-                    }
-                    else if(-s32a > dcurref_l)
-                    {
-                        dcurref_l = -s32a;
-                    }
-                    else
-                    {
-                      /* no action */
-                    }
 
-                    /* d current ramp */
-                    if(CUR_RAMP_RU < dcurref_l)
-                    {
-                        dcurref_l -= CUR_RAMP_RU;
-                    }
-                    else if(-CUR_RAMP_RU > dcurref_l)
-                    {
-                        dcurref_l += CUR_RAMP_RU;
-                    }
-                    else
-                    {
-                        dcurref_l = 0;
-                    }
-                    
-                    curdqr.x = (int16_t)(dcurref_l >> SH_BASE_VALUE);
-                }
+                #ifdef ENABLE_MTPA 
+                dcurref_mtpa = MCAPP_idmaxTorquePerAmpere( );
+                #endif
+
+                #ifdef FIELD_WEAKENING
+                dcurref_fw = MCAPP_fieldWeakening( );
+                #endif
+                /* Determine the target d-axis reference current */
+                
+                #if   ( defined ENABLE_MTPA )   && ( defined FIELD_WEAKENING ) 
+                s32a = (dcurref_mtpa < dcurref_fw) ? dcurref_mtpa : dcurref_fw;
+                #elif ( defined ENABLE_MTPA )   && ( !defined FIELD_WEAKENING ) 
+                s32a = dcurref_mtpa;
+                #elif ( !defined ENABLE_MTPA )   && ( defined FIELD_WEAKENING ) 
+                s32a = dcurref_fw;
+                #else 
+                s32a = 0;      
+                #endif
+                
+
+                /* D-axis current linear ramp filter */
+                if((s32a + CUR_RAMP_RU )  < dcurref_l )
+                {
+                    dcurref_l -= CUR_RAMP_RU;
+                 }
+                 else if((s32a - CUR_RAMP_RU )  < dcurref_l )
+                 {
+                    dcurref_l += CUR_RAMP_RU;
+                 }
+                 else
+                 {
+                    dcurref_l = s32a;
+                 }
+                curdqr.x = (int16_t)(dcurref_l >> SH_BASE_VALUE);
 
                 /* phase lost check filters */
                 phase_lost_filters();
-#ifndef TORQUE_MODE
+
+                #ifndef TORQUE_MODE
                 /* position loss control */
                 pos_lost_control();
-#endif
+                #endif
                 break;
             default:
-              /* empty case: control should not come here */
-              break;
+                 /* empty case: control should not come here */
+                 break;
         }/* end of switch case */
-
-        #else   /* ifndef CURPI_TUN */
-        curdqr.x = CUR_STEP_VAL;
-        curdqr.y = 0;
-        curabr.x = 0; // This assignment has no impact in CURPI_TUN mode. It is done to avoid build warning of unused variable in CURPI_TUN mode
-        curabr.y = 0; // This assignment has no impact in CURPI_TUN mode. It is done to avoid build warning of unused variable in CURPI_TUN mode
-        #endif  /* else ifndef CURPI_TUN */
+       #endif
         /* angle update */
         sysph.ang = newsysph;
         library_sincos(&sysph);
-         /* direct current control */
+
+        #ifndef CURPI_TUN
+        if(assert_active_vector == 1)
+        {
+        #endif  
+
         s32a =(int32_t)outvmax * DVOL_MARG;
+
         id_pi.hlim = (int16_t)(s32a >> SH_BASE_VALUE);      /* vd max */
         id_pi.llim = -id_pi.hlim;
+        
         s32a = curdqr.x;
         s32a -= curdqm.x;
         outvdq.x = library_pi_control(s32a, &id_pi);
 
         /* quadrature current control */
-#ifdef USE_DIVAS
+        #ifdef USE_DIVAS
         if(outvmax > outvdq.x)
         {
             iq_pi.hlim = (int16_t)DIVAS_SquareRoot((uint32_t)((uint32_t)(outvmax*outvmax)- (uint32_t)(outvdq.x*outvdq.x))); /* vq max */
@@ -1627,13 +1994,13 @@ void motorcontrol(void)
         {
             iq_pi.hlim = 0;
         }
-#else        
+        #else        
         iq_pi.hlim = library_scat(outvmax, outvdq.x);  /* vq max */
-#endif
+        #endif
         iq_pi.llim = -iq_pi.hlim;
         s32a = curdqr.y;
         s32a -= curdqm.y;
-        outvdq.y =  library_pi_control(s32a, &iq_pi);
+        outvdq.y = library_pi_control(s32a, &iq_pi);
         prev_outvab = outvab; // save the outvab from previous cycle before updating them in the current cycle
         /* voltage reverse-Park transformation */
         library_dq_ab(&sysph, &outvdq, &outvab);
@@ -1641,11 +2008,24 @@ void motorcontrol(void)
         /* modulation (uses vbus and outvab to calculate duties, 
            and sets directly pwm registers) */
 
+  
+        pwm_modulation();
+        #ifndef  CURPI_TUN
+        }
+       
 
-            pwm_modulation();
+
+        #else   /* ifndef CURPI_TUN */
+        curdqr.x = CUR_STEP_VAL;
+        curdqr.y = 0;
+        curabr.x = 0; // This assignment has no impact in CURPI_TUN mode. It is done to avoid build warning of unused variable in CURPI_TUN mode
+        curabr.y = 0; // This assignment has no impact in CURPI_TUN mode. It is done to avoid build warning of unused variable in CURPI_TUN mode        
+        #endif  /* else ifndef CURPI_TUN */
+
         /* filters */
         idfil_mem += curdqm.x;          /* direct current */
         idfil_mem -= idfil;
+        /* 10.1 violated for optimization*/
         idfil = (int16_t)(idfil_mem >> SH_MEAS_FIL);
         iqfil_mem += curdqm.y;          /* quadrature current */
         iqfil_mem -= iqfil;
@@ -1687,8 +2067,11 @@ void motorcontrol(void)
         outvab.x = 0;
         outvab.y = 0;
 
-
+#ifdef WINDMILLING_ENABLE
+        motor_status = WINDMILLING;
+#else
         motor_status = STOPPED;
+#endif
 
         dcurref_l = 0;
         newsysph = 0;
@@ -1717,6 +2100,7 @@ void motorcontrol(void)
     s32a -= vbmin;
     if(0 > s32a)
     {
+      /* 10.1 violated for optimization*/
         s32a <<= SH_VBMIN_DEC;  /* faster decrease */
     }
     vbmin_mem += s32a;
@@ -1736,9 +2120,127 @@ void motorcontrol(void)
     {
         --syn_cnt;
     }
-
-  
 }
+
+
+
+#ifdef ENABLE_MTPA
+__STATIC_INLINE int32_t MCAPP_idmaxTorquePerAmpere( void )
+{
+      int32_t s32a;
+      static int32_t  const1 = 0;
+# ifdef USE_DIVAS  
+      static int32_t  const2 = 0;
+#endif
+      static int32_t   shift = 0;
+      static uint8_t   init_done = 0;
+      
+      if( 0U  == init_done )
+      {
+          init_done = 1U; 
+          const1 =  (int32_t)PMSM_MTPA_CONSTANT1_SCALED;
+    
+          while( const1 > (int32_t)BASE_VALUE )
+          {
+                  shift++;
+                  const1 >>= 1;
+          }
+#ifdef USE_DIVAS  
+          const2 = (int32_t)( const1 * const1 ); 
+#endif
+      }
+     
+
+     s32a = (int32_t)((int32_t)iqfil * (int32_t)iqfil ) >> ( 2* shift);
+    
+      
+     #ifdef USE_DIVAS   
+      s32a = (int32_t)((int32_t)const1 - (int32_t)DIVAS_SquareRoot( const2 + (uint32_t)s32a ));
+    #else
+     vec2_t CartCoordinate;
+     vecp_t PolCoordinate;
+     CartCoordinate.x = (int16_t)const1;
+     CartCoordinate.y = (int16_t)( iqfil >> shift );
+     library_xy_rt( &CartCoordinate, &PolCoordinate );
+     s32a = (int32_t)const1 - (int32_t)PolCoordinate.r;
+    #endif
+
+     s32a <<= (SH_BASE_VALUE+ shift);
+    
+     return s32a;
+
+}
+#endif
+
+
+#ifdef FIELD_WEAKENING
+__STATIC_INLINE int32_t MCAPP_fieldWeakening(void)
+{
+    int32_t s32a;
+
+    VdSquare =  (int32_t)vdfil * (int32_t)vdfil;
+    if( PMSM_RATED_SPEED_SCALED < elespeed_abs )
+    {
+        if( ( vdfil >= outvmax ) || ( vdfil <= -outvmax ))
+        {
+           VdSquare = outvmax * outvmax;
+        }
+    #ifdef USE_DIVAS
+        Vqref = DIVAS_SquareRoot( (uint32_t)(outvmax*outvmax - VdSquare) );
+    #else
+        Vqref = library_scat( (int16_t)outvmax, vdfil );
+    #endif
+        /* Revert the sign of reference q-axis current for negative rotation  */
+        if(0 > spe_ref_sgn)
+        {
+           iqref_abs = -curdqr.y;
+        }
+        else
+        {
+           iqref_abs = curdqr.y;
+        }
+        /* Id reference for feed forward control */
+        Numerator =  (int32_t)((int32_t)K_CURRENT * (int32_t)((int32_t)Vqref
+                                        -(int32_t)(((int32_t)iqref_abs * (int32_t)PMSM_RESISTANCE_SCALED) >> SH_BASE_VALUE )
+                                        -(int32_t)(get_Bemf_magnitude())));
+     #ifdef NON_ISOTROPIC_MOTOR
+        Denominator = ((int32_t)PMSM_INDUCTANCE_D_SCALED * (int32_t)elespeed_abs)>> SH_BASE_VALUE;
+     #else
+        Denominator = ((int32_t)PMSM_INDUCTANCE_SCALED * (int32_t)elespeed_abs)>> SH_BASE_VALUE;
+     #endif
+     #ifdef USE_DIVAS
+        s32a = __aeabi_idiv(Numerator, Denominator);
+     #else
+        s32a = Numerator/Denominator;
+     #endif
+
+        /* Limit the reference d axis current */
+        if( s32a > 0)
+        {
+            s32a = 0;
+        }
+        else if( s32a < (int32_t)PMSM_MAX_NEGATIVE_IDREF_SCALED )
+        {
+            s32a = PMSM_MAX_NEGATIVE_IDREF_SCALED ;
+        }
+        else
+        {
+            /* Do nothing */
+
+        }
+
+    }
+    else
+    {
+        /* Field weakening is disabled below rated speed. */
+        s32a = 0;
+    }
+    s32a <<= SH_BASE_VALUE;
+    return s32a;
+}
+
+#endif
+
 
 /* EOF motor_control.c */
 

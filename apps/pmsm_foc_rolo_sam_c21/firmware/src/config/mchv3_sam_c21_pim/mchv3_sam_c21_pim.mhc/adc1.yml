@@ -1,0 +1,73 @@
+format_version: v1.0
+type: UniqueComponent
+attributes: {id: adc1}
+children:
+- type: Symbols
+  children:
+  - type: Combo
+    attributes: {id: ADC_CONV_TRIGGER}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: visible}
+        children:
+        - {type: Value, value: 'false'}
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: HW Event Trigger}
+  - type: Boolean
+    attributes: {id: ADC_CTRLA_SLAVEEN}
+    children:
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: 'true'}
+  - type: KeyValueSet
+    attributes: {id: ADC_CTRLB_PRESCALER}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: visible}
+        children:
+        - {type: Value, value: 'false'}
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: '1'}
+  - type: KeyValueSet
+    attributes: {id: ADC_INPUTCTRL_MUXPOS}
+    children:
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: '5'}
+  - type: Integer
+    attributes: {id: ADC_SAMPCTRL_SAMPLEN}
+    children:
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: '4'}
+  - type: Comment
+    attributes: {id: ADC_SAMPCTRL_SAMPLEN_TIME}
+    children:
+    - type: Attributes
+      children:
+      - type: String
+        attributes: {id: text}
+        children:
+        - {type: Value, value: '**** Conversion Time is 1.33333333333 uS ****'}
+  - type: Menu
+    attributes: {id: ADC_SEQUENCE_MENU}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: visible}
+        children:
+        - {type: Value, value: 'true'}
+- type: ElementPosition
+  attributes: {x: '277', y: '231', id: adc1}

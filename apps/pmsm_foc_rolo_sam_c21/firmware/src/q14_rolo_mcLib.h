@@ -2,7 +2,7 @@
   System Definitions
 
   File Name:
-    q14_generic_mcLib.h
+    q14_rolo_wm_mcLib.h
 
   Summary:
     Header file which contains variables and function prototypes for Motor Control.
@@ -40,6 +40,7 @@
 #ifndef Q14_ROLO_MCLIB_H
 #define Q14_ROLO_MCLIB_H
 
+#include "userparams.h"
 /*******************************************************************************
 Macro definitions
 *******************************************************************************/
@@ -58,11 +59,17 @@ Macro definitions
 /*	only the cross-coupling coefficients are speed dependent, and their value is usually
 	much lesser than the others; so in first approximation they could be neglected, saving
 	a lot of computation time; furthermore, neglecting them could lead to a higher noise immunity */
-#define CROSS_COUPLING_ENABLED 
+/* uncomment the following macro to enable the cross-coupling observer terms */
+ #define CROSS_COUPLING_ENABLED 
 
 /* uncomment the following macro to enable amplification clamping */
 /* #define AMP_CLAMP */
 
+
+extern uint16_t flx_arg_mem;
+extern uint16_t bemf_arg_mem;
+extern uint16_t flx_arg;
+extern uint16_t bemf_arg;
 /*******************************************************************************
 Type definitions
 *******************************************************************************/
@@ -112,6 +119,22 @@ void __ramfunc__ position_and_speed_estimation(int16_t rs, const vec2_t *v, cons
 #else
 void position_and_speed_estimation(int16_t rs, const vec2_t *v, const vec2_t *i);
 #endif
+
+/******************************************************************************
+Function:		bemf_position_and_speed_estimation
+Description:	performs the position and speed estimation of bemf vector
+Input:			reference speed [internal_speed_unit] rs
+				applied voltage vector (in stationary reference frame)
+				measured current vector (in stationary reference frame)
+Output:			nothing (updates internal variables)
+******************************************************************************/
+#ifdef RAM_EXECUTE
+void __ramfunc__ bemf_position_and_speed_estimation(int16_t rs, const vec2_t *v, const vec2_t *i);
+#else
+void bemf_position_and_speed_estimation(int16_t rs, const vec2_t *v, const vec2_t *i);
+#endif
+
+
 /******************************************************************************
 Function:		estimation_alignment
 Description:	aligns the observer
@@ -123,6 +146,15 @@ Output:			nothing (updates internal variables)
 void estimation_alignment(int16_t rs, const vec2_t *v, const vec2_t *i);
 
 /******************************************************************************
+Function:		bemf_estimation_alignment
+Description:	aligns the observer
+Input:			reference speed [internal_speed_unit] rs
+				applied voltage vector (in stationary reference frame)
+				measured current vector (in stationary reference frame)
+Output:			nothing (updates internal variables)
+******************************************************************************/
+void bemf_estimation_alignment(int16_t rs, const vec2_t *v, const vec2_t *i);
+/******************************************************************************
 Function:		get_angular_position
 Description:	returns the estimated position [internal_angle_unit]
 Input:			nothing
@@ -133,6 +165,19 @@ uint16_t __ramfunc__ get_angular_position(void);
 #else
 uint16_t get_angular_position(void);
 #endif
+
+/******************************************************************************
+Function:		get_bemf_angular_position
+Description:	returns the estimated position [internal_angle_unit]
+Input:			nothing
+Output:			compensated estimated position
+******************************************************************************/
+#ifdef RAM_EXECUTE
+uint16_t __ramfunc__ get_bemf_angular_position(void);
+#else
+uint16_t get_bemf_angular_position(void);
+#endif
+
 /******************************************************************************
 Function:		get_angular_speed
 Description:	returns the estimated speed [internal_speed_unit]
@@ -223,6 +268,13 @@ Output:			nothing (modifies global variable flx_arg)
 void phase_estimation_init(void);
 
 /*******************************************************************************
+Function:		phase_estimation_init
+Description:	init routine for use of phase estimation
+Input:			nothing (uses global variable bemf vector)
+Output:			nothing (modifies global variable flx_arg)
+*******************************************************************************/
+void bemf_phase_estimation_init(void);
+/*******************************************************************************
 Function:		speed_filter
 Description:	speed estimation, using a fourth order low-pass filter
 Input:			nothing (uses delta position in one step)
@@ -233,6 +285,19 @@ void __ramfunc__ speed_filter(void);
 #else
 void speed_filter(void);
 #endif
+
+/*******************************************************************************
+Function:		bemf_speed_filter
+Description:	bemf speed estimation, using a fourth order low-pass filter
+Input:			nothing (uses delta position in one step)
+Output:			nothing (modifies global variable speed_est)
+*******************************************************************************/
+#ifdef RAM_EXECUTE
+void __ramfunc__ bemf_speed_filter(void);
+#else
+void bemf_speed_filter(void);
+#endif
+
 /******************************************************************************
 Function:		speed_filter_init
 Description:
@@ -254,4 +319,16 @@ uint16_t __ramfunc__ delay_comp(void);
 uint16_t delay_comp(void);
 #endif
 
-#endif // Q14_GENERIC_MCLIB_H
+/******************************************************************************
+Function:		get_Bemf_magnitude
+Description:	returns nack emf magnitude
+Input:			nothing
+Output:			compensated estimated position
+******************************************************************************/
+#ifdef RAM_EXECUTE
+uint16_t __ramfunc__ get_Bemf_magnitude(void);
+#else
+uint16_t get_Bemf_magnitude(void);
+#endif
+
+#endif // Q14_ROLO_MCLIB_H

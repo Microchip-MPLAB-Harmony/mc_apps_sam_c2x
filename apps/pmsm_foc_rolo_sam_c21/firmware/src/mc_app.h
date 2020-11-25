@@ -42,9 +42,11 @@
 
 #include "userparams.h"
 #include "q14_generic_mcLib.h"
-#include "q14_rolo_mcLib.h"
+//#include "q14_generic_mcLib.h"
+//#include "q14_rolo_mcLib.h"
 
 
+#define MACRO_DEBUG 
 /*******************************************************************************
 Public typedefs
 *******************************************************************************/
@@ -67,10 +69,18 @@ typedef enum
 
 typedef enum
 {
+#ifdef WINDMILLING_ENABLE
+    WINDMILLING,
+    WINDMILLING_DECIDE,
+    WINDMILLING_PASSIVE_BRAKE,      
+#endif             
     STOPPED,
     ALIGNING,
     STARTING,
     CLOSINGLOOP,
+#ifdef WINDMILLING_ENABLE
+    CLOSINGLOOP_WINDMILLING,
+#endif 
     RUNNING
 } run_status_t;
 
@@ -86,50 +96,12 @@ typedef enum
     PHASE_W_LOSS,            
     OC_FAULT_STOP
 } stop_source_t;
-
-
-extern pi_cntrl_t
-    id_pi,
-    iq_pi,
-    sp_pi;
-#define MACRO_DEBUG 
-#ifdef	MACRO_DEBUG
-extern uint16_t     acc_ramp;
-extern uint16_t     dec_ramp;
-#endif
-
-/* visualization variables and
-its dependent filters */
-/* These variables are used in speed_ramp function that is outside
-the control loop , if a variable is required for safety purpose
-the same  should be done with a diverse storage */
-extern uint16_t     syn_cnt;
-
-extern uint16_t     syn1000ms_cnt;
-
-extern int16_t      ext_speed_ref_rpm;
-extern int16_t      
-    ref_sgn,
-    sgn_mem;
-extern uint16_t     
-    spe_ref_abs,
-    ref_abs,
-    ext_spe_ref_fil,
-    espabs_fil;
-extern int16_t
-    vbfil,
-    vdfil,
-    vqfil,
-    idfil,
-    iqfil;
-
 /*******************************************************************************
 Public variables definition
 *******************************************************************************/
 extern run_status_t
     motor_status;  /* status variable in motor management state machine */
-extern stop_source_t
-    motor_stop_source; 
+
 extern alrm_t motor_alarm;
 extern uint8_t state_run;
 
@@ -153,6 +125,58 @@ extern uint16_t
   uall_cnt,  /* u-phase phase lost alarm counter */
   vall_cnt,  /* v-phase phase lost alarm counter */
   wall_cnt;  /* w-phase phase lost alarm counter */
+
+extern uint8_t start_toggle;
+extern uint8_t direction;
+extern uint8_t phaseindex[3];
+extern uint16_t adc_dc_bus_voltage;
+extern uint16_t pot_input;
+
+
+/*******************************************************************************
+Private variables definition
+*******************************************************************************/
+extern pi_cntrl_t
+    id_pi,
+    iq_pi,
+    sp_pi;
+
+extern pi_cntrl_iv_t
+    id_pi_var,
+    iq_pi_var,
+    sp_pi_var;
+
+
+#ifdef	MACRO_DEBUG
+extern uint16_t     acc_ramp;
+extern uint16_t     dec_ramp;
+#endif
+
+/* visualization variables and
+its dependent filters */
+/* These variables are used in speed_ramp function that is outside
+the control loop , if a variable is required for safety purpose
+the same  should be done with a diverse storage */
+extern uint16_t     syn_cnt;
+extern uint16_t     vis_cnt;
+
+extern uint16_t     syn1000ms_cnt;
+
+extern int16_t      ext_speed_ref_rpm;
+extern int16_t      
+    ref_sgn,
+    sgn_mem;
+extern uint16_t     
+    spe_ref_abs,
+    ref_abs,
+    espabs_fil;
+extern int16_t
+    vbfil,
+    vdfil,
+    vqfil,
+    idfil,
+    iqfil;
+
 
 
 #ifdef  CURPI_TUN
@@ -180,13 +204,6 @@ extern uint16_t
 #endif	
 
 
-extern uint8_t start_toggle;
-extern uint16_t adc_dc_bus_voltage;
-extern uint16_t pot_input;
-extern uint8_t  direction;
-
-
-
 /*******************************************************************************
 Private functions prototypes
 *******************************************************************************/
@@ -195,14 +212,12 @@ Private functions prototypes
 void macro_debug(void);
 #endif	// ifdef MACRO_DEBUG
 
-
-
-
-
 /*******************************************************************************
 Public functions prototypes
 *******************************************************************************/
 
+/* debug function which toggles an output port */
+void timedebug_toggle(void);
 
 /******************************************************************************
 Function:		syn10ms
@@ -212,14 +227,6 @@ Output:			1 if the synchronization period is not elapsed, 0 if it is elapsed
 Revision:		1.0
 ******************************************************************************/
 uint8_t syn10ms(void);
-
-/******************************************************************************
-Function:		syn1000ms
-Description:	synchronization function for the main loop
-Input:			nothing
-Output:			1 if the synchronization period is not elapsed, 0 if it is elapsed
-Revision:		1.0
-******************************************************************************/
 uint8_t syn1000ms(void);
 /******************************************************************************
 Function:		motorcontrol_vars_init
@@ -298,4 +305,6 @@ Note:      this function can be called in the main loop every 10ms;
         of the media (0.75)
 ******************************************************************************/
 void phase_lost_check(void);
-#endif // MC_APP_H
+
+
+#endif /* MC_APP_H */
