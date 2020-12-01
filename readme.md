@@ -35,8 +35,6 @@ These applications contain static algorithm code and peripherals are configured 
 | Name | Description|
 |:---------|:-----------|
 | [PMSM FOC using Reduced Order Luenberger Observer](apps/pmsm_foc_rolo_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) |
-| [PMSM FOC using Reduced Order Luenberger Observer with Field Weakening and MTPA ](apps/pmsm_foc_rolo_fw_mtpa_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) with Field Weakening and MTPA |
-| [PMSM FOC using Reduced Order Luenberger Observer with windmilling](apps/pmsm_foc_rolo_wm_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) with on the fly start|
 | [PMSM FOC using Reduced Order Luenberger Observer with single shunt current reconstruction ](apps/pmsm_foc_rolo_1shunt_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) with single shunt current reconstruction|
 | [BLDC Block Commutation using Hall Sensors](apps/bldc_bc_hall_sam_c21/readme.md) | Block Commutation Control of BLDC motors using Hall Sensors |
 | [ACIM Open Loop V/Hz](apps/acim_vhz_sam_c21/readme.md) | Open Loop V/Hz Control of ACIM |
