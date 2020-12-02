@@ -65,36 +65,32 @@
 // *****************************************************************************
 // *****************************************************************************
 
-  
 /*** Macros for BTN_START_STOP pin ***/
 #define BTN_START_STOP_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = 1 << 11)
 #define BTN_START_STOP_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = 1 << 11)
 #define BTN_START_STOP_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = 1 << 11)
-#define BTN_START_STOP_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 11)) & 0x01)
 #define BTN_START_STOP_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = 1 << 11)
 #define BTN_START_STOP_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = 1 << 11)
+#define BTN_START_STOP_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 11)) & 0x01)
 #define BTN_START_STOP_PIN                  PORT_PIN_PA11
 
 /*** Macros for LED2_DIRECTION pin ***/
 #define LED2_DIRECTION_Set()               (PORT_REGS->GROUP[1].PORT_OUTSET = 1 << 12)
 #define LED2_DIRECTION_Clear()             (PORT_REGS->GROUP[1].PORT_OUTCLR = 1 << 12)
 #define LED2_DIRECTION_Toggle()            (PORT_REGS->GROUP[1].PORT_OUTTGL = 1 << 12)
-#define LED2_DIRECTION_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 12)) & 0x01)
 #define LED2_DIRECTION_OutputEnable()      (PORT_REGS->GROUP[1].PORT_DIRSET = 1 << 12)
 #define LED2_DIRECTION_InputEnable()       (PORT_REGS->GROUP[1].PORT_DIRCLR = 1 << 12)
+#define LED2_DIRECTION_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 12)) & 0x01)
 #define LED2_DIRECTION_PIN                  PORT_PIN_PB12
 
 /*** Macros for LED1_OC_FAULT pin ***/
 #define LED1_OC_FAULT_Set()               (PORT_REGS->GROUP[1].PORT_OUTSET = 1 << 13)
 #define LED1_OC_FAULT_Clear()             (PORT_REGS->GROUP[1].PORT_OUTCLR = 1 << 13)
 #define LED1_OC_FAULT_Toggle()            (PORT_REGS->GROUP[1].PORT_OUTTGL = 1 << 13)
-#define LED1_OC_FAULT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 13)) & 0x01)
 #define LED1_OC_FAULT_OutputEnable()      (PORT_REGS->GROUP[1].PORT_DIRSET = 1 << 13)
 #define LED1_OC_FAULT_InputEnable()       (PORT_REGS->GROUP[1].PORT_DIRCLR = 1 << 13)
+#define LED1_OC_FAULT_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 13)) & 0x01)
 #define LED1_OC_FAULT_PIN                  PORT_PIN_PB13
-
-
-
 // *****************************************************************************
 /* PORT Group
 
@@ -904,7 +900,7 @@ void PORT_GroupToggle(PORT_GROUP group, uint32_t mask);
     void PORT_GroupInputEnable(PORT_GROUP group, uint32_t mask)
 
   Summary:
-    Confgiures the selected IO pins of a group as input.
+    Configures the selected IO pins of a group as input.
 
   Description:
     This function configures the selected IO pins of a group as input. The pins
@@ -943,7 +939,7 @@ void PORT_GroupInputEnable(PORT_GROUP group, uint32_t mask);
     void PORT_GroupOutputEnable(PORT_GROUP group, uint32_t mask)
 
   Summary:
-    Confgiures the selected IO pins of a group as output.
+    Configures the selected IO pins of a group as output.
 
   Description:
     This function configures the selected IO pins of a group as output. The pins

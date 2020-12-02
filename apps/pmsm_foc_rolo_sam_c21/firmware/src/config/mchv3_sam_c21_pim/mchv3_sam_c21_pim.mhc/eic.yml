@@ -109,4 +109,4 @@ children:
         children:
         - {type: Value, value: 'true'}
 - type: ElementPosition
-  attributes: {x: '140', y: '232', id: eic}
+  attributes: {x: '12', y: '292', id: eic}

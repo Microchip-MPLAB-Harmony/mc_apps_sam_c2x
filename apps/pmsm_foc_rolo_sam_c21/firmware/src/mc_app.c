@@ -101,10 +101,10 @@ uint16_t     syn_cnt;
 uint16_t     vis_cnt;  
 uint16_t     angle_dac;
 /* Debug variables */
-#ifdef  MACRO_DEBUG
+
 uint16_t     acc_ramp;
 uint16_t     dec_ramp;
-#endif
+
 #ifdef  CURPI_TUN
 uint16_t
     cpt_cnt;    /* counter in tuning PI procedure */
@@ -144,8 +144,6 @@ uint16_t start_count = 0;
 uint16_t stop_count = 0;
 int32_t err = 0;
 
-uint16_t     acc_ramp;
-uint16_t     dec_ramp;
 /* Field weakening debug variables */
 int16_t     rated_scaled_rpm;
 int16_t     scaled_resistance;

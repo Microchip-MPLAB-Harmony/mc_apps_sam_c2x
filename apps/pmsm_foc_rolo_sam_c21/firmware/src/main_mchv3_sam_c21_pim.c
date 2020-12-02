@@ -88,8 +88,6 @@ extern uint16_t flx_arg_mem;
 extern uint16_t bemf_arg;
 extern uint16_t bemf_arg_mem;
 extern uint16_t angle_rollover_count;
-button_response_t button_S2_data;
-button_response_t button_S3_data;
 
 uint16_t calibration_sample_count = 0x0000U;
 uint16_t adc_0_offset = 0;

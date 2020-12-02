@@ -80,4 +80,4 @@ children:
         children:
         - {type: Value, value: 'true'}
 - type: ElementPosition
-  attributes: {x: '276', y: '180', id: adc0}
+  attributes: {x: '143', y: '173', id: adc0}
