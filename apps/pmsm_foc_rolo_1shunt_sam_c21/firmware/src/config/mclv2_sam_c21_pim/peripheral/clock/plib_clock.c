@@ -65,16 +65,16 @@ static void OSCCTRL_Initialize(void)
 
 static void OSC32KCTRL_Initialize(void)
 {
-	OSC32KCTRL_REGS->OSC32KCTRL_OSC32K = 0x0;
+    OSC32KCTRL_REGS->OSC32KCTRL_OSC32K = 0x0;
 
-	OSC32KCTRL_REGS->OSC32KCTRL_RTCCTRL = OSC32KCTRL_RTCCTRL_RTCSEL(0);
+    OSC32KCTRL_REGS->OSC32KCTRL_RTCCTRL = OSC32KCTRL_RTCCTRL_RTCSEL(0);
 }
 
 
 
 static void GCLK0_Initialize(void)
 {
-    
+
     GCLK_REGS->GCLK_GENCTRL[0] = GCLK_GENCTRL_DIV(1) | GCLK_GENCTRL_SRC(6) | GCLK_GENCTRL_GENEN_Msk;
 
     while((GCLK_REGS->GCLK_SYNCBUSY & GCLK_SYNCBUSY_GENCTRL0_Msk) == GCLK_SYNCBUSY_GENCTRL0_Msk)
@@ -106,77 +106,77 @@ void CLOCK_Initialize (void)
     GCLK1_Initialize();
 
 
-	/* Selection of the Generator and write Lock for EIC */
+    /* Selection of the Generator and write Lock for EIC */
     GCLK_REGS->GCLK_PCHCTRL[2] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[2] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for EVSYS_0 */
+    /* Selection of the Generator and write Lock for EVSYS_0 */
     GCLK_REGS->GCLK_PCHCTRL[6] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[6] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for EVSYS_1 */
+    /* Selection of the Generator and write Lock for EVSYS_1 */
     GCLK_REGS->GCLK_PCHCTRL[7] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[7] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for EVSYS_2 */
+    /* Selection of the Generator and write Lock for EVSYS_2 */
     GCLK_REGS->GCLK_PCHCTRL[8] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[8] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for EVSYS_3 */
+    /* Selection of the Generator and write Lock for EVSYS_3 */
     GCLK_REGS->GCLK_PCHCTRL[9] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[9] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for EVSYS_4 */
+    /* Selection of the Generator and write Lock for EVSYS_4 */
     GCLK_REGS->GCLK_PCHCTRL[10] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[10] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for SERCOM3_CORE */
+    /* Selection of the Generator and write Lock for SERCOM3_CORE */
     GCLK_REGS->GCLK_PCHCTRL[22] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[22] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for TCC0 TCC1 */
+    /* Selection of the Generator and write Lock for TCC0 TCC1 */
     GCLK_REGS->GCLK_PCHCTRL[28] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[28] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for TC0 TC1 */
+    /* Selection of the Generator and write Lock for TC0 TC1 */
     GCLK_REGS->GCLK_PCHCTRL[30] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[30] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for ADC0 */
+    /* Selection of the Generator and write Lock for ADC0 */
     GCLK_REGS->GCLK_PCHCTRL[33] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[33] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
     {
         /* Wait for synchronization */
     }
-	/* Selection of the Generator and write Lock for ADC1 */
+    /* Selection of the Generator and write Lock for ADC1 */
     GCLK_REGS->GCLK_PCHCTRL[34] = GCLK_PCHCTRL_GEN(0x0)  | GCLK_PCHCTRL_CHEN_Msk;
 
     while ((GCLK_REGS->GCLK_PCHCTRL[34] & GCLK_PCHCTRL_CHEN_Msk) != GCLK_PCHCTRL_CHEN_Msk)
@@ -184,8 +184,7 @@ void CLOCK_Initialize (void)
         /* Wait for synchronization */
     }
 
-    /* Configure the AHB Bridge Clocks */
-    MCLK_REGS->MCLK_AHBMASK = 0x1cff;
+
 
     /* Configure the APBC Bridge Clocks */
     MCLK_REGS->MCLK_APBCMASK = 0x61611;
