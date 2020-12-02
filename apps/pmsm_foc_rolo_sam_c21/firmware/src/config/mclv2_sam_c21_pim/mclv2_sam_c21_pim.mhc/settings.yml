@@ -5,7 +5,7 @@ frameworkPath: ../../..
 processor: ATSAMC21J18A
 projectName: ''
 settings:
-  PackageFilter: motor_control;csp;motor_control;x2c;
+  PackageFilter: bsp;core;csp;motor_control;x2c;
   FORCE_OPTIMIZATION: 'false'
   GENERATE_BACKUP: 'true'
   CMSISPath: .\dev_packs\arm\CMSIS\5.7.0

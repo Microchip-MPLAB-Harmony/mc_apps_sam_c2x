@@ -70,4 +70,4 @@ children:
         children:
         - {type: Value, value: 'true'}
 - type: ElementPosition
-  attributes: {x: '297', y: '141', id: adc1}
+  attributes: {x: '154', y: '243', id: adc1}
