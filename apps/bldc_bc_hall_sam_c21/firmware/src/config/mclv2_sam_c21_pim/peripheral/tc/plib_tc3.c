@@ -125,6 +125,15 @@ uint32_t TC3_TimerFrequencyGet( void )
     return (uint32_t)(500000UL);
 }
 
+void TC3_TimerCommandSet(TC_COMMAND command)
+{
+    TC3_REGS->COUNT16.TC_CTRLBSET = command << TC_CTRLBSET_CMD_Pos;
+    while((TC3_REGS->COUNT16.TC_SYNCBUSY))
+    {
+        /* Wait for Write Synchronization */
+    }    
+}
+
 /* Get the current timer counter value */
 uint16_t TC3_Timer16bitCounterGet( void )
 {

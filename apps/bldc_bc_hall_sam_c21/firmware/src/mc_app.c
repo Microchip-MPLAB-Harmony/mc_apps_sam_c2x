@@ -263,7 +263,7 @@ Output:       nothing (modifies some global variables)
 Note:         called when overcurrent is detected             
 ******************************************************************************/
 #ifdef RAM_EXECUTE
-void __ramfunc__ OC_FAULT_ISR(uintptr_t context)
+void __NO_RETURN __ramfunc__ OC_FAULT_ISR(uintptr_t context)
 #else
 void OC_FAULT_ISR(uintptr_t context)
 #endif
