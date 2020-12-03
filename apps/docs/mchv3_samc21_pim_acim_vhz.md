@@ -8,7 +8,7 @@ The following table shows the target hardware for the application projects.
 | mchv3_sam_c21_pim.X |<br>[MCHV3 Development Board](https://www.microchip.com/developmenttools/ProductDetails/dm330023-3)<br>[SAMC21 Motor Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206)<br>ACIM Motor 
 |||
 
-Note: For test purpose, LEESON C4T34FB5  motor has been used.
+Note: For test purpose, Oriental Motor 4IK25A-SW2  motor has been used.
 
 ### Setting up [MCHV3 Development Board](https://www.microchip.com/developmenttools/ProductDetails/dm330023-3)
 
@@ -48,9 +48,10 @@ Note: For test purpose, LEESON C4T34FB5  motor has been used.
 
 1. Build and Program the application using its IDE
 2. Press switch PUSHBUTTON to start the motor
-3. Vary potentiometer to change the speed of the motor
-4. Press switch to stop the motor
-5. Monitor graphs on X2C Scope
+3. Vary Potentiometer knob from mid point to extreme left to increase the speed of the motor in forward direction.
+4. Vary Potentiometer knob from mid point to extreme right to increase the speed of the motor in reverse direction.
+5. Press switch to stop the motor
+6. Monitor graphs on X2C Scope
 
 Refer to the following tables for switch and LED details:
 
