@@ -1,0 +1,78 @@
+{
+	"metaDataVersion": "1.0.0",
+	"category": "com.microchip.ide.project",
+	"content": {
+		"metaDataVersion": "1.1.0",
+		"name": "com.microchip.mcu32.mplabx.project.mc_apps_sam_c2x_bldc_bc_hall_sam_c21_mclv2_sam_c21_pim",
+		"version": "3.0.0",
+		"displayName": "BLDC Block Commutation using Hall Sensor Example for SAM C20/C21 Family",
+		"projectName": "bldc_bc_hall_sam_c21",
+		"shortDescription": "Brushless Direct Current electric motor, or BLDC motors for short, are electronically commutated motors powered by a DC electric source via an external motor controller. This document serves as a guidance to build, configure and run Block Commutation algorithm for BLDC motors on Microchip's 32-bit SAMC21 microcontroller devices.",
+		"ide": {
+			"name": "MPLABX",
+			"semverRange": ">=5.45.0"
+		},
+		"compiler": [
+			{
+				"name": "XC32",
+				"semverRange": ">=2.50.0"
+			}
+		],
+		"dfp": {
+			"name": "SAMC21_DFP",
+			"semverRange": "^3.4.78"
+		},
+		"configurator": {
+			"name": "MHC",
+			"semverRange": ">=3.6.2"
+		},
+		"device": {
+			"metaDataVersion": "1.0.0",
+			"category": "com.microchip.portal.contentRef",
+			"content": {
+				"metaDataVersion": "1.0.0",
+				"category": "com.microchip.device",
+				"name": "ATSAMC21J18A",
+				"versionRange": "*"
+			}
+		},
+		"author": "Microchip",
+		"subcategories": [
+			[
+				"Development Kit", "MCLV2 Development Board"
+			],
+			[
+				"Harmony", "Motor Control", "BLDC"
+			],
+			[
+				"Motor Control", "BLDC"
+			]
+		],
+		"peripherals": [
+			"PWM"
+		],
+		"keywords": [
+			"MHC",
+			"Harmony",
+			"Motor Control",
+			"BLDC",
+			"ATSAMC21J18A",
+			"SAM C20/C21 Family",
+			"MCPWM",
+			"PWM",
+			"Motor Control",
+			"Timer"
+		],
+		"additionalData": {
+			"longDescription": {
+				"metaDataVersion": "1.0.0",
+				"category": "com.microchip.portal.fileRef",
+				"content": {
+					"metaDataVersion": "1.0.0",
+					"fileName": "./../../readme.md",
+					"mimeType": "text/markdown"
+				}
+			}
+		}
+	}
+}

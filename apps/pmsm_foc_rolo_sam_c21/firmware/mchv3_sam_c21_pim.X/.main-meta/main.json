@@ -1,0 +1,78 @@
+{
+	"metaDataVersion": "1.0.0",
+	"category": "com.microchip.ide.project",
+	"content": {
+		"metaDataVersion": "1.1.0",
+		"name": "com.microchip.mcu32.mplabx.project.mc_apps_sam_c2x_pmsm_foc_rolo_sam_c21_mchv3_sam_c21_pim",
+		"version": "3.0.0",
+		"displayName": "PMSM FOC using Reduced Order Luenberger Observer Example for SAM C20/C21 Family",
+		"projectName": "pmsm_foc_rolo_sam_c21_mchv3",
+		"shortDescription": "This application implements the sensorless field oriented control (FOC) of a permanent magnet synchronous motor (PMSM). It estimates rotor position from measured phase currents and a reduced order luenberger observer (ROLO). This algorithm is implemented on a SAMC21J18A MCU.",
+		"ide": {
+			"name": "MPLABX",
+			"semverRange": ">=5.45.0"
+		},
+		"compiler": [
+			{
+				"name": "XC32",
+				"semverRange": ">=2.50.0"
+			}
+		],
+		"dfp": {
+			"name": "SAMC21_DFP",
+			"semverRange": "^3.4.78"
+		},
+		"configurator": {
+			"name": "MHC",
+			"semverRange": ">=3.6.2"
+		},
+		"device": {
+			"metaDataVersion": "1.0.0",
+			"category": "com.microchip.portal.contentRef",
+			"content": {
+				"metaDataVersion": "1.0.0",
+				"category": "com.microchip.device",
+				"name": "ATSAMC21J18A",
+				"versionRange": "*"
+			}
+		},
+		"author": "Microchip",
+		"subcategories": [
+			[
+				"Development Kit", "MCHV3 Development Board"
+			],
+			[
+				"Harmony", "Motor Control", "PMSM"
+			],
+			[
+				"Motor Control", "PMSM"
+			]
+		],
+		"peripherals": [
+			"PWM"
+		],
+		"keywords": [
+			"MHC",
+			"Harmony",
+			"Motor Control",
+			"PMSM",
+			"ATSAMC21J18A",
+			"SAM C20/C21 Family",
+			"MCPWM",
+			"PWM",
+			"Motor Control",
+			"Timer"
+		],
+		"additionalData": {
+			"longDescription": {
+				"metaDataVersion": "1.0.0",
+				"category": "com.microchip.portal.fileRef",
+				"content": {
+					"metaDataVersion": "1.0.0",
+					"fileName": "./../../readme.md",
+					"mimeType": "text/markdown"
+				}
+			}
+		}
+	}
+}
