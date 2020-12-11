@@ -1,11 +1,18 @@
-﻿# MCLV2 Development Board
+﻿---
+parent: Hardware Setup
+title: MCLV2 Development Board Setup for BLDC Hall Sensor Mode
+has_children: false
+has_toc: false
+---
+
+# MCLV2 Development Board
 ## Setting up the hardware
 
 The following table shows the target hardware for the application projects.
 
 | Project Name| Hardware |
 |:---------:|:---------:|
-| mclv2_sam_c21_pim.X |<br>[MCLV2 Development Board](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2)<br>[SAMC21 Motor Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206)<br>[Hurst Motor ](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/AC300020) |
+| mclv2_sam_c21_pim.X |<br>[MCLV2 Development Board](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2)<br>[SAMC21 Motor Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206)<br>[Hurst Motor ](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNo/AC300022) |
 |||
 
 ### Setting up [MCLV2 Development Board](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2)
@@ -18,13 +25,29 @@ The following table shows the target hardware for the application projects.
 
     ![External OPAMP](images/mclv2/mclv2_ext_opamp.png)
 
-- Motor Connections: 
-    - Phase U - M1 
-    - Phase V - M2 
-    - Phase W - M3
+- Motor and Hall Connections: 
 
-    ![Motor Connections](images/mclv2/mclv2_motor_sensor_interface.png)
+  Motor phase connection for Long Hurst motor are given below:
     
+  | Phase Connector |     Description   |
+  |-----------------|-------------------|
+  | White           |   M1  ( Phase U ) |
+  | Black           |   M2  ( Phase V ) |
+  | Red             |   M3  ( Phase W ) |
+
+  Hall connection for long hurst motor are given below:
+  
+  | Hall Connector  | Description |
+  |-----------------|-------------|
+  | Red             |   +5V       |
+  | Black           |    GND      |
+  | White           |    HA       |
+  | Brown           |    HB       |
+  | Green           |    HC       |
+  |                 |             |
+  |
+  
+  ![Motor and Hall Connections](images/mclv2/mclv2_motor_hall_interface.jpg)
 
 - Jumper Settings: 
     - JP1 - Curr, JP2 - Curr, JP3 - Curr 

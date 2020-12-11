@@ -1,4 +1,11 @@
-﻿# MCLV2 Development Board
+﻿---
+parent: Hardware Setup
+title: MCLV2 Development Board Setup for BLDC Hall Sensor Mode
+has_children: false
+has_toc: false
+---
+
+# MCLV2 Development Board
 ## Setting up the hardware
 
 The following table shows the target hardware for the application projects.

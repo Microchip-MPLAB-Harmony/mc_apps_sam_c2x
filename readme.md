@@ -1,4 +1,11 @@
-﻿# Microchip MPLAB® Harmony 3 Motor Control Application Examples for SAM C2x family
+﻿---
+title: Motor Control Application Examples for SAM C2x family
+nav_order: 1
+has_children: true
+has_toc: false
+---
+
+# Microchip MPLAB® Harmony 3 Motor Control Application Examples for SAM C2x family
 
 MPLAB Harmony 3 is an extension of the MPLAB® ecosystem for creating
 embedded firmware solutions for Microchip 32-bit SAM and PIC32 microcontroller
@@ -17,13 +24,12 @@ notes and licensing information.
  - [Release Notes](./release_notes.md)
  - [MPLAB Harmony License](mplab_harmony_license.md)
 
-# Contents Summary
+## Contents Summary
 
 | Folder     | Description                                               |
 |------------|-----------------------------------------------------------|
 | apps       | Demonstration applications for Motor Control              |
-| doc        | Demonstration user guide in .chm format                   |
-| docs       | Demonstration user guide in HTML format                   |
+| docs       | Contains documentation in html format for offline viewing (to be used only after cloning this repository onto a local machine). Use [github pages](https://microchip-mplab-harmony.github.io/mc_apps_sam_c2x/) of this repository for viewing it online.                   |
 |||
 
 
@@ -31,11 +37,11 @@ notes and licensing information.
 
 These applications contain static algorithm code and peripherals are configured using MHC. Configurations can be changed in userparam.h file. 
 
-### SAMC2x Family
+
 | Name | Description|
 |:---------|:-----------|
 | [PMSM FOC using Reduced Order Luenberger Observer](apps/pmsm_foc_rolo_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) |
-| [PMSM FOC using Reduced Order Luenberger Observer with single shunt current reconstruction ](apps/pmsm_foc_rolo_1shunt_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) with single shunt current reconstruction|
+| [PMSM FOC using Reduced Order Luenberger Observer <br> with single shunt current reconstruction ](apps/pmsm_foc_rolo_1shunt_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) with single shunt current reconstruction|
 | [BLDC Block Commutation using Hall Sensors](apps/bldc_bc_hall_sam_c21/readme.md) | Block Commutation Control of BLDC motors using Hall Sensors |
 | [ACIM Open Loop V/Hz](apps/acim_vhz_sam_c21/readme.md) | Open Loop V/Hz Control of ACIM |
 |||
