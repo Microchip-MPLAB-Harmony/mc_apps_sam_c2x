@@ -169,7 +169,7 @@ Macro definitions
 
 
 /* Determine air gap flux */
-#define AIR_GAP_FLUX           (     120 * M_PI * BEMF_CONST / ( 1000 * 1.414 * POLAR_COUPLES  )) 
+#define AIR_GAP_FLUX         (float)(  60 * BEMF_CONSTANT / ( 1.414 * 1000 * M_PI ))  
 
 /* dsPICDEM MCLV-2 Board related parameters */
 #ifdef MCLV2
