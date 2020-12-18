@@ -56,6 +56,7 @@
                      projectFiles="true">
         <itemPath>../src/q14_generic_mcLib.h</itemPath>
         <itemPath>../src/q14_rolo_mcLib.h</itemPath>
+        <itemPath>../src/q14_flying_start_mcLib.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="packs" projectFiles="true">
         <logicalFolder name="f1" displayName="ATSAMC21J18A_DFP" projectFiles="true">
@@ -230,7 +231,7 @@
         <targetDevice>ATSAMC21J18A</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>noID</platformTool>
+        <platformTool>ICD4Tool</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>2.50</languageToolchainVersion>
         <platform>3</platform>
@@ -244,6 +245,7 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibFileItem>../src/X2CScopeLib_SAMC21_XC32_215.a</linkerLibFileItem>
+            <linkerLibFileItem>../src/lib_SAM_C2x_MC_FLYINGSTART.X.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
@@ -477,6 +479,8 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-3ffff"/>
         <property key="poweroptions.powerenable" value="false"/>
+        <property key="programmerToGoFilePath"
+                  value="C:/harmony/harmony3/mc_apps_sam_c2x/apps/pmsm_foc_rolo_sam_c21/firmware/mclv2_sam_c21_pim.X/debug/mclv2_sam_c21_pim/mclv2_sam_c21_pim_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.ledbrightness" value="5"/>

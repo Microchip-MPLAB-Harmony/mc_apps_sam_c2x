@@ -56,6 +56,7 @@
                      projectFiles="true">
         <itemPath>../src/q14_generic_mcLib.h</itemPath>
         <itemPath>../src/q14_rolo_mcLib.h</itemPath>
+        <itemPath>../src/q14_flying_start_mcLib.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="packs" projectFiles="true">
         <logicalFolder name="f1" displayName="ATSAMC21J18A_DFP" projectFiles="true">
@@ -252,6 +253,7 @@
         <linkerTool>
           <linkerLibItems>
             <linkerLibFileItem>../src/X2CScopeLib_SAMC21_XC32_215.a</linkerLibFileItem>
+            <linkerLibFileItem>../src/lib_SAM_C2x_MC_FLYINGSTART.X.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>

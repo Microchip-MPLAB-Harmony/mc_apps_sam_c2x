@@ -49,6 +49,7 @@ Headers inclusions
 #include "q14_rolo_mcLib.h"
 #include "device.h"
 #include "mc_app.h"
+#include "q14_flying_start_mcLib.h"
 #include "definitions.h"
 #include <sys/attribs.h>
 #include "userparams.h"
@@ -130,14 +131,11 @@ uint16_t
 uint32_t loop_count;
 uint32_t trigger = 0;
 uint32_t state_count = 1;
-uint16_t state_windmilling =0;
-uint16_t state_decide =0;
-uint16_t state_brake =0;
+uint16_t state_flying_start = 0;
 uint16_t state_stopped =0;
 uint16_t state_start =0;
 uint16_t state_align =0;
 uint16_t state_closingloop =0;
-uint16_t state_closingloopwindmilling =0;
 uint16_t state_closedloop =0;
 int16_t min_test=MIN_SPE;
 uint16_t start_count = 0;
@@ -209,10 +207,10 @@ uint16_t  uall_cnt,  /* u-phase phase lost alarm counter */
   wall_cnt;  /* w-phase phase lost alarm counter */
 
 /* status variable in motor management state machine */
-#ifdef WINDMILLING_ENABLE
+#ifdef FLYING_START_ENABLE
 run_status_t
-    motor_status = WINDMILLING,  
-    prev_motor_status = WINDMILLING;
+    motor_status = FLYING_START,  
+    prev_motor_status = FLYING_START;
 #else
 run_status_t
     motor_status = STOPPED;  
@@ -231,7 +229,7 @@ uint16_t
 
 /* system phase [(d, q) reference system angular 
                 position referred to alpha (u) axis] [internal angle unit] */
-static ang_sincos_t
+ang_sincos_t
     sysph;      
 /* vector containing the PWM timer compare values */
 static int32_t dutycycle[3];  
@@ -240,7 +238,7 @@ static vec3_t
     cur3m,      /* three-phases vector of current measurement [internal current unit] */
     outv3;      /* three-phases vector of output voltage reference [internal voltage unit] */
 
-static vec2_t
+vec2_t
     curabm,      /* two-phases (a, b) vector of current measurement [internal current unit] */
     curabr,      /* two-phases (a, b) vector of current reference [internal current unit] */
     curdqm,      /* two-phases (d, q) vector of current measurement [internal current unit] */
@@ -249,7 +247,7 @@ static vec2_t
     prev_outvab, /* two-phases (a, b) vector of output voltage reference of previous cycle [internal voltage unit] */
     outvdq;      /* two-phases (d, q) vector of output voltage reference [internal voltage unit] */
 
-static uint16_t
+uint16_t
     newsysph,    /* next cycle system phase [(d, q) reference system 
                     angular position referred to alpha (u) axis] [internal angle unit] */
     position_offset,/* angular offset to be added to system phase [internal angle unit] */
@@ -271,7 +269,6 @@ static int16_t
                     amplitude value [internal voltage unit] */
 
 static int32_t
-    dcurref_l,    /* amplified direct current reference */
     vbmin_mem,    /* filter memory in vbmin lp filter */
     vbfil_mem,    /* filter memory in vbus lp filter */
     vdfil_mem,    /* filter memory in vd lp filter */
@@ -279,11 +276,15 @@ static int32_t
     idfil_mem,    /* filter memory in id lp filter */
     iqfil_mem;    /* filter memory in iq lp filter */
 
+int32_t dcurref_l;    /* amplified direct current reference */
+
 static uint32_t
     espabs_mem,  /* filter memory in electrical speed lp filter */
     ext_spe_ref_mem,/* filter memory for mechanical speed ref LP filter */
     ampsysph,    /* system phase amplified value */
-    elespeed_l,  /* electrical speed amplified value */
+    elespeed_l;  /* electrical speed amplified value */
+        
+uint32_t        
     spe_ref_mem; /* filter memory in reference speed lp filter */
 
 int32_t  spe_adc_rpm_var; // Intermediate variable to convert POT  - ADC value to RPM
@@ -295,14 +296,13 @@ int16_t  torque_adc_ref; // This register holds the signed torque ref scaled to 
 
 uint16_t test_va1 = HALF_MIN_ANGLE_ROLLOVER;
 uint16_t test_va2,test_va3;
-uint16_t windmilling_count = 0;
-uint16_t braking_count = 0;
+
 uint16_t assert_active_vector = 0;
 int32_t elespeed_ref = 0;
 int16_t elespeed_actual=0;
 int16_t torque_ref = 0;
 int16_t vx,vy;
-extern uint16_t angle_rollover_count;
+
 
 /*******************************************************************************
 Function Prototype
@@ -537,6 +537,7 @@ void motor_start(void)
     /* Rules 11.4, 11.6 violated access to register */
     TCC0_PWMPatternSet(0x00,0x00);/*Disable PWM override*/
     state_run = 1;
+    MCCTRL_ResetFlyingStartControl();
 
 }
 
@@ -606,7 +607,7 @@ Note:      to be called in the main interrupt, when the output frequency
         is lesser than the minimum required for the routine (ex. when
         aligning)
 ******************************************************************************/
-static inline void phase_lost_filters_reset(void)
+void phase_lost_filters_reset(void)
 {
   umem = 0UL;
   ufil = 0U;
@@ -1128,7 +1129,7 @@ Input:      nothing
 Output:      nothing
 Modifies:    global variable plost_cnt
 ******************************************************************************/
-static inline void pos_lost_control_reset(void)
+void pos_lost_control_reset(void)
 {
   plost_cnt = 0;
 }
@@ -1353,287 +1354,50 @@ void motorcontrol(void)
         /* motor control state machine */
         switch(motor_status)
         {
-#ifdef WINDMILLING_ENABLE
-    
-    #ifndef ACTIVE_VECTOR_WINDMILLING
-            case WINDMILLING:
-                
-                
-                trigger = 200; // debug variable
-                state_windmilling = state_count;// debug variable
-                outvab.x = 0;
-                outvab.y = 0;
-                assert_active_vector = 0;
-                if(windmilling_count< WINDMILLING_TIME_IU)
+
+#ifdef FLYING_START_ENABLE    
+            case FLYING_START:
+            {
+                tMC_FLYING_START_STATUS_E flying_start_status;
+                trigger = 800; // debug variable
+                state_flying_start = state_count; // debug variable
+
+                flying_start_status = MCCTRL_FlyingStartControl();
+                switch(flying_start_status)
                 {
-                    motor_status = WINDMILLING;
-                    windmilling_count++;
-                }
-                else
-                {
-        #ifdef WINDMILLING_CALIBRATION
-                    motor_status = WINDMILLING;
 
-        #else                                           
-                    motor_status = WINDMILLING_DECIDE;
-        #endif 
-                    state_count++;// debug variable
-                } 
-       
-                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
-                newsysph = position_offset + get_bemf_angular_position();
-
-
-                /* estimated speed */
-                elespeed = get_angular_speed(); 
-
-                TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)(PWM_HPER_TICKS>>1));
-                TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)(PWM_HPER_TICKS>>1));
-                TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)(PWM_HPER_TICKS>>1));
-
-                break;
-    #else
-            case WINDMILLING:
-                
-                
-                trigger = 200; // debug variable
-                state_windmilling = state_count; // debug variable
-                curdqr.x = 0;
-                curdqr.y = 0;
-                assert_active_vector = 1;
-                if(windmilling_count< WINDMILLING_TIME_IU)
-                {
-                    motor_status = WINDMILLING;
-                    windmilling_count++;
-                }
-                else
-                {
-        #ifdef WINDMILLING_CALIBRATION
-                    motor_status = WINDMILLING;
-
-        #else                                           
-                    motor_status = WINDMILLING_DECIDE;
-        #endif 
-                    state_count++; // debug variable
-                } 
-
-                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
-                newsysph = position_offset + get_bemf_angular_position();
-
-
-                /* estimated speed */
-                elespeed = get_angular_speed(); 
-
-                
-                break;
-    #endif
-                
-            case WINDMILLING_DECIDE:
-                
-                trigger = 400; // debug variable
-                state_decide = state_count;// debug variable
-                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
-                newsysph = position_offset + get_bemf_angular_position();
-                /* estimated speed */
-                elespeed = get_angular_speed(); 
-
-    #ifndef ACTIVE_VECTOR_WINDMILLING
-                assert_active_vector = 0;
-    #else
-                assert_active_vector = 1;    
-    #endif
-/* This if else loop determines if the electric speed is higher than minimum windmilling speed in both directions 
- * It also checks if the counted angle roll overs are more than half the expected angle rollovers at minimum windmilling speed.
- * If the speed or angle rollover conditions are not met, then it assumes that motor speed is too low to be able to faithfully track the angle
- * It observed that at certain instances when rotor was stationary, the angle tracking was noisy which resulted in non zero speed which at times 
- * was higher than Minimum windmilling speed which resulted in algorithm to enter erroneously in closed loop state. 
- * Angle roll over count was introduced to make the decision making more robust as it would not only check for electrical speed as well as angle rollovers */
-                if((angle_rollover_count > HALF_MIN_ANGLE_ROLLOVER)&&((elespeed > MIN_WM_SPE)||(elespeed < -MIN_WM_SPE)))
-                {
-                    if(spe_ref_sgn> 0)
+                    case MC_FLYING_START_IN_PROGRESS:
                     {
-                        if(elespeed<0) // If Command direction is +ve and windmilling direction is -ve then brake
-                        {
-                            
-                            motor_status = WINDMILLING_DECIDE;
-                            //During Windmilling, the DQ reference frame is aligned to Back EMF Vector
-                            //Hence, injecting negative D axis current wrt BEMF Vector would result in regenerative braking
-                            if(curdqr.x > -REGEN_BRAKE_CURRENT) // Ramping the regen brake current reference
-                            {
-                                curdqr.x -= RGN_BRK_RAMP_IU;
-                            }
-                            else
-                            {
-                               curdqr.x = (int32_t)-REGEN_BRAKE_CURRENT; 
-                            }
-
-                        }
-                        else // If Command direction is +ve and windmilling direction is +ve then switch to closed loop windmilling
-                        {
-                            motor_status = CLOSINGLOOP_WINDMILLING;
-                            state_count++; // debug variable
-                            
-
-                        }
+                        motor_status = FLYING_START;
                     }
-                    else
+                    break;
+
+                    case MC_FLYING_START_DETECTED:
                     {
-                        if(elespeed>0) // If Command direction is -ve and windmilling direction is +ve then brake
-                        {
-
-                            
-                            motor_status = WINDMILLING_DECIDE;
-                            if(curdqr.x > -REGEN_BRAKE_CURRENT) // Ramping the regenerative brake current reference
-                            {
-                                curdqr.x -=RGN_BRK_RAMP_IU;
-                            }
-                            else
-                            {
-                               curdqr.x = (int32_t)-REGEN_BRAKE_CURRENT; 
-                            }
-
-
-                        }
-                        else// If Command direction is -ve and windmilling direction is -ve then switch to closed loop windmilling
-                        {
-                            
-                            motor_status = CLOSINGLOOP_WINDMILLING;
-                            state_count++; // debug variable
-
-                        }   
+                        motor_status = RUNNING;
+                        state_count++;
                     }
+                    break;                
 
-                }
-                else
-                {
-                    motor_status = WINDMILLING_PASSIVE_BRAKE;
-                    state_count++; // debug variable
+                    case MC_FLYING_START_NOT_DETECTED:
+                    {
+                        motor_status = STOPPED;
+                        state_count++;
+                    }
+                    break;
 
-                    
-                }                     
-
-                break;
-            
-            case WINDMILLING_PASSIVE_BRAKE:
-                
-                trigger = 600; // debug variable
-                state_brake = state_count;// debug variable
-                assert_active_vector = 0;
-                outvab.x = 0;
-                outvab.y = 0;
-                curdqr.x = 0;
-                curdqr.y = 0;
-                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
-                newsysph = position_offset + get_bemf_angular_position();
-                                /* estimated speed */
-                elespeed = get_angular_speed(); 
-                if(braking_count < BRAKING_TIME_IU)
-                {
-                    TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)(PWM_HPER_TICKS>>1));
-                    TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)(PWM_HPER_TICKS>>1));
-                    TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)(PWM_HPER_TICKS>>1));
-                    braking_count++; // debug variable
-                    motor_status = WINDMILLING_PASSIVE_BRAKE;
-                }
-                else
-                {
-                    motor_status = STOPPED;
-                    state_count++; // debug variable
-                }
-                break;
-            
-            case CLOSINGLOOP_WINDMILLING:
-                
-    #ifndef ACTIVE_VECTOR_WINDMILLING
-                assert_active_vector = 0;
-    #else
-                assert_active_vector = 1;    
-    #endif
-                trigger = 1800; // debug variable
-                state_closingloopwindmilling = state_count; // debug variable
-                bemf_position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
-                if(spe_ref_sgn >0)
-                {
-                    flx_arg_mem = (bemf_arg_mem - PIHALVES);
-                    flx_arg = (bemf_arg - PIHALVES);
-                    /* speed PI control memory setting */
-                sp_pi.imem = WINDMILL_START_CUR;/* speed PI integral term */
-                }
-                else
-                {
-                    flx_arg_mem = (bemf_arg_mem + PIHALVES);
-                    flx_arg = (bemf_arg + PIHALVES);
-                    /* speed PI control memory setting */
-                sp_pi.imem = -WINDMILL_START_CUR;/* speed PI integral term */
+                    default:
+                    {
+                        /* Undefined state: Should never come here */
+                        motor_status = STOPPED;
+                    }
+                    break;                    
                 }
 
-                newsysph = flx_arg;
-                #ifdef  SPREF_FIL_ALIGN
-                elespeed = get_angular_speed();
-                if(0 >= elespeed)
-                {
-                    spe_ref_fil = (uint16_t)(-elespeed);
-                }
-                else
-                {
-                    spe_ref_fil = (uint16_t)elespeed;
-                }
-                spe_ref_mem = spe_ref_fil;
-                spe_ref_mem <<= SH_REFSPEED_FIL;
-                #endif  /* ifdef SPREF_FIL_ALIGN */
+            }
+            break;
 
-                /* control memories calc and setting */
-                /* compiler ensures a arithmetic shift is done in these cases.
-                    MISRA 10.1 violated for optimziation purpose */
-                outvdq.x = (int16_t)(id_pi.imem >> id_pi.shp); //Copying the integral output of D axis PI Controller to D axis output voltage
-                outvdq.y = (int16_t)(iq_pi.imem >> iq_pi.shp); //Copying the integral output of Q axis PI Controller to Q axis output voltage
-                library_dq_ab(&sysph, &outvdq, &outvab);
-                library_dq_ab(&sysph, &curdqr, &curabr);
-
-                /* new phase alignment */
-                sysph.ang = newsysph;
-                library_sincos(&sysph);
-
-                /* control memories setting in the new reference */
-                library_ab_dq(&sysph, &outvab, &outvdq);
-                library_ab_dq(&sysph, &curabr, &curdqr);
-
-                id_pi.imem = outvdq.x;
-                /* d current PI integral term in new ref. frame */
-                id_pi.imem <<= id_pi.shp;  
-                iq_pi.imem = outvdq.y;
-                /* q current PI integral term in new ref. frame */
-                iq_pi.imem <<= iq_pi.shp;  
-                dcurref_l = curdqr.x;
-                dcurref_l <<= SH_BASE_VALUE;
-
-
-                /* position loss control reset */
-                pos_lost_control_reset();
-
-                /* status change */
-                if(0 != ref_sgn)
-                {
-                    motor_status = RUNNING;
-                    state_count++; // debug variable
-                }
-                else
-                {
-                    curdqr.x =  0;
-                    curdqr.y = 0;
-                    elespeed =  0;
-                    elespeed_abs = 0;
-                    motor_status = STOPPED;
-
-                }
-
-                /* phase lost check filters reset */
-                phase_lost_filters_reset();
-                
-                break;
-                    
-#endif                 
-            
+#endif           
             case STOPPED:
                  
                 trigger = 1000; // debug variable
@@ -1815,6 +1579,7 @@ void motorcontrol(void)
                 #ifdef Q_AXIS_STARTUP
                 curdqr.x = 0 ; 
                 #endif
+curdqr.x = 0 ; 
                 id_pi.imem = outvdq.x;
                 /* d current PI integral term in new ref. frame */
                 id_pi.imem <<= id_pi.shp;  
@@ -2010,6 +1775,12 @@ void motorcontrol(void)
         pwm_modulation();
         #ifndef  CURPI_TUN
         }
+        else
+        {
+            TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)(PWM_HPER_TICKS>>1));
+            TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)(PWM_HPER_TICKS>>1));
+            TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)(PWM_HPER_TICKS>>1));
+        }
        
 
 
@@ -2065,8 +1836,8 @@ void motorcontrol(void)
         outvab.x = 0;
         outvab.y = 0;
 
-#ifdef WINDMILLING_ENABLE
-        motor_status = WINDMILLING;
+#ifdef FLYING_START_ENABLE
+        motor_status = FLYING_START;
 #else
         motor_status = STOPPED;
 #endif

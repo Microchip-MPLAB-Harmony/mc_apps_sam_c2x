@@ -8,7 +8,7 @@
     q14_rolo_wm_mcLib.c
 
   Summary:
-    Reduced Order Luenberger Observer and windmilling related functions and variables
+    Reduced Order Luenberger Observer related functions and variables
  *  implemented in Q14 fixed point arithmetic.
 
   Description:
@@ -684,7 +684,7 @@ void bemf_phase_estimation(void)
         else
         {
             blanking_count = BEMF_ANGLE_BLANK_COUNT;  //when blanking_count == 0, CPU enters here and the high delta in angle is assumed to be caused due to angle roll over. Hence, bemf.t.ang is accepted as valid angle
-            angle_rollover_count++; // counts the angle rollovers during windmilling
+            angle_rollover_count++; // counts the angle rollovers during Flying Start
         }
     }
 

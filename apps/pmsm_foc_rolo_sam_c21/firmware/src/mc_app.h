@@ -67,18 +67,13 @@ typedef enum
 
 typedef enum
 {
-#ifdef WINDMILLING_ENABLE
-    WINDMILLING,
-    WINDMILLING_DECIDE,
-    WINDMILLING_PASSIVE_BRAKE,      
-#endif             
+#ifdef FLYING_START_ENABLE    
+    FLYING_START,
+#endif
     STOPPED,
     ALIGNING,
     STARTING,
     CLOSINGLOOP,
-#ifdef WINDMILLING_ENABLE
-    CLOSINGLOOP_WINDMILLING,
-#endif 
     RUNNING
 } run_status_t;
 
@@ -129,8 +124,7 @@ extern uint8_t direction;
 extern uint8_t phaseindex[3];
 extern uint16_t adc_dc_bus_voltage;
 extern uint16_t pot_input;
-
-
+extern uint32_t trigger;
 /*******************************************************************************
 Private variables definition
 *******************************************************************************/
@@ -175,8 +169,38 @@ extern int16_t
     idfil,
     iqfil;
 
+extern vec2_t
+    curabm,      /* two-phases (a, b) vector of current measurement [internal current unit] */
+    curabr,      /* two-phases (a, b) vector of current reference [internal current unit] */
+    curdqm,      /* two-phases (d, q) vector of current measurement [internal current unit] */
+    curdqr,      /* two-phases (d, q) vector of current reference [internal voltage unit] */
+    outvab,      /* two-phases (a, b) vector of output voltage reference [internal voltage unit] */
+    prev_outvab, /* two-phases (a, b) vector of output voltage reference of previous cycle [internal voltage unit] */
+    outvdq;      /* two-phases (d, q) vector of output voltage reference [internal voltage unit] */
+
+extern uint16_t
+    newsysph,    /* next cycle system phase [(d, q) reference system 
+                    angular position referred to alpha (u) axis] [internal angle unit] */
+    position_offset,/* angular offset to be added to system phase [internal angle unit] */
+    spe_ref_fil,  /* filtered speed reference absolute value [internal speed unit] */
+    elespeed_abs;  /* estimated speed absolute value [internal speed unit] */
+
+/* system phase [(d, q) reference system angular 
+                position referred to alpha (u) axis] [internal angle unit] */
+extern ang_sincos_t
+    sysph;   
+
+extern uint32_t        
+    spe_ref_mem; /* filter memory in reference speed lp filter */
+
+extern int32_t 
+    dcurref_l;    /* amplified direct current reference */
 
 
+extern uint16_t assert_active_vector;
+extern int16_t  elespeed;    /* (estimated or imposed) electrical speed [internal speed unit] */
+
+extern uint16_t angle_rollover_count;
 #ifdef  CURPI_TUN
 uint16_t
     cpt_cnt;
@@ -303,6 +327,29 @@ Note:      this function can be called in the main loop every 10ms;
         of the media (0.75)
 ******************************************************************************/
 void phase_lost_check(void);
+
+
+/******************************************************************************
+Function:    pos_lost_control_reset
+Description:  reset of internal variables used in "pos_lost_control"
+Input:      nothing
+Output:      nothing
+Modifies:    global variable plost_cnt
+******************************************************************************/
+void pos_lost_control_reset(void);
+
+
+/******************************************************************************
+Function:    phase_lost_filters_reset
+Description:  reset of the filters used for the phase lost check and also
+        of the related alarm counters
+Input:      nothing (uses global variables)
+Output:      nothing (modifies global variables)
+Note:      to be called in the main interrupt, when the output frequency
+        is lesser than the minimum required for the routine (ex. when
+        aligning)
+******************************************************************************/
+void phase_lost_filters_reset(void);
 
 
 #endif /* MC_APP_H */

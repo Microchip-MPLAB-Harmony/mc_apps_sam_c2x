@@ -66,25 +66,29 @@
 /*Debug Feature: Defining TORQUE_MODE forces the algorithm to operate in Torque Mode i.e. no speed control, the potentiometer input is used as torque reference*/
 #undef TORQUE_MODE
 
+
+/*Defining this macro enables Flying Start detect*/
+
+#undef FLYING_START_ENABLE
+
+#ifndef FLYING_START_ENABLE
 /* Defining RAM_EXECUTE executes key motor control functions from RAM and thereby allowing faster execution at the expense of data memory.
  Please note, instruction breakpoint will not be asserted if that particular instruction is being executed from RAM
-*Undefining RAM_EXECUTE executes key motor control functions from Flash and thereby reducing data memory consumption at the expense of time */
-#define RAM_EXECUTE
+*Undefining RAM_EXECUTE executes key motor control functions from Flash and thereby reducing data memory consumption at the expense of time 
+Note: Defining RAM_EXECUTE and FLYING_START_ENABLE simultaneously would result in build errors*/
 
-/*Defining USE_DIVAS uses the DIVAS peripheral for division and square root operatons*/
+#define RAM_EXECUTE
+#endif // ifndef FLYING_START_ENABLE
+/*Defining USE_DIVAS uses the DIVAS peripheral for division and square root operations*/
 #define USE_DIVAS
 
-
+#ifdef RAM_EXECUTE
 /* Field weakening */
 #define FIELD_WEAKENING
+#endif 
 
 /* Define MTPA */
 #undef MTPA
-
-/*Defining this macro enables Windmilling detect*/
-#undef WINDMILLING_ENABLE
-
-
 
 
 /*******************************************************************************
@@ -122,10 +126,10 @@ Macro definitions
 #define STUP_ACCTIME_S  (     2.0 )     /* startup acceleration time [sec] */
 #define CUR_RISE_T      (     1.5 )    /* current rising time [s] during startup alignment */
 #define CUR_FALL_T      (     1 )     /* direct current falling time [s] after startup */
-#define MIN_WM_FRE_HZ   (    30 )       /* Minimum Windmilling Frequency [Hz] - 360RPM*/
-#define WINDMILL_CUR_AMP (     0.4 )    /* Post Windmill startup current [A] */
+#define MIN_FS_FRE_HZ   (    30 )      /* Minimum Flying Start Frequency [Hz] - 360Hz*/
+#define FLYING_START_CUR_AMP (     0.4 )    /* Post Flying Start Detect startup current [A] */
 #define RGN_BRK_CUR_AMP (     0.4 )     /*Regenerative Braking current*/
-#define WINDMILLING_TIME_SEC  (0.3)     /* Windmilling Time in Seconds*/
+#define FLYING_START_TIME_SEC  (0.3)     /* Flying Start Detect Time in Seconds*/
 #define PASSIVE_BRAKING_TIME_SEC       (2) /*Motor Braking Time in Seconds*/
 #define TORQUE_MODE_MIN_CUR_AMP 0.2     /* Minimum Torque Mode Reference in A */
 #endif  /* ifdef LEADSHINE_EL5_M0400_1_24 */
@@ -197,8 +201,8 @@ Macro definitions
 #define MAX_SPE_RS      (2.0f * FLOAT_PI * (float32_t)MAX_FRE_HZ)   
 /* minimum speed considered */
 #define MIN_SPE_RS      (2.0f * FLOAT_PI * (float32_t)MIN_FRE_HZ)   
-/*minimum windmilling speed in Rad/S */
-#define MIN_WM_SPE_RS      (2.0f * FLOAT_PI * (float32_t)MIN_WM_FRE_HZ)   
+/*minimum Flying Start Detect speed in Rad/S */
+#define MIN_FS_SPE_RS      (2.0f * FLOAT_PI * (float32_t)MIN_FS_FRE_HZ)   
 /* no deep flux weakening: all the voltages considered are lesser than vbus */
 #define BASE_VOLTAGE    ((float32_t)1 * MAX_VOL)      
 /*      deep flux weakening: bemf level can be much higher than max vbus */
@@ -289,7 +293,7 @@ Macro definitions
 /* used in position lost alarm management */
 #define MAX_SPE_PLOST   ((uint16_t)(1.25f * BASE_VALUE_FL))        
 #define MIN_SPE         ((uint16_t)(BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED))
-#define MIN_WM_SPE      ((uint16_t)(BASE_VALUE_FL * MIN_WM_SPE_RS / BASE_SPEED)) 
+#define MIN_FLYING_START_SPE      ((uint16_t)(BASE_VALUE_FL * MIN_FS_SPE_RS / BASE_SPEED)) 
 /* used in position lost alarm management */
 #define MIN_SPE_PLOST   ((uint16_t)(0.3f * (BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED))) 
 /* position lost alarm counter limit */
@@ -307,14 +311,14 @@ Macro definitions
 /* 333.32 micro second = 1, hence 3000 for 1s */
 #define SYN_VAL1000MS    ((uint16_t)3000U) 
 
-/* Internal Unit calculation for Windmilling Time*/
-#define WINDMILLING_TIME_IU      ((uint16_t)(SAMPLING_FREQ * (float32_t)WINDMILLING_TIME_SEC)) 
+/* Internal Unit calculation for Flying Start Time*/
+#define FLYING_START_TIME_IU      ((uint32_t)(SAMPLING_FREQ * (float32_t)FLYING_START_TIME_SEC)) 
 
 /* Internal Unit calculation for Braking Time*/
-#define BRAKING_TIME_IU      ((uint16_t)(SAMPLING_FREQ * (float32_t)PASSIVE_BRAKING_TIME_SEC)) 
+#define BRAKING_TIME_IU      ((uint32_t)(SAMPLING_FREQ * (float32_t)PASSIVE_BRAKING_TIME_SEC)) 
 
 /*This value provides half the value of expected angle rollovers i.e. 2*PI->0 or 0 -> 2*PI*/
-#define HALF_MIN_ANGLE_ROLLOVER  ((uint16_t)(MIN_WM_FRE_HZ*WINDMILLING_TIME_SEC*0.5))
+#define HALF_MIN_ANGLE_ROLLOVER  ((uint16_t)(MIN_FS_FRE_HZ*FLYING_START_TIME_SEC*0.5))
 
 /* from the required acceleration ramps in rpm we derive the quantities 
    to add to the reference each main loop (10ms) cycle */
@@ -330,7 +334,7 @@ Macro definitions
 #ifdef TORQUE_MODE
 #define TORQUE_MODE_MIN_CUR       ((int16_t)((float32_t)TORQUE_MODE_MIN_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
 #endif
-#define WINDMILL_START_CUR ((int16_t)((float32_t)WINDMILL_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
+#define FLYING_START_CUR ((int16_t)((float32_t)FLYING_START_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
 
 #define REGEN_BRAKE_CURRENT ((int16_t)((float32_t)RGN_BRK_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
 /* amplified (to increase resolution) startup current */
@@ -383,17 +387,6 @@ Macro definitions
 #define OVERCURRENT_RESET_DELAY_SEC     3
 #define OVERCURRENT_RESET_DELAY_COUNT  (uint32_t) (OVERCURRENT_RESET_DELAY_SEC*100)  // Delay coun value calculated based 10mS unit.
 
-#ifdef WINDMILLING_ENABLE
-/*Defining ACTIVE_VECTOR_WINDMILLING enables Windmilling in active vector mode : This mode results in low braking torque but can have noisy angle tracking 
-  * Undefining ACTIVE_VECTOR_WINDMILLING enables Windmilling in null vector mode: This mode results in high braking torque which increases with speed but has relatively noise free angle tracking */
-#define ACTIVE_VECTOR_WINDMILLING
-
-/*Defining WINDMILLING_CALIBRATION puts the algorithm in Windmilling state perpetually. This mode is mainly used to debug 
-   angle and speed tracking in windmilling mode*/
-//#define WINDMILLING_CALIBRATION
-#endif // WINDMILLING_ENABLE
-
-
 #if ( defined NON_ISOTROPIC_MOTOR )  && ( defined MTPA )
 #define ENABLE_MTPA
 #define PMSM_INDUCTANCE_D_PHYS                LD_SYN
@@ -403,6 +396,7 @@ Macro definitions
 #define PMSM_MTPA_CONSTANT1_PHYS           (float)(0.5 * AIR_GAP_FLUX / (PMSM_INDUCTANCE_Q_PHYS - PMSM_INDUCTANCE_D_PHYS))
 #define PMSM_MTPA_CONSTANT1_SCALED       (uint32_t)(PMSM_MTPA_CONSTANT1_PHYS * K_CURRENT )
 #define PMSM_MTPA_CONSTANT2_SCALED       (uint32_t)(PMSM_MTPA_CONSTANT1_SCALED * PMSM_MTPA_CONSTANT1_SCALED )
+
 #else
 #undef ENABLE_MTPA
 #endif

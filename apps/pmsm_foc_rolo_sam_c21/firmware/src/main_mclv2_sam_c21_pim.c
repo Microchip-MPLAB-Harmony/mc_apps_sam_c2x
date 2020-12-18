@@ -54,7 +54,7 @@
 #include "X2CScope.h"
 #include "X2CScopeCommunication.h"
 #include <sys/attribs.h>
-
+#include "q14_flying_start_mcLib.h"
 uint16_t adc_result1;   
 uint16_t adc_result2;
 #ifndef CTRL_PWM_1_1
@@ -62,32 +62,25 @@ static uint8_t  adc_interrupt_counter = 0U;
 #endif
 uint16_t adc_result_data[2];
 uint8_t start_toggle = 0;
-uint8_t windmilling_start = 0;
 uint16_t adc_dc_bus_voltage;
 uint16_t pot_input;
 uint16_t set_speed = 0;
 uint8_t  direction = 0;
 uint8_t direction_change_flag = 0;
 uint8_t phaseindex[3] = {0,1,2};
-extern uint16_t windmilling_count;
-extern uint16_t braking_count;
+
 extern uint32_t state_count;
-extern uint16_t state_windmilling;
-extern uint16_t state_decide;
-extern uint16_t state_brake; 
+extern uint16_t state_flying_start;
 extern uint16_t state_stopped;
 extern uint16_t state_start;
 extern uint16_t state_align;
 extern uint16_t state_closingloop;
-extern uint16_t state_closingloopwindmilling;
 extern uint16_t state_closedloop;
-extern uint32_t trigger;
-extern int16_t elespeed;
 extern uint16_t flx_arg;
 extern uint16_t flx_arg_mem;
 extern uint16_t bemf_arg;
 extern uint16_t bemf_arg_mem;
-extern uint16_t angle_rollover_count;
+
 
 
 uint16_t calibration_sample_count = 0x0000U;
@@ -126,6 +119,7 @@ int main ( void )
     ADC0_Enable();
     state_run = 0;
     X2CScope_Init();
+    MCCTRL_InitializeFlyingStartControl();
     TCC0_PWMStart();
     motor_stop();
     EIC_CallbackRegister ((EIC_PIN)EIC_PIN_2, (EIC_CALLBACK) OC_FAULT_ISR,(uintptr_t)NULL);
@@ -142,7 +136,7 @@ int main ( void )
             if(overCurrentFaultActive == 0)
             {
                 /* This if loop ensures that when the motor direction is changed, 
-                 * the PWM is disabled for 10mS before re-starting the windmilling 
+                 * the PWM is disabled for 10mS before re-starting the state machine
                  * state to avoid current spike*/
                 if(direction_change_flag == 1) 
                 {
@@ -322,24 +316,17 @@ void motor_start_stop(void) //Calling this function, starts/stops the motor
      if(!start_toggle)
      {
         motor_stop();
-        windmilling_start = 0;
-        windmilling_count = 0;
         state_count = 1;
-        braking_count = 0;
-        state_windmilling = 0;
-        state_decide = 0;
-        state_brake = 0;
+        state_flying_start = 0;
         state_stopped = 0;
         state_align = 0;
         state_start = 0;
         state_closingloop = 0;
-        state_closingloopwindmilling = 0;
         state_closedloop = 0;
         angle_rollover_count = 0;
-#ifdef WINDMILLING_ENABLE
-        motor_status = WINDMILLING;
-#else
         motor_status = STOPPED;
+#ifdef FLYING_START_ENABLE
+        motor_status = FLYING_START;
 #endif 
         elespeed = 0;
         flx_arg = 0;
@@ -369,25 +356,18 @@ void motor_direction_toggle(void) //Calling this function, toggles the direction
         motor_stop(); 
         direction = !direction; // toggle direction 
         LED2_DIRECTION_Toggle();
-        windmilling_start = 0;
-        windmilling_count = 0;
         state_count = 1;
-        braking_count = 0;
-        state_windmilling = 0;
-        state_decide = 0;
-        state_brake = 0;
+        state_flying_start = 0;
         state_stopped = 0;
         state_align = 0;
         state_start = 0;
         state_closingloop = 0;
-        state_closingloopwindmilling = 0;
         state_closedloop = 0;
         angle_rollover_count = 0;
-    #ifdef WINDMILLING_ENABLE
-        motor_status = WINDMILLING;
-    #else
         motor_status = STOPPED;
-    #endif 
+#ifdef FLYING_START_ENABLE
+        motor_status = FLYING_START;
+#endif 
         direction_change_flag = 1;
         trigger = 0;
         if(direction == 0)

@@ -21,8 +21,8 @@ Key features enabled in this project are:
 - Dual shunt current measurement
 - Speed control loop
 - Field weakening
-- Windmilling
-- Active Vector windmilling
+- Flying Start
+
 
 
 ## MHC Project Configurations
@@ -148,10 +148,10 @@ Set the following motor specific parameters in the userparams.h file.
 | DEC_RPM_S      | Deceleration ramp rate                      | RPM/s  |
 | STUP_ACCTIME_S | Open loop start up time                     | s      |
 | CUR_RISE_T     | Current rise time during field alignment    | s      |
-| MIN_WM_FRE_HZ  | Current rise time during field alignment    | s      |
-| WINDMILL_CUR_AMP | Post Windmill startup current    | A     |
+| MIN_FS_FRE_HZ  | Minimum Flying Start Frequency              | Hz     |
+| FLYING_START_CUR_AMP | Post FLying Start Detect startup current    | A     |
 | RGN_BRK_CUR_AMP  | Regenerative Braking current    | A      |
-| WINDMILLING_TIME_SEC      |  Windmilling Time    | s      |
+| FLYING_START_TIME_SEC      |  Flying Start Detect Time in Seconds    | s      |
 | PASSIVE_BRAKING_TIME_SEC  | Motor Braking Time     | s      |
 | TORQUE_MODE_MIN_CUR_AMP   | Minimum Torque Mode Reference    | A    |
 |       
@@ -212,19 +212,13 @@ This example provides compile time re-configuration options using #define macro 
 
   - Field Weakening - FIELD_WEAKENING
     - Defining this macro enables Field Weakening allowing the PMSM motor to spin at speed greater than rated motor speed.
+    - Note: RAM_EXECUTE macro must be enabled for proper functioning of Field Weakening
 
-  - Windmilling Enable/Disable - WINDMILLING_ENABLE
-    - Undefining this macro, disables "Windmilling" capability of the algorithm
+  - Flying Start Enable/Disable - FLYING_START_ENABLE
+    - Undefining this macro, disables "Flying Start" capability of the algorithm
+    - Note: You may see build errors if macro "RAM_EXECUTE" and "FLYING_START_ENABLE" are defined simultaneously.
 
-  - Active Vector / Null Vector Windmilling - ACTIVE_VECTOR_WINDMILLING
-    - Defining this macro, configures the algorithm to operate in Active Vector Windmilling mode. This mode results in low braking torque but can have noisy angle tracking and may assert an unbalanced torque until ROLO based estimator converges and tracks the actual rotor angle.
-    Un-defining this macro, configures the algorithm to operate in Null Vector Windmilling mode. This mode results in high braking torque which increases with windmilling speed but has relatively less noisy angle tracking.
-    - Windmilling Calibration - WINDMILLING_CALIBRATION
-    Defining this macro, configures the algorithm to operating in windmilling mode perpetually. This mode is mainly used to debug angle and speed tracking in windmilling mode. In order to debug in this mode, the motor needs to operate as a generator i.e. driven by an external force which will acts as prime mover.
-    
-    - NOTE: Windmilling must be enabled, in order for ACTIVE_VECTOR_WINDMILLING and WINDMILLING_CALIBRATION macros to have any effect.
-
- 
+  
   - Control Frequency to PWM Frequency = 1:1 - CTRL_PWM_1_1
     - Defining this macro, executes current and speed controllers every other PWM cycle.
     - Note: Please account for CPU bandwidth availability while setting Control to PWM Frequency Ratio as 1:1. If the ISR execution is not completed within the same PWM cycle, it could lead to erratic motor behavior
