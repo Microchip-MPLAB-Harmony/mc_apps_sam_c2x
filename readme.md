@@ -38,14 +38,13 @@ notes and licensing information.
 These applications contain static algorithm code and peripherals are configured using MHC. Configurations can be changed in userparam.h file. 
 
 
-| Name | Description|
-|:---------|:-----------|
-| [PMSM FOC using Reduced Order Luenberger Observer](apps/pmsm_foc_rolo_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) |
-| [PMSM FOC using Reduced Order Luenberger Observer <br> with single shunt current reconstruction ](apps/pmsm_foc_rolo_1shunt_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) with single shunt current reconstruction|
-| [BLDC Block Commutation using Hall Sensors](apps/bldc_bc_hall_sam_c21/readme.md) | Block Commutation Control of BLDC motors using Hall Sensors |
-| [ACIM Open Loop V/Hz](apps/acim_vhz_sam_c21/readme.md) | Open Loop V/Hz Control of ACIM |
-|||
-
+| Name | Description|Control Board|Inverter Board|
+|:-----|:-----------|:------------|:-------------|
+| [ACIM Open Loop V/Hz](apps/acim_vhz_pic32_cm_mc/readme.md) | Open Loop V/Hz Control of ACIM |[ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206) |[dsPICDEM™ MCHV-3 Support](https://www.microchip.com/developmenttools/ProductDetails/dm330023-3)|
+| [BLDC Block Commutation using Hall Sensors](apps/bldc_bc_hall_pic32_cm_mc/readme.md) | Block Commutation Control of BLDC motors using Hall Sensors |[ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206) |[dsPICDEM™ MCLV-2 Support](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2) |
+|[PMSM FOC using Reduced Order Luenberger Observer with Single Shunt](apps/pmsm_foc_rolo_1shunt)| Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer with Single Shunt Current Sense | [ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206)|[dsPICDEM™ MCLV-2 Support](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2)|
+|[PMSM FOC using Reduced Order Luenberger Observer](apps/pmsm_foc_rolo_pic32_cm_mc/readme.md)| Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) | [ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206)| [dsPICDEM™ MCLV-2 Support](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2) <br  />[dsPICDEM™ MCHV-3 Support](https://www.microchip.com/developmenttools/ProductDetails/dm330023-3) |
+|||||
 
 
 [![License](https://img.shields.io/badge/license-Harmony%20license-orange.svg)](https://github.com/Microchip-MPLAB-Harmony/mc/blob/master/mplab_harmony_license.md)
