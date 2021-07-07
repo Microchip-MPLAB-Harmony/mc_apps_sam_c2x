@@ -6,57 +6,79 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="mclv2_sam_c21_pim" projectFiles="true">
-          <logicalFolder name="f1" displayName="peripheral" projectFiles="true">
-            <logicalFolder name="f5" displayName="adc" projectFiles="true">
+          <logicalFolder name="f3" displayName="motor_control" projectFiles="true">
+            <logicalFolder name="f1" displayName="pmsm_foc" projectFiles="true">
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_ramp_profiler.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_ramp_profiler.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_current_control.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_current_measurement.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_error_handler.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_flux_control.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_function_coordinator.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_generic_library.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_hardware_abstraction.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_interface_handling.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_motor_control.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_pmsm_foc.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_pwm.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_reduced_order_luenberger.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_speed_control.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_start_up.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_userparams.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_voltage_measurement.h</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="f4" displayName="adc" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/adc/plib_adc_common.h</itemPath>
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/adc/plib_adc0.h</itemPath>
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/adc/plib_adc1.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f7" displayName="clock" projectFiles="true">
+            <logicalFolder name="f6" displayName="clock" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/clock/plib_clock.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f10" displayName="divas" projectFiles="true">
+            <logicalFolder name="f9" displayName="divas" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/divas/plib_divas.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f9" displayName="eic" projectFiles="true">
+            <logicalFolder name="f8" displayName="eic" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/eic/plib_eic.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f3" displayName="evsys" projectFiles="true">
+            <logicalFolder name="f2" displayName="evsys" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/evsys/plib_evsys.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f8" displayName="nvic" projectFiles="true">
+            <logicalFolder name="f7" displayName="nvic" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/nvic/plib_nvic.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f2" displayName="nvmctrl" projectFiles="true">
+            <logicalFolder name="f1" displayName="nvmctrl" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/nvmctrl/plib_nvmctrl.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f6" displayName="port" projectFiles="true">
+            <logicalFolder name="f5" displayName="port" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/port/plib_port.h</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="sercom" projectFiles="true">
+            <logicalFolder name="f10" displayName="sercom" projectFiles="true">
               <logicalFolder name="f1" displayName="usart" projectFiles="true">
                 <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/sercom/usart/plib_sercom3_usart.h</itemPath>
                 <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/sercom/usart/plib_sercom_usart_common.h</itemPath>
               </logicalFolder>
             </logicalFolder>
-            <logicalFolder name="f4" displayName="tcc" projectFiles="true">
+            <logicalFolder name="f3" displayName="tcc" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/tcc/plib_tcc0.h</itemPath>
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/tcc/plib_tcc_common.h</itemPath>
             </logicalFolder>
           </logicalFolder>
-          <itemPath>../src/config/mclv2_sam_c21_pim/userparams.h</itemPath>
+          <logicalFolder name="f1" displayName="X2CCode" projectFiles="true">
+            <logicalFolder name="f1" displayName="X2CScope" projectFiles="true">
+              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/inc/X2CScope.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/inc/X2CScopeCommunication.h</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <itemPath>../src/config/mclv2_sam_c21_pim/device.h</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/device_cache.h</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/toolchain_specifics.h</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/definitions.h</itemPath>
-          <itemPath>../src/config/mclv2_sam_c21_pim/device.h</itemPath>
+          <itemPath>../src/config/mclv2_sam_c21_pim/interrupts.h</itemPath>
+          <itemPath>../src/config/mclv2_sam_c21_pim/device_vectors.h</itemPath>
         </logicalFolder>
-      </logicalFolder>
-      <logicalFolder name="f5"
-                     displayName="Motor Control Library"
-                     projectFiles="true">
-        <itemPath>../src/q14_generic_mcLib.h</itemPath>
-        <itemPath>../src/q14_rolo_mcLib.h</itemPath>
-        <itemPath>../src/q14_flying_start_mcLib.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="packs" projectFiles="true">
         <logicalFolder name="f1" displayName="ATSAMC21J18A_DFP" projectFiles="true">
@@ -93,10 +115,56 @@
             <itemPath>../src/packs/ATSAMC21J18A_DFP/component/tsens.h</itemPath>
             <itemPath>../src/packs/ATSAMC21J18A_DFP/component/wdt.h</itemPath>
           </logicalFolder>
-          <logicalFolder name="f2" displayName="pio" projectFiles="true">
+          <logicalFolder name="f2" displayName="instance" projectFiles="true">
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/ac.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/adc0.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/adc1.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/can0.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/can1.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/ccl.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/dac.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/divas.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/dmac.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/dsu.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/eic.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/evsys.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/freqm.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/gclk.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/hmatrixhs.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/mclk.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/mtb.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/nvmctrl.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/osc32kctrl.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/oscctrl.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/pac.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/pm.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/port.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/ptc.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/rstc.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/rtc.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/sdadc.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/sercom0.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/sercom1.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/sercom2.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/sercom3.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/sercom4.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/sercom5.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/supc.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tc0.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tc1.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tc2.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tc3.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tc4.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tcc0.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tcc1.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tcc2.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tsens.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/wdt.h</itemPath>
+          </logicalFolder>
+          <logicalFolder name="f3" displayName="pio" projectFiles="true">
             <itemPath>../src/packs/ATSAMC21J18A_DFP/pio/samc21j18a.h</itemPath>
           </logicalFolder>
-          <itemPath>../src/packs/ATSAMC21J18A_DFP/atsamc21j18a.h</itemPath>
+          <itemPath>../src/packs/ATSAMC21J18A_DFP/samc21j18a.h</itemPath>
         </logicalFolder>
         <logicalFolder name="f2" displayName="CMSIS" projectFiles="true">
           <logicalFolder name="f1" displayName="CMSIS" projectFiles="true">
@@ -117,11 +185,6 @@
           </logicalFolder>
         </logicalFolder>
       </logicalFolder>
-      <logicalFolder name="f4" displayName="X2C Scope" projectFiles="true">
-        <itemPath>../src/X2CScope.h</itemPath>
-        <itemPath>../src/X2CScopeCommunication.h</itemPath>
-      </logicalFolder>
-      <itemPath>../src/mc_app.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -137,43 +200,68 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="config" projectFiles="true">
         <logicalFolder name="f1" displayName="mclv2_sam_c21_pim" projectFiles="true">
-          <logicalFolder name="f1" displayName="peripheral" projectFiles="true">
-            <logicalFolder name="f5" displayName="adc" projectFiles="true">
+          <logicalFolder name="f4" displayName="motor_control" projectFiles="true">
+            <logicalFolder name="f1" displayName="pmsm_foc" projectFiles="true">
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_current_control.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_current_measurement.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_error_handler.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_flux_control.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_function_coordinator.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_generic_library.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_hardware_abstraction.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_interface_handling.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_motor_control.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_pmsm_foc.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_pwm.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_reduced_order_luenberger.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_speed_control.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_start_up.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/motor_control/pmsm_foc/mc_voltage_measurement.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
+          <logicalFolder name="f2" displayName="peripheral" projectFiles="true">
+            <logicalFolder name="f4" displayName="adc" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/adc/plib_adc0.c</itemPath>
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/adc/plib_adc1.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f7" displayName="clock" projectFiles="true">
+            <logicalFolder name="f6" displayName="clock" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/clock/plib_clock.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f10" displayName="divas" projectFiles="true">
+            <logicalFolder name="f9" displayName="divas" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/divas/plib_divas.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f9" displayName="eic" projectFiles="true">
+            <logicalFolder name="f8" displayName="eic" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/eic/plib_eic.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f3" displayName="evsys" projectFiles="true">
+            <logicalFolder name="f2" displayName="evsys" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/evsys/plib_evsys.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f8" displayName="nvic" projectFiles="true">
+            <logicalFolder name="f7" displayName="nvic" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/nvic/plib_nvic.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f2" displayName="nvmctrl" projectFiles="true">
+            <logicalFolder name="f1" displayName="nvmctrl" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/nvmctrl/plib_nvmctrl.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f6" displayName="port" projectFiles="true">
+            <logicalFolder name="f5" displayName="port" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/port/plib_port.c</itemPath>
             </logicalFolder>
-            <logicalFolder name="f1" displayName="sercom" projectFiles="true">
+            <logicalFolder name="f10" displayName="sercom" projectFiles="true">
               <logicalFolder name="f1" displayName="usart" projectFiles="true">
                 <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/sercom/usart/plib_sercom3_usart.c</itemPath>
               </logicalFolder>
             </logicalFolder>
-            <logicalFolder name="f4" displayName="tcc" projectFiles="true">
+            <logicalFolder name="f3" displayName="tcc" projectFiles="true">
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/tcc/plib_tcc0.c</itemPath>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="f2" displayName="stdio" projectFiles="true">
+          <logicalFolder name="f3" displayName="stdio" projectFiles="true">
             <itemPath>../src/config/mclv2_sam_c21_pim/stdio/xc32_monitor.c</itemPath>
+          </logicalFolder>
+          <logicalFolder name="f1" displayName="X2CCode" projectFiles="true">
+            <logicalFolder name="f1" displayName="X2CScope" projectFiles="true">
+              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/src/X2CScope.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/src/X2CScopeCommunication.c</itemPath>
+            </logicalFolder>
           </logicalFolder>
           <itemPath>../src/config/mclv2_sam_c21_pim/initialization.c</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/interrupts.c</itemPath>
@@ -182,18 +270,7 @@
           <itemPath>../src/config/mclv2_sam_c21_pim/libc_syscalls.c</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <logicalFolder name="f3"
-                     displayName="Motor Control Library"
-                     projectFiles="true">
-        <itemPath>../src/q14_generic_mcLib.c</itemPath>
-        <itemPath>../src/q14_rolo_mcLib.c</itemPath>
-      </logicalFolder>
-      <logicalFolder name="f2" displayName="X2C Scope" projectFiles="true">
-        <itemPath>../src/X2CScope.c</itemPath>
-        <itemPath>../src/X2CScopeCommunication.c</itemPath>
-      </logicalFolder>
-      <itemPath>../src/mc_app.c</itemPath>
-      <itemPath>../src/main_mclv2_sam_c21_pim.c</itemPath>
+      <itemPath>../src/main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -211,10 +288,12 @@
         <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/evsys.yml</itemPath>
         <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/GraphSettings.yml</itemPath>
         <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/nvmctrl.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/pmsm_foc.yml</itemPath>
         <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/project.yml</itemPath>
         <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/sercom3.yml</itemPath>
         <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/settings.yml</itemPath>
         <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/tcc0.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/X2CScope.yml</itemPath>
       </logicalFolder>
       <itemPath>Makefile</itemPath>
       <itemPath>../src/config/mclv2_sam_c21_pim/harmony-manifest-success.yml</itemPath>
@@ -231,28 +310,28 @@
         <targetDevice>ATSAMC21J18A</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>ICD4Tool</platformTool>
+        <platformTool>Simulator</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>2.50</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
         <pack name="SAMC21_DFP" vendor="Microchip" version="3.4.78"/>
+        <pack name="CMSIS" vendor="ARM" version="5.4.0"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
       <compileType>
         <linkerTool>
           <linkerLibItems>
-            <linkerLibFileItem>../src/X2CScopeLib_SAMC21_XC32_215.a</linkerLibFileItem>
-            <linkerLibFileItem>../src/lib_SAM_C2x_MC_FLYINGSTART.X.a</linkerLibFileItem>
+            <linkerLibFileItem>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/lib/libCORTEXM0PLUS_X2CScope.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
         </archiverTool>
         <loading>
           <useAlternateLoadableFile>false</useAlternateLoadableFile>
-          <parseOnProdLoad>true</parseOnProdLoad>
+          <parseOnProdLoad>false</parseOnProdLoad>
           <alternateLoadableFile></alternateLoadableFile>
         </loading>
         <subordinates>
@@ -270,52 +349,27 @@
       </makeCustomizationType>
       <AtmelIceTool>
         <property key="AutoSelectMemRanges" value="auto"/>
-        <property key="arm.use_vtor" value="false"/>
-        <property key="arm.vtor_adr" value="exception_table"/>
-        <property key="communication.activationmode" value="nohv"/>
         <property key="communication.interface" value="swd"/>
         <property key="communication.speed" value="4.000"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
-        <property key="firmware.path"
-                  value="Press to browse for a specific firmware version"/>
-        <property key="firmware.toolpack"
-                  value="Press to select which tool pack to use"/>
-        <property key="firmware.update.action" value="firmware.update.use.latest"/>
-        <property key="freeze.timers" value="false"/>
-        <property key="lastid" value=""/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
         <property key="memories.configurationmemory" value="true"/>
         <property key="memories.configurationmemory2" value="true"/>
         <property key="memories.dataflash" value="true"/>
         <property key="memories.eeprom" value="true"/>
-        <property key="memories.exclude.configurationmemory" value="true"/>
         <property key="memories.flashdata" value="true"/>
         <property key="memories.id" value="true"/>
         <property key="memories.instruction.ram.ranges"
                   value="${memories.instruction.ram.ranges}"/>
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0x400000-0x5fffff"/>
-        <property key="memories.rww" value="true"/>
-        <property key="poweroptions.powerenable" value="false"/>
-        <property key="programoptions.eraseb4program" value="true"/>
+        <property key="programoptions.eraseb4program" value="false"/>
         <property key="programoptions.preservedataflash" value="false"/>
-        <property key="programoptions.preservedataflash.ranges"
-                  value="${memories.dataflash.default}"/>
         <property key="programoptions.preserveeeprom" value="false"/>
         <property key="programoptions.preserveeeprom.ranges" value=""/>
         <property key="programoptions.preserveprogram.ranges" value=""/>
         <property key="programoptions.preserveprogramrange" value="false"/>
         <property key="programoptions.preserveuserid" value="false"/>
-        <property key="programoptions.programuserotp" value="false"/>
-        <property key="script.log_level" value="0"/>
-        <property key="script.reset_delay" value="0"/>
-        <property key="script.show_output" value="false"/>
-        <property key="toolpack.updateoptions"
-                  value="toolpack.updateoptions.uselatestoolpack"/>
-        <property key="toolpack.updateoptions.packversion"
-                  value="Press to select which tool pack to use"/>
-        <property key="voltagevalue" value=""/>
       </AtmelIceTool>
       <C32>
         <property key="additional-warnings" value="true"/>
@@ -326,7 +380,7 @@
         <property key="enable-unroll-loops" value="false"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories"
-                  value="../src;../src/config/mclv2_sam_c21_pim;../src/packs/ATSAMC21J18A_DFP;../src/packs/CMSIS/CMSIS/Core/Include;../src/packs/CMSIS/"/>
+                  value="../src;../src/config/mclv2_sam_c21_pim;../src/config/mclv2_sam_c21_pim/X2CCode;../src/packs/ATSAMC21J18A_DFP;../src/packs/CMSIS/;../src/packs/CMSIS/CMSIS/Core/Include"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
@@ -343,7 +397,6 @@
         <property key="use-cci" value="false"/>
         <property key="use-iar" value="false"/>
         <property key="use-indirect-calls" value="true"/>
-        <appendMe value="-Wformat=2 -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-format-attribute -Wno-deprecated-declarations -Wredundant-decls -Wnested-externs -Winline -Wlong-long -Wunreachable-code -Wmissing-noreturn"/>
       </C32>
       <C32-AR>
         <property key="additional-options-chop-files" value="false"/>
@@ -403,7 +456,7 @@
         <property key="optimization-level" value=""/>
         <property key="preprocessor-macros" value=""/>
         <property key="remove-unused-sections" value="true"/>
-        <property key="report-memory-usage" value="true"/>
+        <property key="report-memory-usage" value="false"/>
         <property key="serial-length" value=""/>
         <property key="serial-origin" value=""/>
         <property key="stack-size" value=""/>
@@ -423,7 +476,7 @@
         <property key="exceptions" value="true"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories"
-                  value="../src;../src/config/mclv2_sam_c21_pim;../src/packs/ATSAMC21J18A_DFP;../src/packs/CMSIS/CMSIS/Core/Include;../src/packs/CMSIS/"/>
+                  value="../src;../src/config/mclv2_sam_c21_pim;../src/packs/ATSAMC21J18A_DFP;../src/packs/CMSIS/;../src/packs/CMSIS/CMSIS/Core/Include"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
@@ -453,60 +506,6 @@
         <property key="save-temps" value="false"/>
         <property key="wpo-lto" value="false"/>
       </C32Global>
-      <ICD4Tool>
-        <property key="AutoSelectMemRanges" value="auto"/>
-        <property key="SecureSegment.SegmentProgramming" value="FullChipProgramming"/>
-        <property key="ToolFirmwareFilePath"
-                  value="Press to browse for a specific firmware version"/>
-        <property key="ToolFirmwareOption.UpdateOptions"
-                  value="ToolFirmwareOption.UseLatest"/>
-        <property key="ToolFirmwareToolPack"
-                  value="Press to select which tool pack to use"/>
-        <property key="communication.interface.jtag" value="2wire"/>
-        <property key="debugoptions.useswbreakpoints" value="false"/>
-        <property key="hwtoolclock.frcindebug" value="false"/>
-        <property key="memories.aux" value="false"/>
-        <property key="memories.bootflash" value="true"/>
-        <property key="memories.configurationmemory" value="true"/>
-        <property key="memories.configurationmemory2" value="true"/>
-        <property key="memories.dataflash" value="true"/>
-        <property key="memories.eeprom" value="true"/>
-        <property key="memories.exclude.configurationmemory" value="true"/>
-        <property key="memories.flashdata" value="true"/>
-        <property key="memories.id" value="true"/>
-        <property key="memories.instruction.ram.ranges"
-                  value="${memories.instruction.ram.ranges}"/>
-        <property key="memories.programmemory" value="true"/>
-        <property key="memories.programmemory.ranges" value="0-3ffff"/>
-        <property key="poweroptions.powerenable" value="false"/>
-        <property key="programmerToGoFilePath"
-                  value="C:/harmony/harmony3/mc_apps_sam_c2x/apps/pmsm_foc_rolo_sam_c21/firmware/mclv2_sam_c21_pim.X/debug/mclv2_sam_c21_pim/mclv2_sam_c21_pim_ptg"/>
-        <property key="programoptions.donoteraseauxmem" value="false"/>
-        <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.ledbrightness" value="5"/>
-        <property key="programoptions.pgcconfig" value="pull down"/>
-        <property key="programoptions.pgcresistor.value" value="4.7"/>
-        <property key="programoptions.pgdconfig" value="pull down"/>
-        <property key="programoptions.pgdresistor.value" value="4.7"/>
-        <property key="programoptions.pgmentry.voltage" value="low"/>
-        <property key="programoptions.pgmspeed" value="Med"/>
-        <property key="programoptions.preservedataflash" value="false"/>
-        <property key="programoptions.preservedataflash.ranges"
-                  value="${memories.dataflash.default}"/>
-        <property key="programoptions.preserveeeprom" value="false"/>
-        <property key="programoptions.preserveeeprom.ranges" value=""/>
-        <property key="programoptions.preserveprogram.ranges" value=""/>
-        <property key="programoptions.preserveprogramrange" value="false"/>
-        <property key="programoptions.preserveuserid" value="false"/>
-        <property key="programoptions.programcalmem" value="false"/>
-        <property key="programoptions.programuserotp" value="false"/>
-        <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
-        <property key="toolpack.updateoptions"
-                  value="toolpack.updateoptions.uselatestoolpack"/>
-        <property key="toolpack.updateoptions.packversion"
-                  value="Press to select which tool pack to use"/>
-        <property key="voltagevalue" value="5.0"/>
-      </ICD4Tool>
       <PICkit3PlatformTool>
         <property key="ADC 1" value="true"/>
         <property key="AutoSelectMemRanges" value="auto"/>
@@ -572,7 +571,6 @@
         <property key="codecoverage.enabled" value="Disable"/>
         <property key="codecoverage.enableoutputtofile" value="false"/>
         <property key="codecoverage.outputfile" value=""/>
-        <property key="codecoverage.report" value=""/>
         <property key="oscillator.auxfrequency" value="120"/>
         <property key="oscillator.auxfrequencyunit" value="Mega"/>
         <property key="oscillator.frequency" value="1"/>
@@ -593,6 +591,10 @@
         <property key="periphComp6.gte" value="gt"/>
         <property key="reset.scl" value="false"/>
         <property key="reset.type" value="MCLR"/>
+        <property key="toolpack.updateoptions"
+                  value="toolpack.updateoptions.uselatestoolpack"/>
+        <property key="toolpack.updateoptions.packversion"
+                  value="Press to select which tool pack to use"/>
         <property key="tracecontrol.include.timestamp" value="summarydataenabled"/>
         <property key="tracecontrol.select" value="0"/>
         <property key="tracecontrol.stallontracebufferfull" value="false"/>
@@ -603,9 +605,6 @@
         <property key="uart0io.output" value="window"/>
         <property key="uart0io.outputfile" value=""/>
         <property key="uart0io.uartioenabled" value="false"/>
-        <property key="uart10io.output" value="window"/>
-        <property key="uart10io.outputfile" value=""/>
-        <property key="uart10io.uartioenabled" value="false"/>
         <property key="uart1io.output" value="window"/>
         <property key="uart1io.outputfile" value=""/>
         <property key="uart1io.uartioenabled" value="false"/>
@@ -624,15 +623,48 @@
         <property key="uart6io.output" value="window"/>
         <property key="uart6io.outputfile" value=""/>
         <property key="uart6io.uartioenabled" value="false"/>
-        <property key="uart7io.output" value="window"/>
-        <property key="uart7io.outputfile" value=""/>
-        <property key="uart7io.uartioenabled" value="false"/>
-        <property key="uart8io.output" value="window"/>
-        <property key="uart8io.outputfile" value=""/>
-        <property key="uart8io.uartioenabled" value="false"/>
-        <property key="uart9io.output" value="window"/>
-        <property key="uart9io.outputfile" value=""/>
-        <property key="uart9io.uartioenabled" value="false"/>
+        <property key="usart0io.output" value="window"/>
+        <property key="usart0io.outputfile" value=""/>
+        <property key="usart0io.uartioenabled" value="false"/>
+        <property key="usart1io.output" value="window"/>
+        <property key="usart1io.outputfile" value=""/>
+        <property key="usart1io.uartioenabled" value="false"/>
+        <property key="usart2io.output" value="window"/>
+        <property key="usart2io.outputfile" value=""/>
+        <property key="usart2io.uartioenabled" value="false"/>
+        <property key="usart3io.output" value="window"/>
+        <property key="usart3io.outputfile" value=""/>
+        <property key="usart3io.uartioenabled" value="false"/>
+        <property key="usart4io.output" value="window"/>
+        <property key="usart4io.outputfile" value=""/>
+        <property key="usart4io.uartioenabled" value="false"/>
+        <property key="usartc0io.output" value="window"/>
+        <property key="usartc0io.outputfile" value=""/>
+        <property key="usartc0io.uartioenabled" value="false"/>
+        <property key="usartc1io.output" value="window"/>
+        <property key="usartc1io.outputfile" value=""/>
+        <property key="usartc1io.uartioenabled" value="false"/>
+        <property key="usartd0io.output" value="window"/>
+        <property key="usartd0io.outputfile" value=""/>
+        <property key="usartd0io.uartioenabled" value="false"/>
+        <property key="usartd1io.output" value="window"/>
+        <property key="usartd1io.outputfile" value=""/>
+        <property key="usartd1io.uartioenabled" value="false"/>
+        <property key="usarte0io.output" value="window"/>
+        <property key="usarte0io.outputfile" value=""/>
+        <property key="usarte0io.uartioenabled" value="false"/>
+        <property key="usarte1io.output" value="window"/>
+        <property key="usarte1io.outputfile" value=""/>
+        <property key="usarte1io.uartioenabled" value="false"/>
+        <property key="usarte2io.output" value="window"/>
+        <property key="usarte2io.outputfile" value=""/>
+        <property key="usarte2io.uartioenabled" value="false"/>
+        <property key="usartf0io.output" value="window"/>
+        <property key="usartf0io.outputfile" value=""/>
+        <property key="usartf0io.uartioenabled" value="false"/>
+        <property key="usartf1io.output" value="window"/>
+        <property key="usartf1io.outputfile" value=""/>
+        <property key="usartf1io.uartioenabled" value="false"/>
         <property key="warningmessagebreakoptions.W0001_CORE_BITREV_MODULO_EN"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0002_CORE_SECURE_MEMORYACCESS"
@@ -697,6 +729,8 @@
                   value="report"/>
         <property key="warningmessagebreakoptions.W0034_CORE_UNALIGNED_MEMORY_ACCESS"
                   value="report"/>
+        <property key="warningmessagebreakoptions.W0035_CORE_UNIMPLEMENTED_RAMACCESS_NOTRAP"
+                  value="report"/>
         <property key="warningmessagebreakoptions.W0040_FPU_DIFF_CP10_CP11"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0041_FPU_ACCESS_DENIED"
@@ -745,6 +779,10 @@
         <property key="warningmessagebreakoptions.W0116_SIM_STACK_OVERFLOW"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0117_SIM_STACK_UNDERFLOW"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0118_SIM_INVALID_FIELD_VALUE"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0119_SIM_SAMPLING_RATE_VIOLATION"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0201_ADC_NO_STIMULUS_FILE"
                   value="report"/>
@@ -829,6 +867,14 @@
         <property key="warningmessagebreakoptions.W0243_ADC_INVALID_TAD" value="report"/>
         <property key="warningmessagebreakoptions.W0244_ADC_CONVERSION_ABORTED"
                   value="report"/>
+        <property key="warningmessagebreakoptions.W0245_ADC_BUFREGEN_NOT_ALLOWED"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0246_ADC_ACCUMULATION_BAD_RESSEL"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0247_ADC_CONVERSION_BAD_RESSEL"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0248_ADC_WR_BEFORE_KEY_SEQ"
+                  value="report"/>
         <property key="warningmessagebreakoptions.W0400_PWM_PWM_FASTER_THAN_FOSC"
                   value="report"/>
         <property key="warningmessagebreakoptions.W0600_WDT_2ND_WDT_MR_WRITE"
@@ -842,6 +888,20 @@
                   value="report"/>
         <property key="warningmessagebreakoptions.W0702_CLC_CIRCULAR_LOOP"
                   value="report"/>
+        <property key="warningmessagebreakoptions.W0800_ACC_INPUT_INVALID_CONFIG"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0801_ACC_INPUT_NOT_SUPPORTED"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0802_ACC_INVERTED_WINDOW_LIMITS"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0803_ACC_MISMATCHED_POS_INPUTS"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0804_ACC_WINDOW_COMP_DISABLED"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0805_ACC_WINDOW_COMPS_MODES"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W0806_ACC_FEATURE_NOT_SUPPORTED"
+                  value="report"/>
         <property key="warningmessagebreakoptions.W10001_RESERVED_IRQ_HANDLER_INVOKED"
                   value="report"/>
         <property key="warningmessagebreakoptions.W10002_UNSUPPORTED_CLK_SOURCE"
@@ -853,6 +913,8 @@
         <property key="warningmessagebreakoptions.W10103_UNSUPPORTED_RECEIVER_FILTER"
                   value="report"/>
         <property key="warningmessagebreakoptions.W10301_NO_PORT_PINS_FOUND"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W10500_UNSUPPORTED_SOURCE"
                   value="report"/>
         <property key="warningmessagebreakoptions.W1201_DATAFLASH_MEM_OUTSIDE_RANGE"
                   value="report"/>
@@ -912,6 +974,8 @@
         <property key="warningmessagebreakoptions.W7003_SMT_WIN_SELECTION_NOT_SUPPORT"
                   value="report"/>
         <property key="warningmessagebreakoptions.W8001_OSC_INVALID_CLOCK_SOURCE"
+                  value="report"/>
+        <property key="warningmessagebreakoptions.W8002_OSC_RESERVED_FEXTOSC"
                   value="report"/>
         <property key="warningmessagebreakoptions.W9001_TMR_GATE_AND_EXTCLOCK_ENABLED"
                   value="report"/>

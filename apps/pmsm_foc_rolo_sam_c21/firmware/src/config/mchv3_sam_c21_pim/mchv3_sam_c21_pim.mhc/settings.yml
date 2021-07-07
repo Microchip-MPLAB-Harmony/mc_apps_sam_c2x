@@ -1,13 +1,15 @@
 configName: mchv3_sam_c21_pim
-folderName: ''
+folderName: mchv3_sam_c21_pim
 format_version: v1.0
-frameworkPath: ../../..
+frameworkPath: ..\..\..\..\Code_Generation
 processor: ATSAMC21J18A
-projectName: ''
+projectName: pmsm_foc_rolo_sam_c21_mchv3
 settings:
-  PackageFilter: bsp;core;csp;motor_control;x2c;
+  PackageFilter: csp;mc_apps_pic32cm_mc;mc_apps_pic32mk;mc_apps_sam_d5x_e5x;mc_apps_sam_d5x_e5x
+    - Copy;mc_apps_sam_d5x_e5x - Copy (2);mc_apps_sam_e7x_s7x_v7x;motor_control;motor_control__;x2c
   FORCE_OPTIMIZATION: 'false'
   GENERATE_BACKUP: 'true'
+  TRUSTZONE: 'false'
   CMSISPath: .\dev_packs\arm\CMSIS\5.7.0
   MERGE_STRATEGY: USER_ALL
-  DFPPath: .\dev_packs\Microchip\SAMC21_DFP\3.5.83\samc21\atdf\ATSAMC21J18A.atdf
+  DFPPath: '.\dev_packs\Microchip\SAMC21_DFP\3.5.95\samc21\atdf\ATSAMC21J18A.atdf '

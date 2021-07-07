@@ -121,6 +121,7 @@
 
 void SYS_Initialize ( void* data )
 {
+
     NVMCTRL_REGS->NVMCTRL_CTRLB = NVMCTRL_CTRLB_RWS(3);
 
   
@@ -137,18 +138,21 @@ void SYS_Initialize ( void* data )
 
     EVSYS_Initialize();
 
+    EIC_Initialize();
+
     TCC0_PWMInitialize();
 
 
     ADC0_Initialize();
 
     ADC1_Initialize();
-    EIC_Initialize();
-
 	DIVAS_Initialize();
 
 
 
+
+    X2CScope_Init();
+    PMSM_FOC_Initialize();
 
 
     NVIC_Initialize();

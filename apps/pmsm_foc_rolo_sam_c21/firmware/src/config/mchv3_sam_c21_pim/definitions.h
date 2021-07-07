@@ -49,15 +49,18 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "peripheral/sercom/usart/plib_sercom3_usart.h"
+#include "X2CCode/X2CScope/inc/X2CScope.h"
 #include "peripheral/nvmctrl/plib_nvmctrl.h"
 #include "peripheral/evsys/plib_evsys.h"
-#include "peripheral/tcc/plib_tcc0.h"
-#include "peripheral/adc/plib_adc0.h"
 #include "peripheral/port/plib_port.h"
 #include "peripheral/clock/plib_clock.h"
 #include "peripheral/nvic/plib_nvic.h"
-#include "peripheral/adc/plib_adc1.h"
 #include "peripheral/eic/plib_eic.h"
+#include "motor_control/pmsm_foc/mc_userparams.h"
+#include "motor_control/pmsm_foc/mc_pmsm_foc.h"
+#include "peripheral/tcc/plib_tcc0.h"
+#include "peripheral/adc/plib_adc0.h"
+#include "peripheral/adc/plib_adc1.h"
 #include "peripheral/divas/plib_divas.h"
 
 // DOM-IGNORE-BEGIN
@@ -67,6 +70,9 @@ extern "C" {
 
 #endif
 // DOM-IGNORE-END
+
+/* CPU clock frequency */
+#define CPU_CLOCK_FREQUENCY 48000000
 
 // *****************************************************************************
 // *****************************************************************************
