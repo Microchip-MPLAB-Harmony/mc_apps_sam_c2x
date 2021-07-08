@@ -78,7 +78,7 @@ typedef struct
     tMCCTRL_FLYING_START_CONTROL_STATE_E     mcFlyingStartState;
 }tMCCTRL_FLYING_START_STATE_SIGNALS_S;
 
-tMCCTRL_FLYING_START_STATE_SIGNALS_S     gMCCTRL_FlyingStartStateSignals;
+extern tMCCTRL_FLYING_START_STATE_SIGNALS_S  gMCCTRL_FlyingStartStateSignals;
 
 tMC_FLYING_START_STATUS_E MCCTRL_FlyingStartControl(void);
 
