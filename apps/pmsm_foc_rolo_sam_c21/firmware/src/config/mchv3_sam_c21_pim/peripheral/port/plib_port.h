@@ -85,6 +85,15 @@
 #define PWM1H3_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 10U)) & 0x01U)
 #define PWM1H3_PIN                  PORT_PIN_PA10
 
+/*** Macros for GPIO_PA11 pin ***/
+#define GPIO_PA11_Set()               (PORT_REGS->GROUP[0].PORT_OUTSET = ((uint32_t)1U << 11U))
+#define GPIO_PA11_Clear()             (PORT_REGS->GROUP[0].PORT_OUTCLR = ((uint32_t)1U << 11U))
+#define GPIO_PA11_Toggle()            (PORT_REGS->GROUP[0].PORT_OUTTGL = ((uint32_t)1U << 11U))
+#define GPIO_PA11_OutputEnable()      (PORT_REGS->GROUP[0].PORT_DIRSET = ((uint32_t)1U << 11U))
+#define GPIO_PA11_InputEnable()       (PORT_REGS->GROUP[0].PORT_DIRCLR = ((uint32_t)1U << 11U))
+#define GPIO_PA11_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 11U)) & 0x01U)
+#define GPIO_PA11_PIN                  PORT_PIN_PA11
+
 /*** Macros for GPIO_PB12 pin ***/
 #define GPIO_PB12_Set()               (PORT_REGS->GROUP[1].PORT_OUTSET = ((uint32_t)1U << 12U))
 #define GPIO_PB12_Clear()             (PORT_REGS->GROUP[1].PORT_OUTCLR = ((uint32_t)1U << 12U))
@@ -114,15 +123,6 @@
 /*** Macros for PWM1L3 pin ***/
 #define PWM1L3_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 16U)) & 0x01U)
 #define PWM1L3_PIN                  PORT_PIN_PA16
-
-/*** Macros for GPIO_PB16 pin ***/
-#define GPIO_PB16_Set()               (PORT_REGS->GROUP[1].PORT_OUTSET = ((uint32_t)1U << 16U))
-#define GPIO_PB16_Clear()             (PORT_REGS->GROUP[1].PORT_OUTCLR = ((uint32_t)1U << 16U))
-#define GPIO_PB16_Toggle()            (PORT_REGS->GROUP[1].PORT_OUTTGL = ((uint32_t)1U << 16U))
-#define GPIO_PB16_OutputEnable()      (PORT_REGS->GROUP[1].PORT_DIRSET = ((uint32_t)1U << 16U))
-#define GPIO_PB16_InputEnable()       (PORT_REGS->GROUP[1].PORT_DIRCLR = ((uint32_t)1U << 16U))
-#define GPIO_PB16_Get()               (((PORT_REGS->GROUP[1].PORT_IN >> 16U)) & 0x01U)
-#define GPIO_PB16_PIN                  PORT_PIN_PB16
 
 /*** Macros for X2CSCOPE_TX pin ***/
 #define X2CSCOPE_TX_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 22U)) & 0x01U)

@@ -104,7 +104,7 @@ void mcHalI_VoltageSourceInverterPwmDisable( void )
  */
 uint32_t mcHalI_StartStopButtonGet( void )
 {
-    return GPIO_PB16_Get();
+    return GPIO_PA11_Get();
 }
 
 

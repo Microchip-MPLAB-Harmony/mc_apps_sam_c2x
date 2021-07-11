@@ -53,6 +53,13 @@ children:
       children:
       - type: User
         attributes: {value: '2'}
+  - type: KeyValueSet
+    attributes: {id: MCPMSMFOC_CONTROL}
+    children:
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: '1'}
   - type: Integer
     attributes: {id: MCPMSMFOC_DCBUSV_CH}
     children:
@@ -245,6 +252,24 @@ children:
       children:
       - type: Dynamic
         attributes: {id: pmsm_foc, value: '5000.0'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_MAX_TORQUE}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: visible}
+        children:
+        - {type: Value, value: 'false'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_MIN_TORQUE}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: visible}
+        children:
+        - {type: Value, value: 'false'}
   - type: KeyValueSet
     attributes: {id: MCPMSMFOC_MOTOR_CONNECTION}
     children:
@@ -486,7 +511,7 @@ children:
     - type: Values
       children:
       - type: Dynamic
-        attributes: {id: pmsm_foc, value: '46'}
+        attributes: {id: pmsm_foc, value: '11'}
   - type: String
     attributes: {id: MCPMSMFOC_X2CScope}
     children:
@@ -502,9 +527,9 @@ children:
     - type: TargetAttachments
       children:
       - type: TargetAttachment
-        attributes: {targetComponentID: adc0, targetAttachmentID: ADC0_ADC}
-      - type: TargetAttachment
         attributes: {targetComponentID: adc1, targetAttachmentID: ADC1_ADC}
+      - type: TargetAttachment
+        attributes: {targetComponentID: adc0, targetAttachmentID: ADC0_ADC}
   - type: DirectDependency
     attributes: {id: pmsmfoc_PWM}
     children:
