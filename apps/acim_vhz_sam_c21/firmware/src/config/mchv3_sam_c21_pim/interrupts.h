@@ -1,24 +1,18 @@
 /*******************************************************************************
-  Analog-to-Digital Converter(ADC0) PLIB
+ System Interrupts File
 
-  Company
+  Company:
     Microchip Technology Inc.
 
-  File Name
-    plib_adc0.h
+  File Name:
+    interrupt.h
 
-  Summary
-    ADC0 PLIB Header File.
+  Summary:
+    Interrupt vectors mapping
 
-  Description
-    This file defines the interface to the ADC peripheral library. This
-    library provides access to and control of the associated peripheral
-    instance.
-
-  Remarks:
-    None.
-
-*******************************************************************************/
+  Description:
+    This file contains declarations of device vectors used by Harmony 3
+ *******************************************************************************/
 
 // DOM-IGNORE-BEGIN
 /*******************************************************************************
@@ -42,78 +36,32 @@
 * FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN
 * ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
-*******************************************************************************/
+ *******************************************************************************/
 // DOM-IGNORE-END
 
-#ifndef PLIB_ADC0_H      // Guards against multiple inclusion
-#define PLIB_ADC0_H
+#ifndef INTERRUPTS_H
+#define INTERRUPTS_H
 
 // *****************************************************************************
 // *****************************************************************************
 // Section: Included Files
 // *****************************************************************************
 // *****************************************************************************
-/* This section lists the other files that are included in this file.
-*/
-
-#include "device.h"
-#include "plib_adc_common.h"
-
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus // Provide C Compatibility
-
-    extern "C" {
-
-#endif
-// DOM-IGNORE-END
-
-// *****************************************************************************
-// *****************************************************************************
-// Section: Data Types
-// *****************************************************************************
-// *****************************************************************************
-/* The following data type definitions are used by the functions in this
-    interface and should be considered part it.
-*/
-
-// *****************************************************************************
+#include <stdint.h>
 
 
 // *****************************************************************************
 // *****************************************************************************
-// Section: Interface Routines
+// Section: Handler Routines
 // *****************************************************************************
 // *****************************************************************************
-/* The following functions make up the methods (set of possible operations) of
-    this interface.
-*/
 
-void ADC0_Initialize( void );
-
-void ADC0_Enable( void );
-
-void ADC0_Disable( void );
-
-void ADC0_ChannelSelect( ADC_POSINPUT positiveInput, ADC_NEGINPUT negativeInput );
-
-void ADC0_ConversionStart( void );
-
-uint16_t ADC0_ConversionResultGet( void );
-
-
-bool ADC0_ConversionSequenceIsFinished(void);
-
-
-void ADC0_CallbackRegister( ADC_CALLBACK callback, uintptr_t context );
+void Reset_Handler (void);
+void NonMaskableInt_Handler (void);
+void HardFault_Handler (void);
+void EIC_InterruptHandler (void);
+void ADC1_InterruptHandler (void);
 
 
 
-// DOM-IGNORE-BEGIN
-#ifdef __cplusplus  // Provide C++ Compatibility
-
-    }
-
-#endif
-// DOM-IGNORE-END
-
-#endif /* PLIB_ADC0_H */
+#endif // INTERRUPTS_H
