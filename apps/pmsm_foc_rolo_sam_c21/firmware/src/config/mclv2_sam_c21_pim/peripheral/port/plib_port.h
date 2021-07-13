@@ -77,10 +77,6 @@
 #define PWM1H2_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 5U)) & 0x01U)
 #define PWM1H2_PIN                  PORT_PIN_PA05
 
-/*** Macros for PWM1L3 pin ***/
-#define PWM1L3_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 7U)) & 0x01U)
-#define PWM1L3_PIN                  PORT_PIN_PA07
-
 /*** Macros for VBUS pin ***/
 #define VBUS_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 9U)) & 0x01U)
 #define VBUS_PIN                  PORT_PIN_PA09
@@ -114,6 +110,10 @@
 /*** Macros for PWM1L2 pin ***/
 #define PWM1L2_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 15U)) & 0x01U)
 #define PWM1L2_PIN                  PORT_PIN_PA15
+
+/*** Macros for PWM1L3 pin ***/
+#define PWM1L3_Get()               (((PORT_REGS->GROUP[0].PORT_IN >> 16U)) & 0x01U)
+#define PWM1L3_PIN                  PORT_PIN_PA16
 
 /*** Macros for GPIO_PB16 pin ***/
 #define GPIO_PB16_Set()               (PORT_REGS->GROUP[1].PORT_OUTSET = ((uint32_t)1U << 16U))

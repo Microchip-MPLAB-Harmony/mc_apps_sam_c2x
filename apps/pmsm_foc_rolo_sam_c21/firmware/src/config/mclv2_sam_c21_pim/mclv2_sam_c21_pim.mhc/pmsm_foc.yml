@@ -32,6 +32,13 @@ children:
       children:
       - type: Dynamic
         attributes: {id: pmsm_foc, value: '4095'}
+  - type: KeyValueSet
+    attributes: {id: MCPMSMFOC_CONTROL}
+    children:
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: '1'}
   - type: Integer
     attributes: {id: MCPMSMFOC_DCBUSV_CH}
     children:
@@ -64,6 +71,24 @@ children:
       children:
       - type: Dynamic
         attributes: {id: pmsm_foc, value: '42'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_END_SPEED}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: visible}
+        children:
+        - {type: Value, value: 'false'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_END_TORQUE}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: visible}
+        children:
+        - {type: Value, value: 'false'}
   - type: KeyValueSet
     attributes: {id: MCPMSMFOC_FAULT_LED}
     children:
@@ -71,6 +96,52 @@ children:
       children:
       - type: Dynamic
         attributes: {id: pmsm_foc, value: '43'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_ID_KI}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: pmsm_foc, value: '917.0'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_ID_KP}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: pmsm_foc, value: '0.71'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_IQ_KI}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: pmsm_foc, value: '917.0'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_IQ_KP}
+    children:
+    - type: Values
+      children:
+      - type: Dynamic
+        attributes: {id: pmsm_foc, value: '0.71'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_MAX_TORQUE}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: visible}
+        children:
+        - {type: Value, value: 'false'}
+  - type: Float
+    attributes: {id: MCPMSMFOC_MIN_TORQUE}
+    children:
+    - type: Attributes
+      children:
+      - type: Boolean
+        attributes: {id: visible}
+        children:
+        - {type: Value, value: 'false'}
   - type: KeyValueSet
     attributes: {id: MCPMSMFOC_MOTOR_CONNECTION}
     children:
@@ -173,6 +244,13 @@ children:
         attributes: {id: max}
         children:
         - {type: Value, value: '3'}
+  - type: Combo
+    attributes: {id: MCPMSMFOC_REF_INPUT}
+    children:
+    - type: Values
+      children:
+      - type: User
+        attributes: {value: Potentiometer Analog Input}
   - type: KeyValueSet
     attributes: {id: MCPMSMFOC_START_BUTTON}
     children:
