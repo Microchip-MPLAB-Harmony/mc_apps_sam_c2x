@@ -125,7 +125,8 @@ void TCC1_PWMStop(void);
 
 void TCC1_PWMForceUpdate(void);
 
-void TCC1_PWMPatternSet(uint8_t pattern_enable, uint8_t pattern_output);
+bool TCC1_PWMPatternSet(uint8_t pattern_enable, uint8_t pattern_output);
+
 
 void TCC1_PWMPeriodInterruptEnable(void);
 
@@ -133,15 +134,21 @@ void TCC1_PWMPeriodInterruptDisable(void);
 
 uint32_t TCC1_PWMInterruptStatusGet(void);
 
-void TCC1_PWM24bitPeriodSet(uint32_t period);
+bool TCC1_PWM24bitPeriodSet(uint32_t period);
 
 uint32_t TCC1_PWM24bitPeriodGet(void);
 
 void TCC1_PWM24bitCounterSet(uint32_t count);
 
-__STATIC_INLINE void TCC1_PWM24bitDutySet(TCC1_CHANNEL_NUM channel, uint32_t duty)
+__STATIC_INLINE bool TCC1_PWM24bitDutySet(TCC1_CHANNEL_NUM channel, uint32_t duty)
 {
-    TCC1_REGS->TCC_CCBUF[channel] = duty & 0xFFFFFF;
+    bool status = false;
+    if ((TCC1_REGS->TCC_STATUS & (1UL << (TCC_STATUS_CCBUFV0_Pos + (uint32_t)channel))) == 0U)
+    {
+        TCC1_REGS->TCC_CCBUF[channel] = duty & 0xFFFFFFU;
+        status = true;
+    }
+    return status;
 }
 
 // DOM-IGNORE-BEGIN

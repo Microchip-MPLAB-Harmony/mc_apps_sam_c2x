@@ -53,6 +53,7 @@
 /* This section lists the other files that are included in this file.
 */
 
+#include "interrupts.h"
 #include "plib_tc0.h"
 
 // *****************************************************************************
@@ -84,20 +85,20 @@ void TC0_TimerInitialize( void )
     TC0_REGS->COUNT16.TC_CTRLA = TC_CTRLA_MODE_COUNT16 | TC_CTRLA_PRESCALER_DIV4 | TC_CTRLA_PRESCSYNC_PRESC ;
 
     /* Configure in Match Frequency Mode */
-    TC0_REGS->COUNT16.TC_WAVE = TC_WAVE_WAVEGEN_MPWM;
+    TC0_REGS->COUNT16.TC_WAVE = (uint8_t)TC_WAVE_WAVEGEN_MPWM;
 
     /* Configure timer one shot mode */
-    TC0_REGS->COUNT16.TC_CTRLBSET = TC_CTRLBSET_ONESHOT_Msk;
+    TC0_REGS->COUNT16.TC_CTRLBSET = (uint8_t)TC_CTRLBSET_ONESHOT_Msk;
     /* Configure timer period */
     TC0_REGS->COUNT16.TC_CC[0U] = 1200U;
 
     /* Clear all interrupt flags */
-    TC0_REGS->COUNT16.TC_INTFLAG = TC_INTFLAG_Msk;
+    TC0_REGS->COUNT16.TC_INTFLAG = (uint8_t)TC_INTFLAG_Msk;
 
 
-    TC0_REGS->COUNT16.TC_EVCTRL = TC_EVCTRL_OVFEO_Msk;
+    TC0_REGS->COUNT16.TC_EVCTRL = (uint16_t)(TC_EVCTRL_OVFEO_Msk);
 
-    while((TC0_REGS->COUNT16.TC_SYNCBUSY))
+    while((TC0_REGS->COUNT16.TC_SYNCBUSY) != 0U)
     {
         /* Wait for Write Synchronization */
     }
@@ -131,13 +132,13 @@ void TC0_TimerStop( void )
 
 uint32_t TC0_TimerFrequencyGet( void )
 {
-    return (uint32_t)(12000000UL);
+    return (uint32_t)(12000000U);
 }
 
 void TC0_TimerCommandSet(TC_COMMAND command)
 {
-    TC0_REGS->COUNT16.TC_CTRLBSET = command << TC_CTRLBSET_CMD_Pos;
-    while((TC0_REGS->COUNT16.TC_SYNCBUSY))
+    TC0_REGS->COUNT16.TC_CTRLBSET = (uint8_t)((uint32_t)command << TC_CTRLBSET_CMD_Pos);
+    while((TC0_REGS->COUNT16.TC_SYNCBUSY) != 0U)
     {
         /* Wait for Write Synchronization */
     }    
@@ -147,14 +148,14 @@ void TC0_TimerCommandSet(TC_COMMAND command)
 uint16_t TC0_Timer16bitCounterGet( void )
 {
     /* Write command to force COUNT register read synchronization */
-    TC0_REGS->COUNT16.TC_CTRLBSET |= TC_CTRLBSET_CMD_READSYNC;
+    TC0_REGS->COUNT16.TC_CTRLBSET |= (uint8_t)TC_CTRLBSET_CMD_READSYNC;
 
     while((TC0_REGS->COUNT16.TC_SYNCBUSY & TC_SYNCBUSY_CTRLB_Msk) == TC_SYNCBUSY_CTRLB_Msk)
     {
         /* Wait for Write Synchronization */
     }
 
-    while((TC0_REGS->COUNT16.TC_CTRLBSET & TC_CTRLBSET_CMD_Msk) != 0)
+    while((TC0_REGS->COUNT16.TC_CTRLBSET & TC_CTRLBSET_CMD_Msk) != 0U)
     {
         /* Wait for CMD to become zero */
     }
@@ -195,8 +196,8 @@ uint16_t TC0_Timer16bitPeriodGet( void )
 /* Polling method to check if timer period interrupt flag is set */
 bool TC0_TimerPeriodHasExpired( void )
 {
-    bool timer_status;
-    timer_status = ((TC0_REGS->COUNT16.TC_INTFLAG) & TC_INTFLAG_OVF_Msk);
+    uint8_t timer_status = 0U;
+    timer_status = (uint8_t)((TC0_REGS->COUNT16.TC_INTFLAG) & TC_INTFLAG_OVF_Msk);
     TC0_REGS->COUNT16.TC_INTFLAG = timer_status;
-    return timer_status;
+    return (timer_status != 0U);
 }

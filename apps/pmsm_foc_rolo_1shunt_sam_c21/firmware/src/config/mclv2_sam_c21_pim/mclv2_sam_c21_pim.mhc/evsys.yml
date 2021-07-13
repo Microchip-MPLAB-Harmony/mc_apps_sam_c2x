@@ -24,7 +24,7 @@ children:
     - type: Values
       children:
       - type: User
-        attributes: {value: '74'}
+        attributes: {value: '76'}
   - type: Boolean
     attributes: {id: EVSYS_CHANNEL_0_GENERATOR_ACTIVE}
     children:
@@ -122,7 +122,7 @@ children:
     - type: Values
       children:
       - type: User
-        attributes: {value: '75'}
+        attributes: {value: '77'}
   - type: Boolean
     attributes: {id: EVSYS_CHANNEL_2_GENERATOR_ACTIVE}
     children:
@@ -150,7 +150,7 @@ children:
     - type: Values
       children:
       - type: User
-        attributes: {value: '53'}
+        attributes: {value: '55'}
   - type: Boolean
     attributes: {id: EVSYS_CHANNEL_3_GENERATOR_ACTIVE}
     children:
@@ -178,7 +178,7 @@ children:
     - type: Values
       children:
       - type: User
-        attributes: {value: '53'}
+        attributes: {value: '55'}
   - type: Boolean
     attributes: {id: EVSYS_CHANNEL_4_GENERATOR_ACTIVE}
     children:

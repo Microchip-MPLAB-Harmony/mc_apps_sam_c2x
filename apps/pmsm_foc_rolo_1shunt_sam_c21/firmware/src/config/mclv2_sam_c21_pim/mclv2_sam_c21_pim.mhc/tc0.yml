@@ -167,6 +167,12 @@ children:
   - type: Long
     attributes: {id: TC_TIMER_PERIOD}
     children:
+    - type: Attributes
+      children:
+      - type: Long
+        attributes: {id: max}
+        children:
+        - {type: Value, value: '65535'}
     - type: Values
       children:
       - type: Dynamic
@@ -188,7 +194,7 @@ children:
       - type: Float
         attributes: {id: max}
         children:
-        - {type: Value, value: '5.46125'}
+        - {type: Value, value: '5.4613333'}
     - type: Values
       children:
       - type: User
@@ -208,4 +214,4 @@ children:
       - type: Dynamic
         attributes: {id: tc0, value: '16'}
 - type: ElementPosition
-  attributes: {x: '434', y: '228', id: tc0}
+  attributes: {x: '434', y: '227', id: tc0}

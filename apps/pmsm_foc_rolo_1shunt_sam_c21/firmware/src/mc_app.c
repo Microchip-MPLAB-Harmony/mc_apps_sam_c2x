@@ -275,6 +275,16 @@ int16_t  torque_adc_ref; // This register holds the signed torque ref scaled to 
 Functions
 *******************************************************************************/
 
+void mcApp_TCC0DutySet( TCC0_CHANNEL_NUM channel, uint32_t duty )
+{
+   TCC0_REGS->TCC_CCBUF[channel] = duty & 0xFFFFFFU;
+}
+
+void mcApp_TCC1DutySet( TCC1_CHANNEL_NUM channel, uint32_t duty )
+{
+     TCC1_REGS->TCC_CCBUF[channel] = duty & 0xFFFFFFU;
+}
+
 #ifdef  MACRO_DEBUG
 /******************************************************************************
 Function:    macro_debug
@@ -448,9 +458,9 @@ void motorcontrol_vars_init(void)
 
 void set_pwm_rising_comparevalue(void)
 {
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)cv_upcount[0]);
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)cv_upcount[1]);
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)cv_upcount[2]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL0,(uint32_t)cv_upcount[0]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL1,(uint32_t)cv_upcount[1]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL2,(uint32_t)cv_upcount[2]);
 
 }
 
@@ -458,9 +468,9 @@ void set_pwm_rising_comparevalue(void)
 void set_pwm_falling_comparevalue(void)
 {
     
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)cv_downcount[0]);
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)cv_downcount[1]);
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)cv_downcount[2]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL0,(uint32_t)cv_downcount[0]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL1,(uint32_t)cv_downcount[1]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL2,(uint32_t)cv_downcount[2]);
    
 }
 
@@ -479,8 +489,8 @@ void new_adc_trigger_update(void)
 {
     adc0_trigger_count = adc0_trigger_count_new;
     adc1_trigger_count = adc1_trigger_count_new;
-    TCC1_PWM24bitDutySet(TCC1_CHANNEL0,(uint32_t)(adc0_trigger_count));   // TCC1 Ch0 CC Update for ADC0 Triggering
-    TCC1_PWM24bitDutySet(TCC1_CHANNEL1,(uint32_t)(adc1_trigger_count));   // TCC1 Ch1 CC Update for ADC1 Triggering
+    mcApp_TCC1DutySet(TCC1_CHANNEL0,(uint32_t)(adc0_trigger_count));   // TCC1 Ch0 CC Update for ADC0 Triggering
+    mcApp_TCC1DutySet(TCC1_CHANNEL1,(uint32_t)(adc1_trigger_count));   // TCC1 Ch1 CC Update for ADC1 Triggering
 }
 
 
@@ -499,9 +509,9 @@ void motor_stop(void)
     dc[1] =  (int32_t)HALF_HPER_TICKS;
     dc[2] =  (int32_t)HALF_HPER_TICKS;
     
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)dc[0]);
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)dc[1]);
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)dc[2]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL0,(uint32_t)dc[0]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL1,(uint32_t)dc[1]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL2,(uint32_t)dc[2]);
     
     /*Override all PWM outputs to low*/
     TCC0_PWMPatternSet((TCC_PATT_PGE0_Msk|TCC_PATT_PGE1_Msk|TCC_PATT_PGE2_Msk
@@ -1287,9 +1297,9 @@ static inline void pwm_modulation_reset(void)
     dutycycle[2] = (int32_t)PWM_HPER_TICKS;
     /*Using register address of TCC0 */
      
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL0,(uint32_t)dutycycle[0]);
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL1,(uint32_t)dutycycle[1]);
-    TCC0_PWM24bitDutySet(TCC0_CHANNEL2,(uint32_t)dutycycle[2]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL0,(uint32_t)dutycycle[0]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL1,(uint32_t)dutycycle[1]);
+    mcApp_TCC0DutySet(TCC0_CHANNEL2,(uint32_t)dutycycle[2]);
         
 
 }

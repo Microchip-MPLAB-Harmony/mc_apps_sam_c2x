@@ -100,8 +100,10 @@ int main ( void )
     ADC1_Enable();
     
     TCC0_REGS->TCC_WAVE |= 0x0700;
-    TCC1_PWM24bitDutySet(TCC1_CHANNEL0,1000);
-    TCC1_PWM24bitDutySet(TCC1_CHANNEL1,2000);
+    
+    mcApp_TCC1DutySet(TCC1_CHANNEL0,1000 );
+    mcApp_TCC1DutySet(TCC1_CHANNEL1,2000 );
+    
     TCC0_PWMCallbackRegister((TCC_CALLBACK) TCC0_PR_ISR,(uintptr_t)NULL);
     
      // TCC0 and TCC1 Event 1 is configured to retrigger on event from TC0 Overflow

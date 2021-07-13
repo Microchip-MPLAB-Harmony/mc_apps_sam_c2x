@@ -43,6 +43,7 @@
 #include "userparams.h"
 #include "q14_generic_mcLib.h"
 #include "q14_rolo_mcLib.h"
+#include "definitions.h"
 
 
 /*******************************************************************************
@@ -204,6 +205,8 @@ void macro_debug(void);
 Public functions prototypes
 *******************************************************************************/
 
+void mcApp_TCC0DutySet( TCC0_CHANNEL_NUM channel, uint32_t duty );
+void mcApp_TCC1DutySet( TCC1_CHANNEL_NUM channel, uint32_t duty );
 
 /******************************************************************************
 Function:		syn10ms
