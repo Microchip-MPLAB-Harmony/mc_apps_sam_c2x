@@ -1,5 +1,5 @@
-﻿---
-parent: Motor Control Application Examples for SAM C2x family
+---
+parent: Microchip MPLAB® Harmony 3 Motor Control Application Examples for SAM C2x family
 title: PMSM FOC using ROLO with single shunt current reconstruction
 has_children: false
 has_toc: false

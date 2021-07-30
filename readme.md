@@ -1,5 +1,5 @@
 ﻿---
-title: Motor Control Application Examples for SAM C2x family
+title: Microchip MPLAB® Harmony 3 Motor Control Application Examples for SAM C2x family
 nav_order: 1
 has_children: true
 has_toc: false
