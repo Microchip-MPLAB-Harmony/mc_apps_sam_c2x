@@ -56,9 +56,27 @@
 // *****************************************************************************
 // *****************************************************************************
 
+typedef enum
+{
+    /* EVSYS Channel 0 */
+    EVSYS_CHANNEL_0 = 0,
+    /* EVSYS Channel 1 */
+    EVSYS_CHANNEL_1 = 1,
+    /* EVSYS Channel 2 */
+    EVSYS_CHANNEL_2 = 2,
+    /* EVSYS Channel 3 */
+    EVSYS_CHANNEL_3 = 3,
+    /* EVSYS Channel 4 */
+    EVSYS_CHANNEL_4 = 4,
+} EVSYS_CHANNEL;
+
 
 /***************************** EVSYS API *******************************/
 void EVSYS_Initialize( void );
+void EVSYS_GeneratorEnable(EVSYS_CHANNEL channel, uint8_t generator);
+void EVSYS_GeneratorDisable(EVSYS_CHANNEL channel);
+void EVSYS_UserEnable(EVSYS_CHANNEL channel, uint8_t user);
+void EVSYS_UserDisable(uint8_t user);
 
 #ifdef __cplusplus // Provide C++ Compatibility
  }
