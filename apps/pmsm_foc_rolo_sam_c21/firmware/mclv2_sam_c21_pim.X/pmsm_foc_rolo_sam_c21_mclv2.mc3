@@ -1,4 +1,4 @@
-<config configName="mclv2_sam_c21_pim" projectName="pmsm_foc_rolo_sam_c21_mclv2" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.0">
+<config configName="mclv2_sam_c21_pim" projectName="pmsm_foc_rolo_sam_c21_mclv2" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.1">
    <usedPackages class="java.util.ArrayList"/>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -55,7 +55,7 @@
       </entry>
    </usedClasses>
    <usedLibraries class="java.util.ArrayList">
-      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.harmony.Harmony3Library" version="1.0.3"/>
+      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.harmony.Harmony3Library" version="1.0.9"/>
    </usedLibraries>
    <tokenMap class="java.util.TreeMap">
       <entry>
@@ -98,17 +98,6 @@
   &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_SCOPE_PERIPH_USED&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;X2CScope&quot; value=&quot;SERCOM3_USART&quot;/&gt;
-    &lt;/Values&gt;
-  &lt;/X2CScope&gt;
-&lt;/X2CScope&gt;
-</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_SCOPE_UART_BAUD_RATE_SYMBOL"/>
-         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
-  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_SCOPE_UART_BAUD_RATE_SYMBOL&quot;&gt;
-    &lt;Values dnOrder=&quot;0&quot;&gt;
-      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;X2CScope&quot; value=&quot;USART_BAUD_RATE&quot;/&gt;
     &lt;/Values&gt;
   &lt;/X2CScope&gt;
 &lt;/X2CScope&gt;
@@ -3843,8 +3832,8 @@
     &lt;Attachments dnOrder=&quot;0&quot;&gt;
       &lt;MultiCapability dnOrder=&quot;0&quot; id=&quot;pmsmfoc_ADC&quot;&gt;
         &lt;TargetAttachments dnOrder=&quot;0&quot;&gt;
-          &lt;TargetAttachment dnOrder=&quot;0&quot; targetAttachmentID=&quot;ADC0_ADC&quot; targetComponentID=&quot;adc0&quot;/&gt;
-          &lt;TargetAttachment dnOrder=&quot;1&quot; targetAttachmentID=&quot;ADC1_ADC&quot; targetComponentID=&quot;adc1&quot;/&gt;
+          &lt;TargetAttachment dnOrder=&quot;0&quot; targetAttachmentID=&quot;ADC1_ADC&quot; targetComponentID=&quot;adc1&quot;/&gt;
+          &lt;TargetAttachment dnOrder=&quot;1&quot; targetAttachmentID=&quot;ADC0_ADC&quot; targetComponentID=&quot;adc0&quot;/&gt;
         &lt;/TargetAttachments&gt;
       &lt;/MultiCapability&gt;
       &lt;DirectDependency dnOrder=&quot;1&quot; id=&quot;pmsmfoc_PWM&quot;&gt;
@@ -5262,7 +5251,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\definitions.h</file>
-         <hash>369175dee7a3b4707e0d38c3b3f5655331d690856f0d6ff017c52220d55da49c</hash>
+         <hash>b30fdf4b2dddb9eb59cc81c80211dc8843436ebb1d7604314f946b9c1851573c</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\osc32kctrl.h</file>
@@ -5630,7 +5619,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\port\plib_port.c</file>
-         <hash>40ca97b62b8c6cf6fc74d1b7892f7aaa33e306e112f9cfa760eeb8329064edf8</hash>
+         <hash>9d3c4affa6c39f5f3c1642ec910544099bac5b58aff9293f15ab78db94321d3b</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\rstc.h</file>
@@ -5678,7 +5667,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\startup_xc32.c</file>
-         <hash>be2c779688c247443de3423ff9ffd8079d8e5afd090c46997829e1cf1d57c73f</hash>
+         <hash>0daa92ab227c2d0b2746b14b920680c58690c4f3ade28ae6cef46927b7e413fd</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\dmac.h</file>
