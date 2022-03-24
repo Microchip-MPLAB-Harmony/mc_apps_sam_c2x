@@ -1,4 +1,4 @@
-<config configName="mclv2_sam_c21_pim" projectName="bldc_bc_hall_sam_c21" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.1">
+<config configName="mclv2_sam_c21_pim" projectName="bldc_bc_hall_sam_c21" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.2">
    <usedPackages class="java.util.ArrayList"/>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -5512,7 +5512,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\port\plib_port.c</file>
-         <hash>2e6699c6ef157862e7d0fa2977c9669d106224b60803a42d3ca52a3c1c869907</hash>
+         <hash>c451cab58725ab7cebe0b6723bd52b3b279dac3af3b3d7b19ea8a8cd60073c4e</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\rstc.h</file>
