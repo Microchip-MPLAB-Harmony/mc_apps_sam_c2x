@@ -1,4 +1,4 @@
-<config configName="mclv2_sam_c21_pim" projectName="pmsm_foc_rolo_1shunt_sam_c21_mclv2" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.1">
+<config configName="mclv2_sam_c21_pim" projectName="pmsm_foc_rolo_1shunt_sam_c21_mclv2" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.2">
    <usedPackages class="java.util.ArrayList"/>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -657,7 +657,8 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;474&quot; canvasWidth=&quot;563&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;adc0&quot; x=&quot;295&quot; y=&quot;225&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;adc1&quot; x=&quot;292&quot; y=&quot;153&quot;/&gt;
@@ -674,7 +675,6 @@
         &lt;ElementPosition dnOrder=&quot;12&quot; id=&quot;tcc1&quot; x=&quot;432&quot; y=&quot;157&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;474&quot; canvasWidth=&quot;563&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -6821,7 +6821,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\port\plib_port.c</file>
-         <hash>cfe6fe6722a928a820fa829fb980b78dd1c78dedc59b2894d524b9abcde0a864</hash>
+         <hash>3e5477c31fe1b3a729fe4aebbf97d0a20e23000ee6a2e5786f08e27200e8497b</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\rstc.h</file>
