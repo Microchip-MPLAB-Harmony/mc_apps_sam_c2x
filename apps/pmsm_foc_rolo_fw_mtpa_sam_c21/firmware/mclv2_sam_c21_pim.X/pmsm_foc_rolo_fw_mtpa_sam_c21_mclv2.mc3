@@ -1,4 +1,4 @@
-<config configName="mclv2_sam_c21_pim" projectName="pmsm_foc_rolo_fw_mtpa_sam_c21_mclv2" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.1">
+<config configName="mclv2_sam_c21_pim" projectName="pmsm_foc_rolo_fw_mtpa_sam_c21_mclv2" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.2">
    <usedPackages class="java.util.ArrayList"/>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -4565,7 +4565,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\definitions.h</file>
-         <hash>e0f56f2e64cbaf60eece997b2a713e1b017fb6103fcd8310deb6ffa0b6d6e664</hash>
+         <hash>b729c141476eca81cac7dfaa5d6f869eed4e67ce05b088aa172c47d2d7dadd03</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\osc32kctrl.h</file>
@@ -4629,7 +4629,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\initialization.c</file>
-         <hash>2f20bb3da48317a4b2b8d59f13d183165df2f2285967f1514979d154188422fd</hash>
+         <hash>c968ac6bb732ddda551ed7a365d1b68132a47de566d2de365cef3033da82199e</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tcc0.h</file>
@@ -4841,7 +4841,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\port\plib_port.c</file>
-         <hash>9c520077351be2dd030582c5848a8c2b94f42a7c44529defbf336f6db87397b5</hash>
+         <hash>e9b6925bfc0e94aadee5e8caad4c1698b70854d4ac69594a96f98f25c853aeb8</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\rstc.h</file>
