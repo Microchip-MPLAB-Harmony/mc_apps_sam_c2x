@@ -1,4 +1,4 @@
-<config configName="mchv3_sam_c21_pim" projectName="pmsm_foc_rolo_sam_c21_mchv3" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.1">
+<config configName="mchv3_sam_c21_pim" projectName="pmsm_foc_rolo_sam_c21_mchv3" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.2">
    <usedPackages class="java.util.ArrayList"/>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -6050,7 +6050,7 @@
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\port\plib_port.c</file>
-         <hash>7da7f8126ac1b5e589b370fb35b0c1d054d0f4f530589f90e01862750354f779</hash>
+         <hash>8c83468245db5ff6629343467910d12c09cbc3ba72b052c4fb6022ed36bf3e7e</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\motor_control\pmsm_foc\mc_generic_library.c</file>
