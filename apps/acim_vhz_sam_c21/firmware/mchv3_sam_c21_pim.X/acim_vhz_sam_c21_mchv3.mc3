@@ -1,4 +1,4 @@
-<config configName="mchv3_sam_c21_pim" projectName="acim_vhz_sam_c21_mchv3" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.1">
+<config configName="mchv3_sam_c21_pim" projectName="acim_vhz_sam_c21_mchv3" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.2">
    <usedPackages class="java.util.ArrayList"/>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -355,8 +355,7 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;GraphSettings canvasHeight=&quot;554&quot; canvasWidth=&quot;289&quot; dnOrder=&quot;0&quot;/&gt;
-    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
         &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;adc1&quot; x=&quot;159&quot; y=&quot;203&quot;/&gt;
         &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;cmsis&quot; x=&quot;25&quot; y=&quot;103&quot;/&gt;
@@ -370,6 +369,7 @@
         &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;tcc0&quot; x=&quot;30&quot; y=&quot;202&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
+    &lt;GraphSettings canvasHeight=&quot;554&quot; canvasWidth=&quot;289&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -4748,7 +4748,7 @@
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\port\plib_port.c</file>
-         <hash>68e8fd70812eb72feba5797aca7e0e06ee28d1bcbc9e62f38cbc1b9d938b957b</hash>
+         <hash>df412421e0451f3aacd0e1302d69550142444fcafff4f3b47bad61dc2f51f05e</hash>
       </entry>
       <entry>
          <file>..\src\main_mchv3_sam_c21_pim.c</file>
