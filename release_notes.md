@@ -13,8 +13,6 @@ nav_order: 99
 
 ### Applications
 
-Applications migrated from motor_control repository to this application repository for SAMC2x family. 
-
 | Development Board | Number of Applications | 
 | --- | --- | 
 |[dsPICDEM™ MCLV-2 Low Voltage Development Board](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2) | 4 |
@@ -47,8 +45,6 @@ Applications migrated from motor_control repository to this application reposito
 
 
 ### Applications
-
-Applications migrated from motor_control repository to this application repository for SAMC2x family. 
 
 | Development Board | Number of Applications | 
 | --- | --- | 
