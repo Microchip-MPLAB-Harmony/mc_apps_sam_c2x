@@ -1,6 +1,10 @@
-<config configName="mchv3_sam_c21_pim" projectName="acim_vhz_sam_c21_mchv3" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.2">
+<config configName="mchv3_sam_c21_pim" projectName="acim_vhz_sam_c21_mchv3" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.4">
    <usedPackages class="java.util.ArrayList"/>
    <usedClasses class="java.util.TreeMap">
+      <entry>
+         <string>X2CScope</string>
+         <string>class com.microchip.mcc.harmony.HarmonyModule</string>
+      </entry>
       <entry>
          <string>adc1</string>
          <string>class com.microchip.mcc.harmony.HarmonyModule</string>
@@ -43,9 +47,316 @@
       </entry>
    </usedClasses>
    <usedLibraries class="java.util.ArrayList">
-      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.harmony.Harmony3Library" version="1.1.0"/>
+      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.harmony.Harmony3Library" version="1.1.4"/>
    </usedLibraries>
    <tokenMap class="java.util.TreeMap">
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="!@#harmonyAttachmentState"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Attachments dnOrder=&quot;0&quot;&gt;
+      &lt;DirectDependency dnOrder=&quot;0&quot; id=&quot;x2cScopeUartDependency&quot;&gt;
+        &lt;Attributes dnOrder=&quot;0&quot;&gt;
+          &lt;String dnOrder=&quot;0&quot; id=&quot;targetComponentID&quot;&gt;
+            &lt;Value dnOrder=&quot;0&quot;&gt;sercom3&lt;/Value&gt;
+          &lt;/String&gt;
+          &lt;String dnOrder=&quot;1&quot; id=&quot;targetAttachmentID&quot;&gt;
+            &lt;Value dnOrder=&quot;0&quot;&gt;SERCOM3_UART&lt;/Value&gt;
+          &lt;/String&gt;
+        &lt;/Attributes&gt;
+      &lt;/DirectDependency&gt;
+    &lt;/Attachments&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="#&amp;__MCC_Group_Parrent_id"/>
+         <value>__ROOTVIEW</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_RECEIVE_FINAL"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_RECEIVE_FINAL&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_RECEIVE_SERCOM0"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_RECEIVE_SERCOM0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_RECEIVE_SERCOM1"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_RECEIVE_SERCOM1&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_RECEIVE_SERCOM2"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_RECEIVE_SERCOM2&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_RECEIVE_SERCOM3"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_RECEIVE_SERCOM3&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_RECEIVE_SERCOM4"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_RECEIVE_SERCOM4&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_RECEIVE_SERCOM5"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_RECEIVE_SERCOM5&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_TRANSMIT_FINAL"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_TRANSMIT_FINAL&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_TRANSMIT_SERCOM0"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_TRANSMIT_SERCOM0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_TRANSMIT_SERCOM1"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_TRANSMIT_SERCOM1&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_TRANSMIT_SERCOM2"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_TRANSMIT_SERCOM2&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_TRANSMIT_SERCOM3"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_TRANSMIT_SERCOM3&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_TRANSMIT_SERCOM4"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_TRANSMIT_SERCOM4&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INSTANCE_TRANSMIT_SERCOM5"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INSTANCE_TRANSMIT_SERCOM5&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_COMM_INT"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_COMM_INT&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_SCOPE_BAUD_RATE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_SCOPE_BAUD_RATE&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_SCOPE_PERIPH_USED"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_SCOPE_PERIPH_USED&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;X2CScope&quot; value=&quot;SERCOM3_USART&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="X2C_SCOPE_UART_ID"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot; id=&quot;X2C_SCOPE_UART_ID&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;X2CScope&quot; value=&quot;sercom3&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_0"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_1"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_10"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_11"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_2"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_3"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_4"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_5"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_6"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_7"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_8"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="X2CScope" name="__STRINGSYMBOL_9"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;X2CScope&gt;
+  &lt;X2CScope dnOrder=&quot;0&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;/&gt;
+  &lt;/X2CScope&gt;
+&lt;/X2CScope&gt;
+</value>
+      </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="adc1" name="#&amp;__MCC_Group_Parrent_id"/>
          <value>__ROOTVIEW</value>
@@ -355,21 +666,22 @@
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="!@#harmonyUserData"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;UserData&gt;
   &lt;UserData dnOrder=&quot;0&quot;&gt;
-    &lt;ComponentGraph dnOrder=&quot;0&quot; id=&quot;__ROOTVIEW&quot;&gt;
+    &lt;GraphSettings canvasHeight=&quot;506&quot; canvasWidth=&quot;368&quot; dnOrder=&quot;0&quot;/&gt;
+    &lt;ComponentGraph dnOrder=&quot;1&quot; id=&quot;__ROOTVIEW&quot;&gt;
       &lt;ElementPositions dnOrder=&quot;0&quot;&gt;
-        &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;adc1&quot; x=&quot;159&quot; y=&quot;203&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;cmsis&quot; x=&quot;25&quot; y=&quot;103&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;2&quot; id=&quot;core&quot; x=&quot;36&quot; y=&quot;69&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;dfp&quot; x=&quot;155&quot; y=&quot;20&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;divas&quot; x=&quot;28&quot; y=&quot;282&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;eic&quot; x=&quot;159&quot; y=&quot;272&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;evsys&quot; x=&quot;20&quot; y=&quot;19&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;nvmctrl&quot; x=&quot;160&quot; y=&quot;60&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;sercom3&quot; x=&quot;28&quot; y=&quot;394&quot;/&gt;
-        &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;tcc0&quot; x=&quot;30&quot; y=&quot;202&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;0&quot; id=&quot;X2CScope&quot; x=&quot;232&quot; y=&quot;394&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;1&quot; id=&quot;adc1&quot; x=&quot;159&quot; y=&quot;203&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;2&quot; id=&quot;cmsis&quot; x=&quot;25&quot; y=&quot;103&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;3&quot; id=&quot;core&quot; x=&quot;36&quot; y=&quot;69&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;4&quot; id=&quot;dfp&quot; x=&quot;155&quot; y=&quot;20&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;5&quot; id=&quot;divas&quot; x=&quot;28&quot; y=&quot;282&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;6&quot; id=&quot;eic&quot; x=&quot;159&quot; y=&quot;272&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;7&quot; id=&quot;evsys&quot; x=&quot;20&quot; y=&quot;19&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;8&quot; id=&quot;nvmctrl&quot; x=&quot;160&quot; y=&quot;60&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;9&quot; id=&quot;sercom3&quot; x=&quot;28&quot; y=&quot;394&quot;/&gt;
+        &lt;ElementPosition dnOrder=&quot;10&quot; id=&quot;tcc0&quot; x=&quot;30&quot; y=&quot;202&quot;/&gt;
       &lt;/ElementPositions&gt;
     &lt;/ComponentGraph&gt;
-    &lt;GraphSettings canvasHeight=&quot;554&quot; canvasWidth=&quot;289&quot; dnOrder=&quot;1&quot;/&gt;
   &lt;/UserData&gt;
 &lt;/UserData&gt;
 </value>
@@ -472,6 +784,17 @@
   &lt;core dnOrder=&quot;0&quot; id=&quot;COMPILER_CHOICE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;core&quot; value=&quot;0&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/core&gt;
+&lt;/core&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="core" name="COVERITY_SUPPRESS_DEVIATION"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;core&gt;
+  &lt;core dnOrder=&quot;0&quot; id=&quot;COVERITY_SUPPRESS_DEVIATION&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;User dnOrder=&quot;0&quot; value=&quot;true&quot;/&gt;
     &lt;/Values&gt;
   &lt;/core&gt;
 &lt;/core&gt;
@@ -3512,6 +3835,40 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sercom3" name="!@#harmonyAttachmentState"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sercom3&gt;
+  &lt;sercom3 dnOrder=&quot;0&quot;&gt;
+    &lt;Attachments dnOrder=&quot;0&quot;&gt;
+      &lt;DirectCapability dnOrder=&quot;0&quot; id=&quot;SERCOM3_I2C&quot;&gt;
+        &lt;Attributes dnOrder=&quot;0&quot;&gt;
+          &lt;Boolean dnOrder=&quot;0&quot; id=&quot;enabled&quot;&gt;
+            &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+          &lt;/Boolean&gt;
+        &lt;/Attributes&gt;
+      &lt;/DirectCapability&gt;
+      &lt;DirectCapability dnOrder=&quot;1&quot; id=&quot;SERCOM3_SPI&quot;&gt;
+        &lt;Attributes dnOrder=&quot;0&quot;&gt;
+          &lt;Boolean dnOrder=&quot;0&quot; id=&quot;enabled&quot;&gt;
+            &lt;Value dnOrder=&quot;0&quot;&gt;false&lt;/Value&gt;
+          &lt;/Boolean&gt;
+        &lt;/Attributes&gt;
+      &lt;/DirectCapability&gt;
+      &lt;DirectCapability dnOrder=&quot;2&quot; id=&quot;SERCOM3_UART&quot;&gt;
+        &lt;Attributes dnOrder=&quot;0&quot;&gt;
+          &lt;String dnOrder=&quot;0&quot; id=&quot;targetComponentID&quot;&gt;
+            &lt;Value dnOrder=&quot;0&quot;&gt;X2CScope&lt;/Value&gt;
+          &lt;/String&gt;
+          &lt;String dnOrder=&quot;1&quot; id=&quot;targetAttachmentID&quot;&gt;
+            &lt;Value dnOrder=&quot;0&quot;&gt;x2cScopeUartDependency&lt;/Value&gt;
+          &lt;/String&gt;
+        &lt;/Attributes&gt;
+      &lt;/DirectCapability&gt;
+    &lt;/Attachments&gt;
+  &lt;/sercom3&gt;
+&lt;/sercom3&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sercom3" name="#&amp;__MCC_Group_Parrent_id"/>
          <value>__ROOTVIEW</value>
       </entry>
@@ -3527,11 +3884,88 @@
 </value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sercom3" name="RECEIVE_DATA_REGISTER"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sercom3&gt;
+  &lt;sercom3 dnOrder=&quot;0&quot; id=&quot;RECEIVE_DATA_REGISTER&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sercom3&quot; value=&quot;&amp;amp;(SERCOM3_REGS-&amp;gt;USART_INT.SERCOM_DATA)&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/sercom3&gt;
+&lt;/sercom3&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sercom3" name="SERCOM_MODE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sercom3&gt;
+  &lt;sercom3 dnOrder=&quot;0&quot; id=&quot;SERCOM_MODE&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;readOnly&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+    &lt;Values dnOrder=&quot;1&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sercom3&quot; value=&quot;0&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/sercom3&gt;
+&lt;/sercom3&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sercom3" name="SERCOM_USART_COMMON_HEADER"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sercom3&gt;
+  &lt;sercom3 dnOrder=&quot;0&quot; id=&quot;SERCOM_USART_COMMON_HEADER&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;enabled&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/sercom3&gt;
+&lt;/sercom3&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sercom3" name="SERCOM_USART_HEADER"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sercom3&gt;
+  &lt;sercom3 dnOrder=&quot;0&quot; id=&quot;SERCOM_USART_HEADER&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;enabled&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/sercom3&gt;
+&lt;/sercom3&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sercom3" name="SERCOM_USART_SOURCE"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sercom3&gt;
+  &lt;sercom3 dnOrder=&quot;0&quot; id=&quot;SERCOM_USART_SOURCE&quot;&gt;
+    &lt;Attributes dnOrder=&quot;0&quot;&gt;
+      &lt;Boolean dnOrder=&quot;0&quot; id=&quot;enabled&quot;&gt;
+        &lt;Value dnOrder=&quot;0&quot;&gt;true&lt;/Value&gt;
+      &lt;/Boolean&gt;
+    &lt;/Attributes&gt;
+  &lt;/sercom3&gt;
+&lt;/sercom3&gt;
+</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sercom3" name="SPI_BAUD_REG_VALUE"/>
          <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sercom3&gt;
   &lt;sercom3 dnOrder=&quot;0&quot; id=&quot;SPI_BAUD_REG_VALUE&quot;&gt;
     &lt;Values dnOrder=&quot;0&quot;&gt;
       &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sercom3&quot; value=&quot;23&quot;/&gt;
+    &lt;/Values&gt;
+  &lt;/sercom3&gt;
+&lt;/sercom3&gt;
+</value>
+      </entry>
+      <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="sercom3" name="TRANSMIT_DATA_REGISTER"/>
+         <value>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sercom3&gt;
+  &lt;sercom3 dnOrder=&quot;0&quot; id=&quot;TRANSMIT_DATA_REGISTER&quot;&gt;
+    &lt;Values dnOrder=&quot;0&quot;&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;sercom3&quot; value=&quot;&amp;amp;(SERCOM3_REGS-&amp;gt;USART_INT.SERCOM_DATA)&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sercom3&gt;
 &lt;/sercom3&gt;
@@ -3569,7 +4003,8 @@
       &lt;/String&gt;
     &lt;/Attributes&gt;
     &lt;Values dnOrder=&quot;1&quot;&gt;
-      &lt;User dnOrder=&quot;0&quot; value=&quot;false&quot;/&gt;
+      &lt;Dynamic dnOrder=&quot;0&quot; id=&quot;X2CScope&quot; value=&quot;false&quot;/&gt;
+      &lt;User dnOrder=&quot;1&quot; value=&quot;false&quot;/&gt;
     &lt;/Values&gt;
   &lt;/sercom3&gt;
 &lt;/sercom3&gt;
@@ -4304,7 +4739,7 @@
    <generatedFileHashHistoryMap class="java.util.HashMap">
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\gclk.h</file>
-         <hash>e13fc8f6358ea6d967cf2ff57ecc86ea1a7eb9e36a40ce4015c87b7d12698ae0</hash>
+         <hash>a1a9f3656d879a750280245cecb1cb3c084ade2685cecbb19677a260d66fece5</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cachel1_armv7.h</file>
@@ -4312,11 +4747,11 @@
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\divas\plib_divas.h</file>
-         <hash>8772a6559f1702cb9d03b8a0fb4cbbf32ae509f7a7dff483fdc3f4e4a566d35f</hash>
+         <hash>3057b8172ac64739dc62a5df906316ac4eb98625554406c3ad6fa280e1514ff8</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\pac.h</file>
-         <hash>d728cd1ddb720b480f0bc1a4b0f82410553c8711ce0f3612a011a064cd1bae89</hash>
+         <hash>2defd48c2c35bafad2f6d7912b5d6192813d2b0fd9b902c6b3770a3beb6a49c6</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_gcc.h</file>
@@ -4324,11 +4759,15 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\dac.h</file>
-         <hash>f2ba617edb77d7b44ba94f8338c7fbf2047ea4ee0231891ed9ad73df7636523f</hash>
+         <hash>dc0977de3b63a7f7656d1109f6acf5c07c993a5f35407cb91322e35dc983675f</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\evsys.h</file>
-         <hash>42edc96b7abb5cdb51ae12b18d2f8220640da3f2d83b2177595c9fb0cdee65fd</hash>
+         <hash>31524ca0584c9bc0666c320e37cdfe2d195ad55d2f4026738360e77beb2c22f0</hash>
+      </entry>
+      <entry>
+         <file>..\src\packs\ATSAMC21J18A_DFP\component\fuses.h</file>
+         <hash>7d2605026995dabe18daace7f46e8721184fd78b612ec867099d1b02d94a4485</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\clock\plib_clock.c</file>
@@ -4336,11 +4775,11 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\port.h</file>
-         <hash>d0c487d5c19bbb225af665333f8ba9008cb8a68faffac44875218226bebe8a87</hash>
+         <hash>01737ce08be6b8a7f4f2c12bb535952ac0f824289159c03e337279d57cbd6d48</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\rtc.h</file>
-         <hash>148878d9ad3f7cdab4cd7a805387ce7d288716591796d17262d096b23352d474</hash>
+         <hash>0e0c21a6c3045665a163e7b5bebeb960a372ae925b2db1321de1ae276beb23dd</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\clock\plib_clock.h</file>
@@ -4348,23 +4787,31 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\dmac.h</file>
-         <hash>d603f6e71145e2a28e9cd4128175046ded68ea85fbd89a5e922c2e2ff896fa12</hash>
+         <hash>e11903d19310facd45f67fab22f2d1d8f1f412be94b8973a98badfcfe3470c69</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\adc1.h</file>
-         <hash>c59e300d6a410e03247b7402d8dc0a94dd7b80577432aeb4b678f88263e3e979</hash>
+         <hash>d9ffea72619d13d48be17b27bd0e99257799d716263a94de19853f56fb5b8aa6</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\osc32kctrl.h</file>
-         <hash>4fb4810820b798934f7cf0a717b2abcb3f8f9fbc9804724589ff9583b6371e14</hash>
+         <hash>54698c9c67fb890f8ea2f03dc0b0aa245c1e4fee14fe8002f7c6af9964c31ef3</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\mchv3_sam_c21_pim\X2CCode\X2CScope\src\X2CScope.c</file>
+         <hash>8dcc8745b5a12a4c35c2893d601be3df1cfb4d522d7cb0d37627a2c3b629e7e0</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\divas\plib_divas.c</file>
-         <hash>99c02528c493ff7dc9d5cf99977d971721029c0a191a4b0647eb4a393f257cb9</hash>
+         <hash>af5217b56a84e26c9718fec1d1271330b291abfb1f0164c046f221cba96e8ecd</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\ccl.h</file>
-         <hash>73459d6ff56e4a1733860012b240c05c32ad37fc6e099e87511a5b5f96bfe71d</hash>
+         <hash>3a86fd07e87114509b7d3a79035076371e32deddee93a460a9eeaa0f1c5d9f85</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\mchv3_sam_c21_pim\pin_configurations.csv</file>
+         <hash>5bb54257417555b57b8bb38ad8283fabde4dacb47f5576cdafd34a1fc9f65676</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\adc\plib_adc_common.h</file>
@@ -4372,11 +4819,11 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\tcc.h</file>
-         <hash>f29767bcf210ee58a7b5b1f9b383791ad4f2fe56d6caa411c04975a647dcb938</hash>
+         <hash>5b473343ac6fa6cef135fdef2298cb05733e64588be1b46680e201e29a8beca0</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\tcc\plib_tcc0.c</file>
-         <hash>a0d48790bd35368c8a152d9dc06af71bca302c4f917a9b7edd6b35a23bc82591</hash>
+         <hash>c5f7768c9ed112a575587f08d455b80142e1124f5b35aa005f9bb3d6d1c7a1cf</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\core_cm0plus.h</file>
@@ -4384,27 +4831,27 @@
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\initialization.c</file>
-         <hash>0a98d6ec082e4e656a2fa0d5d52d76435ba16f87e35746bb05db237216a99262</hash>
+         <hash>567e1e4bcc4c287743ae2f2ea726560e4095f8ed8a11de3ff8d35bd95d9d2dfb</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\sercom3.h</file>
-         <hash>a0f9c759a7d2ded04ae1b6e75bf758d9ffd10fd717f99d5d68ef04d710ec829b</hash>
+         <hash>2c77d8f3131ca34a22de0d26c5c13fbe716607a61b10636bfbad56b0558a3c11</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tc1.h</file>
-         <hash>c4b359eb257b5a02b7012c28a769eaa99b4fbb052aac49fb4bc6aa24c3f40f88</hash>
+         <hash>d38eb0a461fe865155bc4b13d7b8fb21bac08f969aaaa39dec3bcf070c9d848a</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\samc21j18a.h</file>
-         <hash>608b1658e0ffc5ae6605faee9b8dfcd029045d27f1875642fc7398534bb4b2f7</hash>
+         <hash>35c3b0e29e6a92608192900edd4bc31d7b605c58d752fae0952040e9e805e746</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\exceptions.c</file>
-         <hash>bfd108301928495d78fb40a7ff9ca1f0f1e82b2e3fbf62733a587a3159c48393</hash>
+         <hash>b850253aacaae1bddfcb426c2dc11e0688900afffe9b22c60d0ab16298701118</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\ac.h</file>
-         <hash>c6a05e9f13054244044ff6d9abc754f8eec3377ef242c120d4c6a2b9757eefcb</hash>
+         <hash>18e965ceee994e73f9c30612a73b9ef37049d092638a21c7bcd1e6fc69350cc1</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\tcc\plib_tcc0.h</file>
@@ -4412,31 +4859,35 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\eic.h</file>
-         <hash>e137b4ffbf7a02bcfabab2edf826b623b793f7aef419321145e0d923e322742b</hash>
+         <hash>27a31e65a37a33848d7edce235cfdf4bbd1e985694cc099487a7684d8fbca2d4</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tcc0.h</file>
-         <hash>56fce86e66b226dde4868df82f4ed902b5a421a9c10e43d1395e47d6c1721cef</hash>
+         <hash>a6be43a643719c88c01e762270bf24cdf399febd11c6e2e62d3b1f825e373b72</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\wdt.h</file>
-         <hash>ea199587a089f2bc752903256a99d2af15c0ebdca6828beb5ed5b0d2437db656</hash>
+         <hash>6a3d811efd0f749d1864ad9cf1777c35ba575b0d13ebfbad9a268a04a47e1e90</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\ATSAMC21J18A.ld</file>
-         <hash>39d33e310f63abeaa2189e6a1eedab40c4b94453e712b35876d3b73580c3fbcf</hash>
+         <hash>3fc7dbb63ae72ecd9b52572e4dd84ed79cbd37feb6064cb6d4df6fca301d09af</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\adc.h</file>
-         <hash>cbcec425ed55dee9c2a6a038ceb39720e6da94808ac1af1a4d4c9cca49cd1952</hash>
+         <hash>da8c9fa2b7b683ac6f72c84ab14b91e952f89655b503edc22c0a3e046567ac0c</hash>
+      </entry>
+      <entry>
+         <file>..\src\packs\ATSAMC21J18A_DFP\instance\fuses.h</file>
+         <hash>ba80c7f480244dee44906821d457a1c4e21522071095da87a4f1877ece6bcf6d</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\stdio\xc32_monitor.c</file>
-         <hash>26e5749db654ed433fd94f6c732ef8600d0cbf5196493374cf111877c02b694e</hash>
+         <hash>858f8710d4287200a5ee7f3b3ad7c24f505aed9c05c16956ab0ff9f7bb162a6a</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\can0.h</file>
-         <hash>94e96ab99a1c66e456409ffc48d0cf784f430846a2d7960f9f6ecff65b3b34de</hash>
+         <hash>b0d5b3cdf228f37930be21a37f588ae575f22bbd96726c88d544017587bae5e9</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\mpu_armv7.h</file>
@@ -4448,27 +4899,27 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\rstc.h</file>
-         <hash>b354456bfe0ad16de99351b43ab4e08e43932e48f7243ee6e11061700e401466</hash>
+         <hash>2741d2c342b77550eb9f3f058b723552f2f8db0c13b11c4f127ec5bfbec19c6f</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\pm.h</file>
-         <hash>361d56e72c214d9d792e912d312004d07c9544929d8211f96dd4e38e9f924a04</hash>
+         <hash>e509da951ad2b2a360967a27a6e130065ad0e7325987f846859fcf1c329018f5</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\divas.h</file>
-         <hash>8fbeb18c1c2d6d6153875c916d1940dfe5fff44f7893fccea06ed7c3c3c9b61c</hash>
+         <hash>51af87912aab3a155701b249766aedbf09a6913b3a0a962a72604a22fc97cec0</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\adc0.h</file>
-         <hash>c4c517d4ab2773ffb2be0b0b0f2b227c630d2292ce82da5e6398b582c7d03c18</hash>
+         <hash>3c173f1d5185d3c9476a96fa024e13292fef92ef0241504e017d99f18a46061e</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\nvmctrl.h</file>
-         <hash>a75b04d7d1342775c59c5f9ccffa020d978ec9f49b10b2d516ff49d4798fa8a9</hash>
+         <hash>b5d30ac44fce76d81ac1b96e1254388af4f2b62b503b69f1a0f64cf65e74977c</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\toolchain_specifics.h</file>
-         <hash>c93f9d68b1623668727be21b4449250a7e4a5d7040776d6f6d604a7528ffc9eb</hash>
+         <hash>0322d8a252c0047ffd9e533cc76c470158ed1f3ac5193e63b507fe5eb6e1855f</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_armclang.h</file>
@@ -4480,23 +4931,27 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\tc.h</file>
-         <hash>d9e638e112d23dc9d8de1b716ddaca0a13393eb41d6528d4fc9f3fcaef8642d0</hash>
+         <hash>b2007af7212367dea3006c0fbb83da05e47201af81711ebb1284aa96b980e6c0</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\mchv3_sam_c21_pim\X2CCode\X2CScope\lib\libCORTEXM0PLUS_X2CScope.a</file>
+         <hash>ce0636dffefd35462fc7e04b6554d901001a189413f32b055387946147f85c22</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\sdadc.h</file>
-         <hash>c20b5d28a0fd86fe4d1ffcbdce15454d647e55eb174a36b9fbee6dde85840382</hash>
+         <hash>18a03bc6bf1a127c9e785f1520554e99daaaaa15d3078b8181e477316681ede8</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\interrupts.c</file>
-         <hash>f41324d10b32383a14236370f72ae3c0fe3306c694510abdd6d172aa706cf35c</hash>
+         <hash>f9d720dbc34ce2988b6e55add60d3c38f9412ea121c61cdf26e1bda841f99909</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tc4.h</file>
-         <hash>7a78fd3fdda56cba35292b2af75cb0d1968a2e7fd312fb81985697a14f1033c7</hash>
+         <hash>3cc30104024853d10ee578e046d1cd5868f192beb545060c62eecae37d785dd3</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\port.h</file>
-         <hash>24873e2a4c1c4088821910a1f4758d85d5f8014446507db9f17e3ac33d77c575</hash>
+         <hash>759fe53a842c0bc873798da32e99a92ab0139dcfb3fa6e522b82123db96f4c67</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_compiler.h</file>
@@ -4504,111 +4959,115 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\pm.h</file>
-         <hash>63844ed652153fd4e91ebd1c06bd7637946942ba24cf0cca2905bb6f2bd95031</hash>
+         <hash>9dde14b19423791c50e5c317b67b5c49e0befa12d947eea2c8c45e3398c398bd</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\mclk.h</file>
-         <hash>5769afb9aac08d7d811c617b49088e11df8026b46c21c08d711bfba6937fd925</hash>
+         <hash>df1d30fcf7aa067e61c6c6c7763e752e57e8b8926a9106882600ea15aad988ea</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\dsu.h</file>
-         <hash>6d843b8714fe1a2b78b1ea94d2b39b7708e9af67264823868d02ec12f3d09405</hash>
+         <hash>ea2ba1caa093d27825e012f4949aa8d89bf489aff4bf04d893e425b5cb5092ae</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tsens.h</file>
-         <hash>423a4023687d5e1ca4c36f0fbf3bb73d8ef3599e44c67cf27a8c4641a5837e5c</hash>
+         <hash>e6b16c504a31e922cd9cb8674886e9d797cfd8359ea0f387c310f79b7d737778</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\freqm.h</file>
-         <hash>6475240808b9bb8de72f5ea34f616bb7c5de75a55313e17ff674e66c338e95cc</hash>
+         <hash>38c404513f1615e10fb0d5bb7cfb60a68aca145bc83e892685abf14bcd7f4704</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\freqm.h</file>
-         <hash>eb8697fc44d610ac8c05cb6334a5b703fa8374a123f4eed17de5ffb8071df4c0</hash>
+         <hash>961aa1416eec5d2f3a93cd64792ec7055f8b00542821649c475b972b640364d7</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\divas.h</file>
-         <hash>310874ccc3ffe996f1cde963e056242025ca7c0c0a29b4a25e91011976e949d4</hash>
+         <hash>09a5d9ff42f1aaafef2e3ed611878a4bbe446138e875fd174c926e054ad8ced8</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\sercom\usart\plib_sercom3_usart.c</file>
-         <hash>92f6199f0baa33dd71631cb0fa5e05757b36c3a1db94e1283657232aeea8b6c4</hash>
+         <hash>bcfa7123f8228e7e3722a7bc3fc4a0c0b04faecb32c6b3f463f10b6d0765249f</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\mchv3_sam_c21_pim\X2CCode\X2CScope\src\X2CScopeCommunication.c</file>
+         <hash>c1b99f87153cf9c4b3792e4f77eed420fc5665b9534ab8f13d7996e22305b0d7</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\sercom2.h</file>
-         <hash>e9d4b217ebfb3640ca66ccf3ba1d8caf4c8f4039ea6f7133711476c2e9c1e128</hash>
+         <hash>31472109d5d3b3c2d2a20ed8a2bb2d009b0eb3ca65cd45c3ba6d5745d47d4b60</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tc0.h</file>
-         <hash>baa4668ee27592ff1f92364c22d380e1ed0467747753345a4ed2b985e6811d30</hash>
+         <hash>f82a3a62fdb5c1b56dcd752d1dbf66e2b4cc562696cd8bb22e82188f84e9d4af</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\sercom\usart\plib_sercom3_usart.h</file>
-         <hash>46501dc42d444fb6d1828a9091472de6cecdfcd528a2999588be48494c27d8ce</hash>
+         <hash>1562a17a4068682763baf98fc159410cbd074a4083b0a2a566ea5b74d25eb1fe</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\sercom\usart\plib_sercom_usart_common.h</file>
-         <hash>3ec013593edf39000df359408205a1f012fba3df3b88ce90f09c5115522d81cb</hash>
+         <hash>3feca67a173d19d45961676a16f6153a6d849ecac98e906b62a343258c8bf43b</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\dsu.h</file>
-         <hash>879ecfabb685fa95a00c15b9fd01c61f1d6673db1a97971d0a652c2b22e68a06</hash>
+         <hash>8cf5dde6a110986dc9622cc3badd8b5dddefe3c8edee7d587308043a518af07d</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\tsens.h</file>
-         <hash>6c138607412d5cf91d8b2356859fdb873e9b6c81b5602393f2edfe9b776a2c16</hash>
+         <hash>dfca5719ba8e1e3d1e1c6b662602f7b8f5d65d43e04671d0241dc5dc4c8761e0</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\mtb.h</file>
-         <hash>3af8d1bf548d2874b94da3300e587841f02243cef21ef05b27df39a7d795e842</hash>
+         <hash>e8abf874930994235fafc0c19e3f3af454ec626a8890f0c98577fe0016075497</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\oscctrl.h</file>
-         <hash>bd88d4879cb6c1f8bd65a7a373d1103205d2c397056a8c3a1268bd27ccec272e</hash>
+         <hash>99132d41fada0546495b7ceee25fae8259f4d0db4986a354a300ff86703d8b84</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\pio\samc21j18a.h</file>
-         <hash>958262818358ae89781546f2aa625bc94af42ead70f3f853cd06580e7a7fa0e2</hash>
+         <hash>d4920a5074f62dff1f8213991c83b2689c6ad59364d094e0997990dfb4fd4789</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\mtb.h</file>
-         <hash>1d652dcd9614017216b00d2486df069112913edae043821dc4fbf8616e3c3f18</hash>
+         <hash>6836d7b1a525ac65a6f1541133e755a21724516f55580b77c2ec4adfaa5f1a34</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\mclk.h</file>
-         <hash>8cb848d6b06e3133593804783b2b4aa17cf8c501b14d5572b10a0fcfd689aed8</hash>
+         <hash>c8364d869bac94fbe99e29bc50a40962d8ea30f106c0ca71c0a207bec409f738</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\supc.h</file>
-         <hash>887fbc2a23b2b7c8de27feeb01f8166ed7a8bc3224ee865dbf66dbce11c05146</hash>
+         <hash>067c041bb4218d55e12dffcc255951d5389f8971bb61ccab9d387f8d7810d94e</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\can1.h</file>
-         <hash>fa23d3fab34a4c40ccde81012aab53c7a8f72af6b936b06208d73e31001d734c</hash>
+         <hash>197d3f6fefd4a42bdc4fff4e4fe4276a3f54e96b2f388779c049f4cf48933ae1</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\hmatrixhs.h</file>
-         <hash>ded25e4ca968fe9c16885c774a87c3414b38f5db732d3fae4e96de12d017872f</hash>
+         <hash>70305a77185753d34672bc82d403b9463351b422880e1472254555456612e1c5</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\oscctrl.h</file>
-         <hash>a67a3ec88d15c9d1358fcff5b7eb87ec736742230e00d47c69c4f98fd25adfc8</hash>
+         <hash>92cdf00281fd42b618d9343d212fdf729731a738a39c9cc019fcdf3aef884964</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\sdadc.h</file>
-         <hash>a5f90357ba04f5f646a91499e2b265b062d68e4deea798a5a6546faec0be09c0</hash>
+         <hash>ca3a9fab07d72b420b54486f0399f32bd954f3bcbe957b298a01fd73085de877</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\gclk.h</file>
-         <hash>28b134c76cc1bb227b934cdc46a3b9ae46bb4d0411e3e2fd402e207029ab5a31</hash>
+         <hash>5f4ab08d002ca6b5e214a945ddd8fe81cfb9491d5911df33f04ca0069fd474f7</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\definitions.h</file>
-         <hash>a2427ade88746bd767dd182998bd64d81e86373e71123cf1bd618cd034ce3a80</hash>
+         <hash>aab89975a5efa8b6508c1f041a173da780d639802769453aae29962e34f027f7</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\rstc.h</file>
-         <hash>3552605f8d6965d406e6820eb1f6d900d55c61af792a62d1ce448f4fca9ba5d4</hash>
+         <hash>a66c3da8443c9b304664e11d6c69fe881459f22dbea770e38271e87e31fead7a</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_version.h</file>
@@ -4620,23 +5079,23 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\eic.h</file>
-         <hash>d1c421b3574b420afdb3870325b4e58a853ead691062d5a95c6733a277d41f3b</hash>
+         <hash>10d9c2dcf2d257b13f1e03d1f6fc3a1de4773d59fa51ce442d0dc87bf692a70b</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tc3.h</file>
-         <hash>d08614a5672face8fff63f5d406ca8fd9cf62689564e920f44fb929defae624c</hash>
+         <hash>24027477db3c0f7cc7806688fa3c18a7567c80cbb7ffe024cf1e8076997e689e</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\eic\plib_eic.c</file>
-         <hash>d736ce1fa35d251a25f5342448527b6a6b2297f1ae4027df64fde0b4347fe871</hash>
+         <hash>ef83991e831cd9f78dc510d577a02025ec9bb3b6c1e4fac1c8ad2b467dbb6474</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\sercom5.h</file>
-         <hash>b95d4633771bacf32dbe516aea21b8fdec8fb0f61d528147f25738887981db1c</hash>
+         <hash>6e7988bf9dfc9e02361b183d2c02b97feb2d16631c254bd4f6f8f5d55e57c4c5</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\ac.h</file>
-         <hash>aebf252ac520f5ae9a36464918a255bba138f63f706b03f6bacdc6c9a1fb23cd</hash>
+         <hash>62793feaaa1067011e3023f96630cb76e94378c88e9306df3163cb3304410f22</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\device.h</file>
@@ -4644,11 +5103,11 @@
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\evsys\plib_evsys.h</file>
-         <hash>f4bf56e76215bb611bc599bf615a4c870ce4f15a8ea204bb7f68be34da678784</hash>
+         <hash>4ca49e2650f1cbc38a8eaa4835b398b54823f7bc5abc8c2d66d1cbd5dccf723d</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\dmac.h</file>
-         <hash>eb302ab47850f450f20a779f47f556524580f8978824178c74c9d813c25e6bd6</hash>
+         <hash>d0f0c9e6b06f974dc2fc3e6c327ad825e6baf4c8104eb4bd00c6482ebffc88d4</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\nvic\plib_nvic.h</file>
@@ -4656,47 +5115,51 @@
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\libc_syscalls.c</file>
-         <hash>ff03e955db4f7bb775c7989bc2254553698f3d921e9885caac347ccd118e55d7</hash>
+         <hash>df1be7627b968b650c3389237792bf3bf4f4318a64a06a4bfe7b76730551c252</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\dac.h</file>
-         <hash>81d7f4e4b3cdcd1e3a9fa8b62fa79a6359f3d5b672f163b9898a1c36762c8294</hash>
+         <hash>73d6d793dba5a68165453e9d16bff9286f7f14fc56deb1f339a28874f2d3a273</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\sercom1.h</file>
-         <hash>8a61b1f0c9a172dd61b6c8227905efd1d25b473f88b610a858e860a754fc3e8b</hash>
+         <hash>d5cc94e270e48e59925acb90b5bbe8bbc6fa62d4ddf8b2c214b8bfb6c8a03920</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\nvic\plib_nvic.c</file>
-         <hash>45dc70f81bc16606ab7ec09e0f634372ed7f6b31cb139b4c37933bbe377146b1</hash>
+         <hash>33a92d96d2fee7c76757ba7f84bb5813eba805dd507f3f96307d23965aa4747c</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\sercom.h</file>
-         <hash>ab9fabd387b75d046b6d3b9ef7d5e11d4bb0ea81e55e62a404624a0237a6b715</hash>
+         <hash>cde3c9cce2d5b9937ad1a3c43d155694654785c55ff7c1f365cbc77666b69d0e</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\startup_xc32.c</file>
-         <hash>0daa92ab227c2d0b2746b14b920680c58690c4f3ade28ae6cef46927b7e413fd</hash>
+         <hash>1e21579834d44c4e28eb15942a3d53793aedfaa7dcdf53e8e0cbd5b1bc07bcc0</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\wdt.h</file>
-         <hash>c99be341e9f7b9a59bb793e154756a1a59f27c3093a03580586f418b8b7b9958</hash>
+         <hash>fa4d3defc5736ec0c753d5a49713f717e5254f4da5cf6118e8b739522f7ac5e7</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\evsys\plib_evsys.c</file>
-         <hash>64477d13966cde2209403c5b5c9aa5b4528c28e911c94cf5a94512f7e3a9ddc3</hash>
+         <hash>a95c1e6c55bf32ae13082569ed69bf5215781ce4fc8cc993c8feeb7c2933777f</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\mchv3_sam_c21_pim\X2CCode\X2CScope\inc\X2CScope.h</file>
+         <hash>c4c1e8964b703295e7b65ce331295da2a5b143aa63b8960f48c1e62c59fa9d07</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\osc32kctrl.h</file>
-         <hash>d243f7124e9f9c4580f5b7150bd50a0dda5db42a29d1ab8f64e4b2a4de62f309</hash>
+         <hash>7927c74509e1d2b606593de0e3fa810a3baec7f77dc55f848feeb4fd40d2ce71</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tcc2.h</file>
-         <hash>e596c345735588ba113a875029c1d6c73d8d64fd5a26dd83693645096cc6b976</hash>
+         <hash>d22e7f06b755c5d71fe924fcf9a18da26869884c7563dbb24ce85500a78b3dfb</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\eic\plib_eic.h</file>
-         <hash>d75c07011a00d45fe9af71fb92fd23613670f6baa9f80098ee1676afdaed560a</hash>
+         <hash>93ac874d1b16fa9e77090c260f37fb3360b316d3da1735052c520bd01c877239</hash>
       </entry>
       <entry>
          <file>..\src\packs\CMSIS\CMSIS\Core\Include\cmsis_armclang_ltm.h</file>
@@ -4708,7 +5171,7 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\ccl.h</file>
-         <hash>59bddb22b2e67e8367745b247084272a8f208ecea2bba1ce7f7a62d2dafd07b6</hash>
+         <hash>6ac447f4ee6ce0334f7577abe5c3a55c5b4ce6eb903c934ad9344260240df635</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\adc\plib_adc1.h</file>
@@ -4716,7 +5179,7 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\hmatrixb.h</file>
-         <hash>a091c2420119ec218830f001fc4aecc0cc95f79f6de269472f50ecd811e6012b</hash>
+         <hash>ab8986d64e0f6e7507e943805a6efc9ff3882e7a137a919b30dbb5e2be448f88</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\device_cache.h</file>
@@ -4724,31 +5187,31 @@
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\rtc.h</file>
-         <hash>a56296771e8b752277c3cd972c9f4facebf8ac1a4c2006ea1e4c69ad1da33185</hash>
+         <hash>1b8f8def088a7507e62c82281d4a6b3890f2cb32c6aae1b15ba2070ee384e70d</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\adc\plib_adc1.c</file>
-         <hash>4edfce1001b113c98e68e05fb525a4d8701aa8f3edab8bc3577c9b260074809f</hash>
+         <hash>5ebd84443441c4bbead786068f6ee53d5a83c9510da8feb06f5109e37948665b</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\can.h</file>
-         <hash>0bac63f6233b7d98ca4eb0e8d1585b529a91bb6734a92d33f6e31a4cc71c5b20</hash>
+         <hash>c98eb7bcbcb5158e4b581552609cb44b6a4bca28b1c322c387925e8d25d94c00</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\evsys.h</file>
-         <hash>a3cc9b693f030c9f532ce04c04623f94aa70ac8b9f6a7fe81ded7f100a126e12</hash>
+         <hash>3b9594a298307c6fabd944bf6acd890692fe1eb8d7266d71de17e7387c19c74f</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\pac.h</file>
-         <hash>f26c2b694496d52842b03d60952ec79627977e0ff12062d6b792eccffa7416ba</hash>
+         <hash>75028e2e4a1670401b71397a1a6012011dd9d2bbc2721116e6294f8e76d1ed15</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\ptc.h</file>
-         <hash>81ff435d7477373c943eae0c0ba2962329487b1dbadeaaa536b07247b7b5f0b4</hash>
+         <hash>395a8341491f808fdae9d42817c3b4199386e8879722e0029ed792e089d3e727</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\port\plib_port.c</file>
-         <hash>df412421e0451f3aacd0e1302d69550142444fcafff4f3b47bad61dc2f51f05e</hash>
+         <hash>e862a5122aa0ced6bdc786d3e7046d83d4eed8fb7e2e6b7e45f553753bdd0e1b</hash>
       </entry>
       <entry>
          <file>..\src\main_mchv3_sam_c21_pim.c</file>
@@ -4756,47 +5219,51 @@
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\port\plib_port.h</file>
-         <hash>ab3018d73e1751f0428a8229c95b6f53945b8a8ff24543d2e372d2fbee6dca7a</hash>
+         <hash>ca8c0bab820cc14a8eefd056e822258bda1ea416208e7f709b559aef5a60b152</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\supc.h</file>
-         <hash>e5fa5a9ce852f464703180b64d463c039ad71f9649611fb081dac849dcfce601</hash>
+         <hash>d4cc7a715fbc23834cf9749c4d12295df6a5c9fcc2212be9b5cd224db657d2cb</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\sercom0.h</file>
-         <hash>2c8315b944f84a359d3b4d2e8d12413049d8fe25923d7d1c3473cccaeb9f53c0</hash>
+         <hash>e7414434ab9e46e8aa6668d587af76544df30db74f12eee2b124b6b93299989d</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\nvmctrl\plib_nvmctrl.c</file>
-         <hash>b872550c12d62c6470fb0fb64fe5a4f1754ff9a92c7a39e7468ee1d7e869f1c5</hash>
+         <hash>ab6f363dc6978fa96d7ac0736f1647d98df6474db7a58f3e2a2e83bf8ba4c282</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\sercom4.h</file>
-         <hash>88629b63a2481a5f840f13a70da36bd40f3d21872d05d74fe8f6f0b4d1c2a94e</hash>
+         <hash>9ab2b43df3c30cffab9491c9f3900951456a83adc2f61603599799fc503208e1</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tc2.h</file>
-         <hash>433b8bd088c8951904dbdcde9202c99e413d1fad759c0d1a8fd54d79ec1901b2</hash>
+         <hash>ca0944228b2b637f22c90a7c9a5060b68b309f81c0eb4e6db3fbe00661169f4d</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\peripheral\nvmctrl\plib_nvmctrl.h</file>
-         <hash>52ad367b7301a6d2da6d0f6dabce016e228a4a9980caf4b82d37422678a8be37</hash>
+         <hash>3706575d02d502967b3a77c5d6c33f26721148603934715fcbd98c62d20a2663</hash>
+      </entry>
+      <entry>
+         <file>..\src\config\mchv3_sam_c21_pim\X2CCode\X2CScope\inc\X2CScopeCommunication.h</file>
+         <hash>363b149004ecc8edb607ce172f49e7c3dc7c40fc4cec7369dd596c26519604ef</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\nvmctrl.h</file>
-         <hash>87a99c83538f82b2742ccf8da4f77b3d495e6c3daceaec0f841376dd343e3f8e</hash>
+         <hash>bf92be4473d6ed8377e485d7c6d8bc458334ec9a58e0fe7a213a40227b7fed80</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\ptc.h</file>
-         <hash>b351367eaa0cf26494870e4bfd5596e6a7e3624affba448f4f6ea3b55d03b1be</hash>
+         <hash>1c2fad0cc9faa280bcd539d8fdafbb3ac41d72596d96ecbb59c030568aad5dfd</hash>
       </entry>
       <entry>
          <file>..\src\config\mchv3_sam_c21_pim\device_vectors.h</file>
-         <hash>a95084621057a5b45dc5bf7122d457680f02c50445a3c47e347281a14c28092c</hash>
+         <hash>0ffcf2109c1550773094e211109c77b5ce60b5d264766d8e479d6ed2104425b8</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tcc1.h</file>
-         <hash>2a7cc8616b29d75a010c1805003412ee2d133fa936903b6c179b6c0d912e53ce</hash>
+         <hash>a3d5b071198abb54ebdd2808b3c22b69a9c1f49975e9e73c6742788eddab7b8f</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>
