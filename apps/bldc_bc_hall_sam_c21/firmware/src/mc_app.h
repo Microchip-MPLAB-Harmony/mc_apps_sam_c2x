@@ -99,15 +99,15 @@ typedef struct
     uint8_t curhall3;  
 }motor_hall_params_t;
 
-
-extern picontrol_type  speedpi;
+extern motor_state_params_t    Motor_StateParams;
+//extern picontrol_type  speedpi;
 /*******************************************************************************
 Public variables definition
 *******************************************************************************/
 
 //extern stop_source_t motor_stop_source; 
 
-extern uint8_t var_time_10ms;
+//extern uint8_t var_time_10ms;
 
 
 /*******************************************************************************

@@ -49,17 +49,18 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "peripheral/sercom/usart/plib_sercom3_usart.h"
+#include "X2CCode/X2CScope/inc/X2CScope.h"
 #include "peripheral/nvmctrl/plib_nvmctrl.h"
 #include "peripheral/evsys/plib_evsys.h"
-#include "peripheral/tcc/plib_tcc0.h"
-#include "peripheral/adc/plib_adc0.h"
 #include "peripheral/port/plib_port.h"
 #include "peripheral/clock/plib_clock.h"
 #include "peripheral/nvic/plib_nvic.h"
-#include "peripheral/adc/plib_adc1.h"
 #include "peripheral/eic/plib_eic.h"
 #include "peripheral/tc/plib_tc3.h"
 #include "peripheral/tc/plib_tc4.h"
+#include "peripheral/tcc/plib_tcc0.h"
+#include "peripheral/adc/plib_adc0.h"
+#include "peripheral/adc/plib_adc1.h"
 
 // DOM-IGNORE-BEGIN
 #ifdef __cplusplus  // Provide C++ Compatibility

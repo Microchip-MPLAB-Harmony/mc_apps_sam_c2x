@@ -55,7 +55,7 @@ Control Parameters
 *******************************************************************************/
 #define MC_FREQ_HZ      ( 48000000.0f ) /* CPU frequency */
 
-#define PWM_FREQUENCY   (20)       /* in kHz   */
+#define PWM_FREQUENCY   (20U)       /* in kHz   */
 
 #define PWM_PERIOD      (2400U)
 
@@ -70,8 +70,8 @@ Motor definitions
 #define MAX_MOTOR_SPEED         (3000U)
 #define SPEED_KP_DEFAULT        (30U) 
 #define SPEED_KI_DEFAULT        (5U)
-#define DEFAULT_DUTY (uint16_t) ( 0.1 * PWM_PERIOD)
-#define PI_BUF_INIT             (DEFAULT_DUTY << 15)
+#define DEFAULT_DUTY (uint16_t) ( PWM_PERIOD/10U)
+#define PI_BUF_INIT             ((uint32_t)DEFAULT_DUTY << 15U)
 
 #endif
 
@@ -88,11 +88,11 @@ Motor definitions
 
 #define MOTOR_RAMPUP_SPEED_PER_MS   (5U)
 
-#define DEFAULT_SPEED_TARGET        ((DEFAULT_DUTY << 14)/PWM_PERIOD)
+#define DEFAULT_SPEED_TARGET        ((DEFAULT_DUTY << 14U)/PWM_PERIOD)
 
 #define SPEED_MIN_LOW               (5U)       //  [Min speed in internal units range 0 - 10 Max; Typically less than 0% -10% of 2^14]
 
-#define SPEED_MIN_TARGET            (uint16_t)(( 1 << 14) * SPEED_MIN_LOW / 100)
+#define SPEED_MIN_TARGET            (( (uint16_t)1 << 14U) * SPEED_MIN_LOW / 100U)
 
 #define SPEED_MIN_LIMIT             (0U)
 
@@ -102,10 +102,10 @@ Motor definitions
 /*******************************************************************************
  * Calculated macros
 *******************************************************************************/
-#define COUNT_10_MS                 (uint16_t)(PWM_FREQUENCY * 10)    //As PWM_FREQUENCY is given in KHz
+#define COUNT_10_MS                 (PWM_FREQUENCY * 10U)    //As PWM_FREQUENCY is given in KHz
 
 /* Average Speed calculation factor */
-#define MOTOR_SPEED_CALCFACTOR      6   // (MOTOR_POLE_PAIRS * 6U)
+#define MOTOR_SPEED_CALCFACTOR      6U   // (MOTOR_POLE_PAIRS * 6U)
 
 #define MAX_POT_REF                 (4095U)
 
