@@ -77,16 +77,16 @@ Macro definitions
 #define PWM_HPER_TICKS  ( 3000U )  /* 4000 ticks, total period 8000 ticks @48MHz -> 167us */
 /* 2400 ticks , total period 4800 ticks -> 100 micro seconds */
 
-#define HALF_HPER_TICKS  (PWM_HPER_TICKS>>1)
+#define HALF_HPER_TICKS  ((int32_t)PWM_HPER_TICKS/2)
 
 /* motor and application related parameters */
 /* Note: only one motor has to be selected! */
 
 
 #ifdef  SMALL_HURST                      /* Small Hurst motor */
-#define MAX_FRE_HZ      (   250 )       /* maximum frequency [Hz] - 3000RPM */
-#define MIN_FRE_HZ      (    30 )       /* minimum frequency [Hz] - 360RPM  */
-#define POLAR_COUPLES   (     5 )       /* number of polar couples */
+#define MAX_FRE_HZ      (   250U )       /* maximum frequency [Hz] - 3000RPM */
+#define MIN_FRE_HZ      (    30U )       /* minimum frequency [Hz] - 360RPM  */
+#define POLAR_COUPLES   (     5U )       /* number of polar couples */
 #define R_STA           (   2.1 )       /* stator phase resistance [Ohm] */
 #define L_SYN           (     0.00192 ) /* synchronous inductance 0.00192 [Hen] (note: >0!) */
 #define MAX_CUR_AMP     (     2.0 )     /* peak maximum current [A] */
@@ -171,13 +171,13 @@ Macro definitions
 
 /* derived and control parameters */
 /* useful in duty cycle calculation */
-#define HALFPER_NRM     ((uint16_t)((float32_t)PWM_HPER_TICKS * BASE_VALUE_FL / 32768.0f)) 
+#define HALFPER_NRM     (int16_t)((float32_t)((float32_t)PWM_HPER_TICKS * BASE_VALUE_FL / 32768.0f)) 
 /* useful in voltages re-calculation */
-#define HALFPER_A15     ((uint32_t)((float32_t)PWM_HPER_TICKS * 32768.0f))     
+#define HALFPER_A15    ((int32_t)PWM_HPER_TICKS * 32768)    
 /* 60 ticks @48MHz -> 1.25us (greater than deadtimes!) */
 #define DMIN_TICKS      (DEADT_TICKS + 12U)   
 /* max delta duty */
-#define DELMAX_TICKS    (PWM_HPER_TICKS - SHUNT1_TMIN)    
+#define DELMAX_TICKS    ((int16_t)PWM_HPER_TICKS - (int16_t)SHUNT1_TMIN)    
 /* converting DELMAX_TICKS to absolute float calculation */
 #define DELMAX_TICKS_FL ((float32_t)PWM_HPER_TICKS - ((float32_t)SHUNT1_TMIN))    
 /* max ratio of vbus which is possible to obtain with modulation */
@@ -254,13 +254,13 @@ Macro definitions
 /* time constant is (1<<10)/Fs (=128ms @6kHz) */
 #define SH_MEAS_FIL     ( 10 )  
 /* minimum bus voltage in internal units */
-#define VBUSMIN         ((int16_t)(0.2f * BASE_VALUE_FL))   
+#define VBUSMIN         (int16_t)((float32_t)(0.2f * BASE_VALUE_FL))   
 /* ratio of total available voltage reserved for d axis */
-#define DVOL_MARG       ((int16_t)(0.9f * BASE_VALUE_FL))   
+#define DVOL_MARG       (int16_t)((float32_t)(0.9f * BASE_VALUE_FL))   
  /* max speed [rpm] */
-#define MAX_SPE_RPM     ((uint16_t)(60.0f * (float32_t)MAX_FRE_HZ / (float32_t)POLAR_COUPLES))   
+#define MAX_SPE_RPM     ((uint16_t)(60U * MAX_FRE_HZ / POLAR_COUPLES))   
 /* min speed [rpm] */
-#define MIN_SPE_RPM     ((uint16_t)(60 * MIN_FRE_HZ / POLAR_COUPLES))    
+#define MIN_SPE_RPM     (uint16_t)((60U * MIN_FRE_HZ) / POLAR_COUPLES)   
 /* speed[rpm] = (K_INTSPE2RPM * speed[int]) / BASE_VALUE */
 #define K_INTSPE2RPM    MAX_SPE_RPM     
 /* speed[int] = (speed[rpm] * BASE_VALUE) / K_INTSPE2RPM */
@@ -272,14 +272,14 @@ Macro definitions
 #define MAX_SPE          BASE_VALUE_INT
 #define MAX_SPE_FL       BASE_VALUE_FL
 /* used in position lost alarm management */
-#define MAX_SPE_PLOST   ((uint16_t)(1.25f * BASE_VALUE_FL))        
-#define MIN_SPE         ((uint16_t)(BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED))
+#define MAX_SPE_PLOST   (uint16_t)((float32_t)(1.25f * BASE_VALUE_FL))        
+#define MIN_SPE         ((uint16_t)((float32_t)(BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED)))
 /* used in position lost alarm management */
-#define MIN_SPE_PLOST   ((uint16_t)(0.3f * (BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED))) 
+#define MIN_SPE_PLOST   (uint16_t)((float32_t)(0.3f * BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED)) 
 /* position lost alarm counter limit */
 #define POS_LOST_CNTMX  ( 300 ) 
 /* number of sampling periods for startup acceleration */
-#define STUP_TICKS      ((int16_t)(SAMPLING_FREQ * (float32_t)STUP_ACCTIME_S)) 
+#define STUP_TICKS      ((uint16_t)(SAMPLING_FREQ * (float32_t)STUP_ACCTIME_S)) 
 /* delta speed for each sampling period during startup */
 #define DSPEEDL_STUP    ((uint32_t)(MIN_SPE * K_SPEED_L / STUP_TICKS))   
 /* 333.32 micro second = 1, hence 3 for 1ms */
@@ -297,8 +297,8 @@ Macro definitions
 #define ACC_RAMP        ((int16_t)(((float32_t)ACC_RPM_S * BASE_VALUE_FL / MAX_SPE_RPM_FL) / (float32_t)SAMF_SLOW))
 #define DEC_RAMP        ((int16_t)(((float32_t)DEC_RPM_S * BASE_VALUE_FL / MAX_SPE_RPM_FL) / (float32_t)SAMF_SLOW))
 /* maximum current in internal current units */
-#define MAX_CUR         ((int16_t)((float32_t)MAX_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT))  
-#define MAX_CUR_SQUARED (uint32_t)(MAX_CUR*MAX_CUR)
+#define MAX_CUR         (int16_t)((float32_t)((float32_t)MAX_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT))  
+#define MAX_CUR_SQUARED (int32_t)(MAX_CUR*MAX_CUR)
 /* startup current in internal current units */
 #define START_CUR       ((int16_t)((float32_t)START_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
 
@@ -321,7 +321,7 @@ Macro definitions
 /* amplification shifts in current PI calculation */
 #define SH_INTC         (  6U )           
 #define KP_CUR          ((int32_t)(KP_CURPIF * (float32_t)(((uint16_t)1 << (uint16_t)SH_PROC))))
-#define KI_CUR          ((int32_t)(KI_CURPIF * (float32_t)(((uint32_t)1 << (uint32_t)(SH_INTC + SH_PROC)))))
+#define KI_CUR          ((int32_t)(KI_CURPIF * (float32_t)(((uint32_t)1 << (uint32_t)((uint32_t)SH_INTC + (uint32_t)SH_PROC)))))
 /* speed loop proportional gain [int] */
 #define KP_SPEPIF       ((K_CURRENT * (float32_t)KP_AS_R / K_SPEED))       
 /* speed loop integral gain [int] */
@@ -331,7 +331,7 @@ Macro definitions
 /* amplification shifts in speed PI calculation */
 #define SH_INTS         (  6U )           
 #define KP_SPE          ((int16_t)(KP_SPEPIF * (float32_t)(((uint16_t)1 << (uint16_t)SH_PROS))))
-#define KI_SPE          ((int16_t)(KI_SPEPIF * (float32_t)(((uint32_t)1 << (uint32_t)(SH_INTS + SH_PROS)))))
+#define KI_SPE          ((int16_t)(KI_SPEPIF * (float32_t)(((uint32_t)1 << (uint32_t)((uint32_t)SH_INTS + (uint32_t)SH_PROS)))))
 /* conversion constant current[mA] = K_INTCUR2MA * current[internal current unit] */
 #define K_INTCUR2MA     ((uint16_t)(BASE_VALUE_FL * 1000.0f / K_CURRENT))
 /* conversion constant voltage[V/10] = K_INTVOL2DV * voltage[internal voltage unit] */ 
@@ -350,8 +350,8 @@ Macro definitions
 #define CUR_STEP_TIM    ( 0.5 )     
 #define CPT_CNT_VAL     ((uint16_t)(CUR_STEP_TIM * SAMF_SLOW))
 
-#define OVERCURRENT_RESET_DELAY_SEC     1
-#define OVERCURRENT_RESET_DELAY_COUNT  (uint32_t) (OVERCURRENT_RESET_DELAY_SEC*100)  // Delay count value calculated based 10mS unit.
+#define OVERCURRENT_RESET_DELAY_SEC     1u
+#define OVERCURRENT_RESET_DELAY_COUNT  (uint32_t) ((uint32_t)OVERCURRENT_RESET_DELAY_SEC*100u)  // Delay count value calculated based 10mS unit.
 
 #define NORMAL              (0U)
 #define COMPENSATE_T1       (1U)  // T1 < MIN_SAMPLE; T2 > MIN_SAMPLE
@@ -370,16 +370,16 @@ Macro definitions
 #define CYCLE_2        (2U)
 #define CYCLE_3        (3U)
 
-#define DEAD_TIME_COUNT (48U)  // 48U - 1us
+#define DEAD_TIME_COUNT (48)  // 48U - 1us
 
 
 #ifdef SMALL_HURST
-#define SETTLING_DELAY (72U)     
-#define T2_SETTLING_DELAY (48U)  
+#define SETTLING_DELAY (72)     
+#define T2_SETTLING_DELAY (48)  
 #define SAMPLING_DELAY (24U) 
 #define MIN_SAMPLE      (168U) 
-#define MIN_SAMPLE_T2   (144U) 
-#define MIN_SAMPLE_T1   (144U)
+#define MIN_SAMPLE_T2   (144) 
+#define MIN_SAMPLE_T1   (144)
 #endif
 
 
@@ -393,14 +393,14 @@ Macro definitions
 #endif
 
 
-#define MIN_SAMPLE_HALF (MIN_SAMPLE >> 1)
-#define MIN_SAMPLE_T1_HALF (MIN_SAMPLE_T1 >> 1)
-#define MIN_SAMPLE_T2_HALF (MIN_SAMPLE_T2 >> 1)
+#define MIN_SAMPLE_HALF ((int32_t)MIN_SAMPLE/2)
+#define MIN_SAMPLE_T1_HALF ((int32_t)MIN_SAMPLE_T1/2)
+#define MIN_SAMPLE_T2_HALF ((int32_t)MIN_SAMPLE_T2/2 )
 
 
 #ifdef SMALL_HURST
-#define AD_TRIGGER_T1_SMALL_DELAY (DEAD_TIME_COUNT + SETTLING_DELAY)  
-#define AD_TRIGGER_T2_SMALL_DELAY (DEAD_TIME_COUNT + T2_SETTLING_DELAY)  
+#define AD_TRIGGER_T1_SMALL_DELAY (int32_t)((int32_t)DEAD_TIME_COUNT + (int32_t)SETTLING_DELAY)  
+#define AD_TRIGGER_T2_SMALL_DELAY (int32_t)((int32_t)DEAD_TIME_COUNT + (int32_t)T2_SETTLING_DELAY)  
 #endif
 
 #ifdef LONG_HURST

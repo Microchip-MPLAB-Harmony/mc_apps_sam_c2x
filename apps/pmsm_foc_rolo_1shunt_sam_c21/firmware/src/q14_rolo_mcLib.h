@@ -47,7 +47,7 @@ Macro definitions
 #define	OBS_C0_GAIN			( 1.0f - OBS_H_GAIN )	/* > 0 */
 #define	OBS_MINFREQ_HZ		( 3.0f )
 #define	OBS_MINSPEED_R_S	((float32_t)(2.0f * FLOAT_PI * OBS_MINFREQ_HZ))
-#define OBS_MAXSHIFTS		( 32 )
+#define OBS_MAXSHIFTS		(uint16_t)( 32U )
 
 
 

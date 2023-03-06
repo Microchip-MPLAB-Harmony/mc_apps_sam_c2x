@@ -96,11 +96,11 @@ uint16_t spe_rpm_abs;
 its dependent filters */
 /* counter in main loop (10ms) synchronization function */
 uint16_t     syn_cnt;  
+uint16_t     syn1000ms_cnt;
+static uint8_t  compensation_mode = 0u;
+static uint8_t  current_sector = 0u;
+static uint8_t phaseindex[3] = {0u,1u,2u};
 
-uint8_t  compensation_mode = 0;
-uint8_t  current_sector = 0;
-uint8_t phaseindex[3] = {0,1,2};
-uint8_t vis_cnt = 0;
 /* Debug variables */
 #ifdef  MACRO_DEBUG
 uint16_t     acc_ramp;
@@ -130,15 +130,15 @@ uint16_t
     cur_ramp_ru;   /* direct current variation ramp during normal running */
 
 
-uint32_t state_count = 1;
-uint16_t state_stopped =0;
-uint16_t state_start =0;
-uint16_t state_align =0;
-uint16_t state_closingloop =0;
-uint16_t state_closedloop =0;
-int16_t min_test=MIN_SPE;
-uint16_t start_count = 0;
-uint16_t stop_count = 0;
+static uint32_t state_count = 1u;
+static uint16_t state_stopped =0u;
+static uint16_t state_start =0u;
+static uint16_t state_align =0u;
+static uint16_t state_closingloop =0u;
+static uint16_t state_closedloop =0u;
+//static int16_t min_test=(int16_t)MIN_SPE;
+static uint16_t start_count = 0u;
+static uint16_t stop_count = 0u;
 
 #endif
 
@@ -152,7 +152,7 @@ Safety variables
 int16_t cur_mea[3]; 
 int16_t cur_t1,cur_t2;
 
-int32_t cv_sorting[3];
+static int32_t cv_sorting[3];
 
 /*PI control variables */
 pi_cntrl_t
@@ -207,14 +207,14 @@ static ang_sincos_t
     sysph;      
 /* vector containing the PWM timer compare values */
 static int32_t dutycycle[3];
- int32_t cv_upcount[3]; 
- int32_t cv_downcount[3]; 
- int32_t cv_upcount_new[3]; 
- int32_t cv_downcount_new[3];
- int32_t adc0_trigger_count;
- int32_t adc0_trigger_count_new;
- int32_t adc1_trigger_count;
- int32_t adc1_trigger_count_new;
+static int32_t cv_upcount[3]; 
+static int32_t cv_downcount[3]; 
+static int32_t cv_upcount_new[3]; 
+static int32_t cv_downcount_new[3];
+static int32_t adc0_trigger_count;
+static int32_t adc0_trigger_count_new;
+static int32_t adc1_trigger_count;
+static int32_t adc1_trigger_count_new;
 
 static vec3_t
     cur3m,      /* three-phases vector of current measurement [internal current unit] */
@@ -265,12 +265,13 @@ static uint32_t
     elespeed_l,  /* electrical speed amplified value */
     spe_ref_mem; /* filter memory in reference speed lp filter */
 
-int32_t  spe_adc_rpm_var; // Intermediate variable to convert POT  - ADC value to RPM
-uint16_t spe_adc_rpm; // This register holds the Potentiometer value scaled to MAX_SPE_RPM
-
-uint32_t  torque_adc_ref_var; // Intermediate variable to convert POT  - ADC value to Torque Ref
-uint16_t  torque_adc_ref_abs; // This register holds the absolute torque ref scaled to MAX_CUR
-int16_t  torque_adc_ref; // This register holds the signed torque ref scaled to MAX_CUR
+static int32_t  spe_adc_rpm_var; // Intermediate variable to convert POT  - ADC value to RPM
+static uint16_t spe_adc_rpm; // This register holds the Potentiometer value scaled to MAX_SPE_RPM
+#ifdef TORQUE_MODE
+static uint32_t  torque_adc_ref_var; // Intermediate variable to convert POT  - ADC value to Torque Ref
+static uint16_t  torque_adc_ref_abs; // This register holds the absolute torque ref scaled to MAX_CUR
+static int16_t  torque_adc_ref; // This register holds the signed torque ref scaled to MAX_CUR
+#endif
 /*******************************************************************************
 Functions
 *******************************************************************************/
@@ -330,7 +331,7 @@ Note:           to be used in a while loop; it becomes false only every 10ms,
 ******************************************************************************/
 uint8_t syn10ms(void)
 {
-    uint8_t retval = 0;
+    uint8_t retval = 0u;
     if(0U < syn_cnt)
     {
         retval = 1U;
@@ -353,7 +354,7 @@ Note:      to be used in a while loop; it becomes false only every 1000ms,
 ******************************************************************************/
 uint8_t syn1000ms(void)
 {
-    uint8_t retval = 0;
+    uint8_t retval = 0u;
     if(0U < syn1000ms_cnt)
     {
         retval = 1U;
@@ -365,7 +366,11 @@ uint8_t syn1000ms(void)
     return( retval );
 }
 
-
+// *****************************************************************************
+/* MISRA C-2012 Rule 14.3 deviated:3 Deviation record ID -  H3_MISRAC_2012_R_14_3_DR_1 */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate:3 "MISRA C-2012 Rule 14.3" "H3_MISRAC_2012_R_14_3_DR_1" 
 /******************************************************************************
 Function:    motorcontrol_vars_init
 Description:  motor control variable initialization
@@ -377,7 +382,7 @@ Note:      to be called once before starting the interrupts;
 ******************************************************************************/
 void motorcontrol_vars_init(void)
 {
-  uint32_t u32a;
+  volatile uint32_t u32a;
 
 #ifdef MACRO_DEBUG
     macro_debug();
@@ -387,16 +392,16 @@ void motorcontrol_vars_init(void)
   u32a = (uint32_t)KP_CUR;
   if(32767U < u32a)
   {
-    u32a = 32767;
+    u32a = 32767u;
   }
   iq_pi.kp = (int16_t)u32a;
   id_pi.kp = (int16_t)u32a;
   iq_pi.shp = (uint16_t)SH_PROC;
   id_pi.shp = (uint16_t)SH_PROC;
-  u32a = KI_CUR;
+  u32a = (uint32_t)KI_CUR;
   if(32767U < u32a)
   {
-    u32a = 32767;
+    u32a = 32767u;
   }
   iq_pi.ki = (int16_t)u32a;
   id_pi.ki = (int16_t)u32a;
@@ -413,14 +418,14 @@ void motorcontrol_vars_init(void)
   u32a = KP_SPE;
   if(32767U < u32a)
   {
-    u32a = 32767;
+    u32a = 32767u;
   }
   sp_pi.kp = (int16_t)u32a;
   sp_pi.shp = (uint16_t)SH_PROS;
-  u32a = KI_SPE;
+  u32a = (uint32_t)KI_SPE;
   if(32767U < u32a)
   {
-    u32a = 32767;
+    u32a = 32767u;
   }
   sp_pi.ki = (int16_t)u32a;
   sp_pi.shi = (uint16_t)SH_INTS;
@@ -429,7 +434,7 @@ void motorcontrol_vars_init(void)
   sp_pi.llim = 0;
 
   /* */
-  state_run = 0;
+  state_run = 0u;
   ext_speed_ref_rpm = 0;
 
   /* observer init */
@@ -505,23 +510,27 @@ void motor_stop(void)
 {
     /* Rules 11.4, 11.6 violated access to register */
     int32_t dc[3];
-    dc[0] =  (int32_t)HALF_HPER_TICKS;
-    dc[1] =  (int32_t)HALF_HPER_TICKS;
-    dc[2] =  (int32_t)HALF_HPER_TICKS;
+    uint8_t status=1U;
+    bool pwm_flag;
+    dc[0] =  HALF_HPER_TICKS;
+    dc[1] =  HALF_HPER_TICKS;
+    dc[2] =  HALF_HPER_TICKS;
     
     mcApp_TCC0DutySet(TCC0_CHANNEL0,(uint32_t)dc[0]);
     mcApp_TCC0DutySet(TCC0_CHANNEL1,(uint32_t)dc[1]);
     mcApp_TCC0DutySet(TCC0_CHANNEL2,(uint32_t)dc[2]);
     
     /*Override all PWM outputs to low*/
-    TCC0_PWMPatternSet((TCC_PATT_PGE0_Msk|TCC_PATT_PGE1_Msk|TCC_PATT_PGE2_Msk
+    status |= (uint8_t)(pwm_flag = TCC0_PWMPatternSet((TCC_PATT_PGE0_Msk|TCC_PATT_PGE1_Msk|TCC_PATT_PGE2_Msk
             |TCC_PATT_PGE4_Msk|TCC_PATT_PGE5_Msk|TCC_PATT_PGE6_Msk),
             (TCC_PATT_PGE0(0)|TCC_PATT_PGE1(0)|TCC_PATT_PGE2(0)|TCC_PATT_PGE4(0)
-            |TCC_PATT_PGE5(0)|TCC_PATT_PGE6(0)));
+            |TCC_PATT_PGE5(0)|TCC_PATT_PGE6(0))));
         
-    state_run = 0;
+    state_run = 0u;
     stop_count++;
-        
+    if (status!=1U){
+        /* Error log*/
+    }    
 }
 
 /******************************************************************************
@@ -533,10 +542,14 @@ Note:      to be called to enable pwm outputs
 ******************************************************************************/
 void motor_start(void)
 {
-
-    TCC0_PWMPatternSet(0x00,0x00);/*Disable PWM override*/
-    state_run = 1;
+    uint8_t status=1U;
+    bool pwm_flag;
+    status |= (uint8_t)(pwm_flag = TCC0_PWMPatternSet(0x00,0x00));/*Disable PWM override*/
+    state_run = 1u;
     start_count++;
+    if (status!=1U){
+        /* Error log*/
+    }  
 }
 
 /******************************************************************************
@@ -656,14 +669,14 @@ Note2:        the routine has to be called every 10ms to assure correct ramps
         #else
                
         //This calculation scales Speed Ref scale from 0 - 4095 to 0 to Max Speed in RPM
-        spe_adc_rpm_var = pot_input*MAX_SPE_RPM;
-        spe_adc_rpm = spe_adc_rpm_var>>12;  //Divide by 4095 as ADC is 12 bit. 
+        spe_adc_rpm_var = (int32_t)((uint32_t)((uint32_t)pot_input*(uint32_t)MAX_SPE_RPM));
+        spe_adc_rpm = (uint16_t)mcUtils_RightShiftS32(spe_adc_rpm_var, 12U);  //Divide by 4095 as ADC is 12 bit. 
         rpm_ref_abs =spe_adc_rpm;
         #endif
         if(rpm_ref_abs < MIN_SPE_RPM)
         {
             rpm_ref_abs = MIN_SPE_RPM;
-            ext_speed_ref_rpm = MIN_SPE_RPM;
+            ext_speed_ref_rpm = (int16_t)MIN_SPE_RPM;
                         
         }
         else
@@ -697,7 +710,7 @@ Note2:        the routine has to be called every 10ms to assure correct ramps
       spe_ref_abs = 0;
     }
     #ifdef  CURPI_TUN
-    else if(0 == start_toggle)
+    else if(0u == start_toggle)
     {
         motor_stop_source = CUR_PI_NO_START_CMD ;
         motor_stop();
@@ -781,7 +794,7 @@ Note2:        the routine has to be called every 10ms to assure correct ramps
         }
         else
         {
-            if (start_toggle == 1U && !state_run)
+            if ((start_toggle == 1U) && (state_run !=1U))
             {
               /* if motor is not already started */
               motor_start();
@@ -886,7 +899,9 @@ Note:      calculates the third phase value from the other two samles;
                                 cur_mea[1] = -cur_t2;
                                 cur_mea[0] = -(cur_mea[1]+cur_mea[2]);
                                 break;                             
-                        
+                default:
+                       /* Undefined state: Should never come here */
+                       break;                       
     }
     
     /* currents */
@@ -1009,8 +1024,8 @@ void current_1shunt_pwm_update(void)
     if (compensation_mode == COMPENSATE_T1) // T1 < MIN_SAMPLE && T2 >= MIN_SAMPLE
     {
         
-        T1_adjust = MIN_SAMPLE_T1_HALF - (T1_delta>>1);
-        adc1_trigger_normal_delay = (T2_delta - SAMPLING_DELAY);     
+        T1_adjust = (int32_t)MIN_SAMPLE_T1_HALF - mcUtils_RightShiftS32(T1_delta, 1U);
+        adc1_trigger_normal_delay = (T2_delta - (int32_t)SAMPLING_DELAY);     
         
         switch (current_sector)
         {
@@ -1026,10 +1041,10 @@ void current_1shunt_pwm_update(void)
                         
                         // adc0 and adc1 trigger points
                         adc0_trigger_count_new = cv_upcount_new[0] + AD_TRIGGER_T1_SMALL_DELAY;
-                        if(cv_upcount_new[1] < cv_upcount_new[2])
-                            adc1_trigger_count_new = cv_upcount_new[1] + adc1_trigger_normal_delay;
-                        else
-                            adc1_trigger_count_new = cv_upcount_new[2] + adc1_trigger_normal_delay;
+                        if(cv_upcount_new[1] < cv_upcount_new[2]){
+                            adc1_trigger_count_new = cv_upcount_new[1] + adc1_trigger_normal_delay;}
+                        else{
+                            adc1_trigger_count_new = cv_upcount_new[2] + adc1_trigger_normal_delay;}
                         
                         break;
                         
@@ -1045,10 +1060,10 @@ void current_1shunt_pwm_update(void)
                         
                         // adc0 and adc1 trigger points
                         adc0_trigger_count_new = cv_upcount_new[1] + AD_TRIGGER_T1_SMALL_DELAY;
-                        if(cv_upcount_new[0] < cv_upcount_new[2])
-                            adc1_trigger_count_new = cv_upcount_new[0] + adc1_trigger_normal_delay;
-                        else
-                            adc1_trigger_count_new = cv_upcount_new[2] + adc1_trigger_normal_delay;                        
+                        if(cv_upcount_new[0] < cv_upcount_new[2]){
+                            adc1_trigger_count_new = cv_upcount_new[0] + adc1_trigger_normal_delay;}
+                        else{
+                            adc1_trigger_count_new = cv_upcount_new[2] + adc1_trigger_normal_delay;}                        
                         break;
                         
                 case SECTOR_4:
@@ -1063,18 +1078,21 @@ void current_1shunt_pwm_update(void)
                         
                         // adc0 and adc1 trigger points
                         adc0_trigger_count_new = cv_upcount_new[2] + AD_TRIGGER_T1_SMALL_DELAY;
-                        if(cv_upcount_new[0] < cv_upcount_new[1])
-                            adc1_trigger_count_new = cv_upcount_new[0] + adc1_trigger_normal_delay;
-                        else
-                            adc1_trigger_count_new = cv_upcount_new[1] + adc1_trigger_normal_delay;   
+                        if(cv_upcount_new[0] < cv_upcount_new[1]){
+                            adc1_trigger_count_new = cv_upcount_new[0] + adc1_trigger_normal_delay;}
+                        else{
+                            adc1_trigger_count_new = cv_upcount_new[1] + adc1_trigger_normal_delay;}  
                         break;
+                default:
+                       /* Undefined state: Should never come here */
+                       break;
         }
     }
     else if (compensation_mode == COMPENSATE_T2) // T1 >= MIN_SAMPLE && T2 < MIN_SAMPLE
     {
-        T2_adjust = MIN_SAMPLE_T2_HALF - (T2_delta>>1);
+        T2_adjust = (int32_t)MIN_SAMPLE_T2_HALF - mcUtils_RightShiftS32(T2_delta, 1u);
          
-        adc0_trigger_normal_delay = (T1_delta - SAMPLING_DELAY);    
+        adc0_trigger_normal_delay = (T1_delta - (int32_t)SAMPLING_DELAY);    
          
         switch (current_sector)
         {
@@ -1152,13 +1170,16 @@ void current_1shunt_pwm_update(void)
                         }
                         
                         break;
+                default:
+                       /* Undefined state: Should never come here */
+                       break;
         }
     }
     else if (compensation_mode == COMPENSATE_T1T2)  // T1 <= MIN_SAMPLE && T2 <= MIN_SAMPLE
     {
         
-        T1T2_T1_adjust  = MIN_SAMPLE - T1_delta;
-        T1T2_T2_adjust  = MIN_SAMPLE - T2_delta;
+        T1T2_T1_adjust  = (int32_t)MIN_SAMPLE - T1_delta;
+        T1T2_T2_adjust  = (int32_t)MIN_SAMPLE - T2_delta;
         
         switch (current_sector)
         {
@@ -1251,14 +1272,17 @@ void current_1shunt_pwm_update(void)
                         adc1_trigger_count_new = cv_upcount_new[1] + AD_TRIGGER_T2_SMALL_DELAY;
                         
                         break;
+                default:
+                       /* Undefined state: Should never come here */
+                       break;
         }
     }
       
     else
     {
         
-        adc0_trigger_normal_delay = (T1_delta - SAMPLING_DELAY);  
-        adc1_trigger_normal_delay = (T2_delta - SAMPLING_DELAY);  
+        adc0_trigger_normal_delay = (T1_delta - (int32_t)SAMPLING_DELAY);  
+        adc1_trigger_normal_delay = (T2_delta - (int32_t)SAMPLING_DELAY);  
         
         cv_upcount_new[0] = dutycycle[0];
         cv_upcount_new[1] = dutycycle[1];
@@ -1276,7 +1300,9 @@ void current_1shunt_pwm_update(void)
        
              
 } 
-
+#pragma coverity compliance end_block "MISRA C-2012 Rule 14.3"
+#pragma GCC diagnostic pop
+/* MISRAC 2012 deviation block end */
 /******************************************************************************
 Function:    pwm_modulation_reset
 Description:  resets internal variables used in pwm modulation, and sets
@@ -1318,7 +1344,7 @@ Note:      implements a clamped modulation (min-max);
 #ifdef RAM_EXECUTE
 void  __ramfunc__ pwm_modulation(void)
 #else
-void pwm_modulation(void)
+static void pwm_modulation(void)
 #endif
 {
   int32_t s32a;
@@ -1336,17 +1362,17 @@ void pwm_modulation(void)
     where n_shft is found in order to have k inside the range of short integers;
     the condition is k < 32768, and this is true if HALFPER_NRM < vbus, 
     since HALFPER_NRM = PWM_HPER_TICKS * (1 << SH_BASE_VALUE) / 32768.0f */
-  s16a = (int16_t)HALFPER_NRM;
+  s16a = HALFPER_NRM;
   n_shft = (int16_t)SH_BASE_VALUE;
   while(s16a >= vbus)
   {
       /* compiler ensures a arithmetic shift is done in these cases.
       MISRA 10.1 violated for optimziation purpose */
-      s16a >>= 1;
+      s16a=mcUtils_RightShiftS16(s16a, 1u);
      n_shft--;
   }
   s32a = (int32_t)PWM_HPER_TICKS;
-  s32a <<= n_shft;
+  s32a = mcUtils_LeftShiftS32(s32a,(uint16_t)n_shft);
         if(VBUSMIN <= vbus)
         {
           s16a = (int16_t)(s32a / vbus);
@@ -1356,11 +1382,11 @@ void pwm_modulation(void)
           s16a = (int16_t)(s32a / VBUSMIN);
         }
   s32a = ((int32_t)vbus - (int32_t)outv3.u) * (int32_t)s16a;
-        du = (int16_t)(s32a >> n_shft);
+        du = (int16_t)mcUtils_RightShiftS32(s32a, (uint16_t)n_shft);
   s32a = ((int32_t)vbus - (int32_t)outv3.v) * (int32_t)s16a;
-  dv = (int16_t)(s32a >> n_shft);
+  dv = (int16_t)mcUtils_RightShiftS32(s32a, (uint16_t)n_shft);
   s32a = ((int32_t)vbus - (int32_t)outv3.w) * (int32_t)s16a;
-  dw = (int16_t)(s32a >> n_shft);
+  dw = (int16_t)mcUtils_RightShiftS32(s32a, (uint16_t)n_shft);
 
   /* finding duties order:
     phaseindex[0] will be the index of minimum duty,
@@ -1470,19 +1496,19 @@ void pwm_modulation(void)
     s32a = (int32_t)vbus * (int32_t)BASE_VALUE_INT;
     n_shft = (int16_t)SH_BASE_VALUE;
     /* HALFPER_A15 is defined as PWM_HPER_TICKS * 32768 */
-    while((int32_t)HALFPER_A15 <= s32a)  
+    while(HALFPER_A15 <= s32a)  
     {
-      s32a >>= 1;
+      s32a =mcUtils_RightShiftS32(s32a, 1u);
       n_shft--;
     }
     /* this is the division which result must stay in a short int */
     s16a = (int16_t)(s32a / (int32_t)PWM_HPER_TICKS);    
     s32a = ((int32_t)PWM_HPER_TICKS - (int32_t)du) * (int32_t)s16a;
-    outv3.u = (int16_t)(s32a >> n_shft);
+    outv3.u = (int16_t)mcUtils_RightShiftS32(s32a, (uint16_t)n_shft);
     s32a = ((int32_t)PWM_HPER_TICKS - (int32_t)dv) * (int32_t)s16a;
-    outv3.v = (int16_t)(s32a >> n_shft);
+    outv3.v = (int16_t)mcUtils_RightShiftS32(s32a, (uint16_t)n_shft);
     s32a = ((int32_t)PWM_HPER_TICKS - (int32_t)dw) * (int32_t)s16a;
-    outv3.w = (int16_t)(s32a >> n_shft);
+    outv3.w = (int16_t)mcUtils_RightShiftS32(s32a, (uint16_t)n_shft);
 
     /* update output voltage after modulation
      clamping (Clarke transformation) */
@@ -1500,7 +1526,7 @@ void pwm_modulation(void)
     (*amed) += (*amin);
     (*amax) = (int16_t)PWM_HPER_TICKS;
 #else  /* center-aligned modulation */
-    (*amin) = HALF_HPER_TICKS - (*amax>>1);
+    (*amin) = (int16_t)HALF_HPER_TICKS - mcUtils_RightShiftS16(*amax, 1u);
     (*amax) += (*amin);
     (*amed) += (*amin);
 #endif
@@ -1751,7 +1777,7 @@ void motorcontrol(void)
         {
 
             case STOPPED:
-                state_stopped = state_count;
+                state_stopped = (uint16_t)state_count;
                 dcurref_l = 0;
                 curdqr.x = 0;
                 curdqr.y = 0;
@@ -1767,7 +1793,7 @@ void motorcontrol(void)
                 }
                 break;
             case ALIGNING:
-                state_align = state_count;
+                state_align = (uint16_t)state_count;
                
                 if(0 == ref_sgn)
                 {
@@ -1787,7 +1813,7 @@ void motorcontrol(void)
                         {
                             dcurref_l += CUR_RAMP_AL;
 
-                            curdqr.y = (int16_t)(dcurref_l >> SH_BASE_VALUE);
+                            curdqr.y = (int16_t)mcUtils_RightShiftS32(dcurref_l, SH_BASE_VALUE);
 
                         }
                         else
@@ -1818,7 +1844,7 @@ void motorcontrol(void)
                 }
                 break;
             case STARTING:
-                state_start = state_count;
+                state_start = (uint16_t)state_count;
                 /* observer alignment */
                 if((MIN_SPE >> 2) > elespeed_abs)
                 {
@@ -1880,7 +1906,7 @@ void motorcontrol(void)
 
                 break;
             case CLOSINGLOOP:
-                state_closingloop = state_count;
+                state_closingloop = (uint16_t)state_count;
                 /* position and speed estimation (Luenberger) */
                 position_and_speed_estimation(spe_ref_sgn, &prev_outvab, &curabm);
                 newsysph = position_offset + get_angular_position();
@@ -1902,8 +1928,8 @@ void motorcontrol(void)
                 /* compiler ensures a arithmetic shift is done in these cases.
                     MISRA 10.1 violated for optimziation purpose */
 
-                outvdq.x = (int16_t)(id_pi.imem >> id_pi.shp); //Copying the integral output of D axis PI Controller to D axis output voltage
-                outvdq.y = (int16_t)(iq_pi.imem >> iq_pi.shp); //Copying the integral output of Q axis PI Controller to Q axis output voltage
+                outvdq.x = (int16_t)mcUtils_RightShiftS32(id_pi.imem, id_pi.shp); //Copying the integral output of D axis PI Controller to D axis output voltage
+                outvdq.y = (int16_t)mcUtils_RightShiftS32(iq_pi.imem, iq_pi.shp); //Copying the integral output of Q axis PI Controller to Q axis output voltage
                 library_dq_ab(&sysph, &outvdq, &outvab);
                 library_dq_ab(&sysph, &curdqr, &curabr);
 
@@ -1919,16 +1945,16 @@ void motorcontrol(void)
                 #endif
                 id_pi.imem = outvdq.x;
                 /* d current PI integral term in new ref. frame */
-                id_pi.imem <<= id_pi.shp;  
+                id_pi.imem = mcUtils_LeftShiftS32(id_pi.imem, id_pi.shp);  
                 iq_pi.imem = outvdq.y;
                 /* q current PI integral term in new ref. frame */
-                iq_pi.imem <<= iq_pi.shp;  
+                iq_pi.imem = mcUtils_LeftShiftS32(iq_pi.imem, iq_pi.shp);  
                 dcurref_l = curdqr.x;
-                dcurref_l <<= SH_BASE_VALUE;
+                dcurref_l = mcUtils_LeftShiftS32(dcurref_l, SH_BASE_VALUE);
 
                 /* speed PI control memory setting */
                 sp_pi.imem = curdqr.y;
-                sp_pi.imem <<= sp_pi.shp;  /* speed PI integral term */
+                sp_pi.imem = mcUtils_LeftShiftS32(sp_pi.imem, sp_pi.shp);  /* speed PI integral term */
                 /* position loss control reset */
                 pos_lost_control_reset();
 
@@ -1956,7 +1982,7 @@ void motorcontrol(void)
             
             case RUNNING:
                 
-                state_closedloop = state_count;
+                state_closedloop = (uint16_t)state_count;
                /* reference speed filter */
                 spe_ref_mem += spe_ref_abs;
                 spe_ref_mem -= spe_ref_fil;
@@ -2000,7 +2026,7 @@ void motorcontrol(void)
 #ifdef USE_DIVAS
                     if(MAX_CUR > curdqr.y) 
                     {
-                        s32a = (int32_t)DIVAS_SquareRoot((uint32_t)((uint32_t)(MAX_CUR_SQUARED)- (uint32_t)(curdqr.y*curdqr.y)));
+                        s32a = (int32_t)DIVAS_SquareRoot((uint32_t)((int32_t)(MAX_CUR_SQUARED- ((int32_t)curdqr.y*(int32_t)curdqr.y))));
                     }
                     else
                     {
@@ -2009,7 +2035,7 @@ void motorcontrol(void)
 #else
                     s32a = library_scat(MAX_CUR, curdqr.y);
 #endif 
-                    s32a <<= SH_BASE_VALUE;
+                    s32a = mcUtils_LeftShiftS32(s32a, SH_BASE_VALUE);
                     if(s32a < dcurref_l)
                     {
                         dcurref_l = s32a;
@@ -2037,7 +2063,7 @@ void motorcontrol(void)
                         dcurref_l = 0;
                     }
                     
-                    curdqr.x = (int16_t)(dcurref_l >> SH_BASE_VALUE);
+                    curdqr.x = (int16_t)mcUtils_RightShiftS32(dcurref_l, SH_BASE_VALUE);
                 }
 
                 /* phase lost check filters */
@@ -2063,7 +2089,7 @@ void motorcontrol(void)
         library_sincos(&sysph);
          /* direct current control */
         s32a =(int32_t)outvmax * DVOL_MARG;
-        id_pi.hlim = (int16_t)(s32a >> SH_BASE_VALUE);      /* vd max */
+        id_pi.hlim = (int16_t)mcUtils_RightShiftS32(s32a, SH_BASE_VALUE);      /* vd max */
         id_pi.llim = -id_pi.hlim;
         s32a = curdqr.x;
         s32a -= curdqm.x;
@@ -2078,7 +2104,7 @@ void motorcontrol(void)
 #ifdef USE_DIVAS
         if(outvmax > outvdq.x)
         {
-            iq_pi.hlim = (int16_t)DIVAS_SquareRoot((uint32_t)((uint32_t)(outvmax*outvmax)- (uint32_t)(outvdq.x*outvdq.x))); /* vq max */
+            iq_pi.hlim = (int16_t)DIVAS_SquareRoot((uint32_t)((int32_t)(((int32_t)outvmax*(int32_t)outvmax)- ((int32_t)outvdq.x*(int32_t)outvdq.x)))); /* vq max */
         }
         else
         {
@@ -2117,16 +2143,16 @@ void motorcontrol(void)
         /* filters */
         idfil_mem += curdqm.x;          /* direct current */
         idfil_mem -= idfil;
-        idfil = (int16_t)(idfil_mem >> SH_MEAS_FIL);
+        idfil = (int16_t)mcUtils_RightShiftS32(idfil_mem, SH_MEAS_FIL);
         iqfil_mem += curdqm.y;          /* quadrature current */
         iqfil_mem -= iqfil;
-        iqfil = (int16_t)(iqfil_mem >> SH_MEAS_FIL);
+        iqfil = (int16_t)mcUtils_RightShiftS32(iqfil_mem, SH_MEAS_FIL);
         vdfil_mem += outvdq.x;          /* direct voltage */
         vdfil_mem -= vdfil;
-        vdfil = (int16_t)(vdfil_mem >> SH_MEAS_FIL);
+        vdfil = (int16_t)mcUtils_RightShiftS32(vdfil_mem, SH_MEAS_FIL);
         vqfil_mem += outvdq.y;          /* quadrature voltage */
         vqfil_mem -= vqfil;
-        vqfil = (int16_t)(vqfil_mem >> SH_MEAS_FIL);
+        vqfil = (int16_t)mcUtils_RightShiftS32(vqfil_mem, SH_MEAS_FIL);
         espabs_mem += elespeed_abs;    /* estimated abs speed */
         espabs_mem -= espabs_fil;
         espabs_fil = (uint16_t)(espabs_mem >> SH_MEAS_FIL);
@@ -2142,8 +2168,8 @@ void motorcontrol(void)
         phase_lost_filters_reset();
 
         sysph.ang = 0;
-        sysph.sin = 0;
-        sysph.cos = (int16_t)BASE_VALUE_INT;
+        sysph.sin_th = 0;
+        sysph.cos_th = (int16_t)BASE_VALUE_INT;
 
         curdqr.x = 0;
         curdqr.y = 0;
@@ -2188,19 +2214,19 @@ void motorcontrol(void)
     s32a -= vbmin;
     if(0 > s32a)
     {
-        s32a <<= SH_VBMIN_DEC;  /* faster decrease */
+        s32a = mcUtils_LeftShiftS32(s32a, SH_VBMIN_DEC);  /* faster decrease */
     }
     vbmin_mem += s32a;
-    vbmin = (int16_t)(vbmin_mem >> SH_VBMIN_INC);
+    vbmin = (int16_t)mcUtils_RightShiftS32(vbmin_mem, SH_VBMIN_INC);
 
     /* available voltage calculation */
     s32a = (int32_t)vbmin * K_AVAIL_VOL;
-    outvmax = (int16_t)(s32a >> SH_BASE_VALUE);
+    outvmax = (int16_t)mcUtils_RightShiftS32(s32a, SH_BASE_VALUE);
 
     /* filters */
     vbfil_mem += vbus;
     vbfil_mem -= vbfil;
-    vbfil = (int16_t)(vbfil_mem >> 12);
+    vbfil = (int16_t)mcUtils_RightShiftS32(vbfil_mem, 12u);
 
   
 }

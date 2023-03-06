@@ -89,7 +89,7 @@ static coef_t
  k11;   /* constant observer coefficient */
 
 #ifdef  CROSS_COUPLING_ENABLED
-coef_t
+static coef_t
  hhh,   /* intermediate result in observer variable coefficient calculation */
  lll,   /* intermediate result in observer variable coefficient calculation */
  xxx,   /* intermediate result in observer variable coefficient calculation */
@@ -128,16 +128,15 @@ static uint16_t
  flx_arg_mem, /* estimated permanent magnets flux position memory */
  dph_abs_fil; /* filtered one-step phase difference */
 
-uint16_t dph_global;
+static uint16_t dph_global;
 static int16_t
  k_spe12,  /* internal conversion constant */
  speed_min,  /* minimum speed [internal units] */
  speed_est,  /* estimated speed [internal units] */
  speed_sgn,  /* speed sign */
  speed_abs,  /* speed absolute value */
- sp_fir_ind,  /* index in fir speed filter memories vector */
  sp_fir_vec[8]; /* speed fir filter memories vector */
-
+static uint16_t  sp_fir_ind;  /* index in fir speed filter memories vector */
 /*******************************************************************************
 Functions (private and public)
 *******************************************************************************/
@@ -171,7 +170,7 @@ void estimation_set_base_values(float32_t samfreq, float32_t basespe,
  f32a = (OBS_MINSPEED_R_S * (BASE_VALUE_FL)) / basespe;
  speed_min = (int16_t)f32a;
  /* minimum phase difference */
- f32a = OBS_MINFREQ_HZ * 65536.0 / f32_sam_fre;
+ f32a = OBS_MINFREQ_HZ * 65536.0f / f32_sam_fre;
  dph_min = (uint16_t)f32a;
 
  /* conversion constants between speed in internal units and speed as
@@ -179,7 +178,11 @@ void estimation_set_base_values(float32_t samfreq, float32_t basespe,
  f32a = ((32768.0f / FLOAT_PI)) * (f32_bas_spe / f32_sam_fre);
  k_spe12 = (int16_t)f32a;
 }
-
+// *****************************************************************************
+/* MISRA C-2012 Rule 14.1 deviated:9 Deviation record ID -  H3_MISRAC_2012_R_14_1_DR_1 */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block deviate:9 "MISRA C-2012 Rule 14.1" "H3_MISRAC_2012_R_14_1_DR_1" 
 /******************************************************************************
 Function:  estimation_set_parameters
 Description: Luenberger observer coefficients calculation
@@ -191,7 +194,7 @@ Modifies:  observer coefficients
 void estimation_set_parameters(float32_t rsta, float32_t lsyn)
 {
  float32_t  f32a;
-
+ 
  /* preliminary floating point calculations */
  f32_sta_res = rsta;
  f32_syn_ind = lsyn;
@@ -201,15 +204,15 @@ void estimation_set_parameters(float32_t rsta, float32_t lsyn)
  /* constant coefficients calc (l11) */
  f32a = OBS_C0_GAIN;
  l11.shr = 0;
- while((16383.0f > f32a) && ((uint16_t)OBS_MAXSHIFTS > l11.shr))
+ while((16383.0f > f32a ) && (OBS_MAXSHIFTS > l11.shr))
  {
   f32a *= 2.0f;
   l11.shr++;
  }
  l11.val = (int16_t)f32a;        /* always positive */
- while((0 == (l11.val & 0x0001)) && (0U < l11.shr))
+ while((0u == ((uint16_t)l11.val & 0x0001u)) && (0U < l11.shr))
  {
-  l11.val >>= 1;
+  l11.val =mcUtils_RightShiftS16(l11.val, 1u);
   l11.shr--;
  }
 
@@ -218,7 +221,7 @@ void estimation_set_parameters(float32_t rsta, float32_t lsyn)
  m11.shr = 0;
  if(f32a >= 0.0f)
  {
-  while((16383.0f > f32a) && ((uint16_t)OBS_MAXSHIFTS > m11.shr))
+  while((16383.0f > f32a) && (OBS_MAXSHIFTS > m11.shr))
   {
    f32a *= 2.0f;
    m11.shr++;
@@ -226,46 +229,46 @@ void estimation_set_parameters(float32_t rsta, float32_t lsyn)
  }
  else
  {
-  while((-16383.0f < f32a) && ((uint16_t)OBS_MAXSHIFTS > m11.shr))
+  while((-16383.0f < f32a) && (OBS_MAXSHIFTS > m11.shr))
   {
    f32a *= 2.0f;
    m11.shr++;
   }
  }
  m11.val = (int16_t)f32a;        /* can be negative */
- while((0 == (m11.val & 0x0001)) && (0U < m11.shr))
+ while((0u == ((uint16_t)m11.val & 0x0001u)) && (0U < m11.shr))
  {
-  m11.val >>= 1;
+  m11.val =mcUtils_RightShiftS16(m11.val,1u);
   m11.shr--;
  }
 
  /* constant coefficients calc (n11) */
  f32a = OBS_H_GAIN;
  n11.shr = 0;
- while((16383.0f > f32a) && ((uint16_t)OBS_MAXSHIFTS > n11.shr))
+ while((16383.0f > f32a) && (OBS_MAXSHIFTS > n11.shr))
  {
   f32a *= 2.0f;
   n11.shr++;
  }
  n11.val = (int16_t)f32a;        /* always positive */
- while((0 == (n11.val & 0x0001)) && (0U < n11.shr))
+ while((0u == ((uint16_t)n11.val & 0x0001u)) && (0U < n11.shr))
  {
-  n11.val >>= 1;
+  n11.val =mcUtils_RightShiftS16(n11.val, 1u);
   n11.shr--;
  }
 
  /* constant coefficients calc (k11) */
  f32a = f32_k_gain * f32_k_volam;
  k11.shr = 0;
- while((16383.0f > f32a) && ((uint16_t)OBS_MAXSHIFTS > k11.shr))
+ while((16383.0f > f32a) && (OBS_MAXSHIFTS > k11.shr))
  {
   f32a *= 2.0f;
   k11.shr++;
  }
  k11.val = (int16_t)f32a;        /* always positive */
- while((0 == (k11.val & 0x0001)) && (0U < k11.shr))
+ while((0u == ((uint16_t)k11.val & 0x0001u)) && (0U < k11.shr))
  {
-  k11.val >>= 1;
+  k11.val =mcUtils_RightShiftS16(k11.val, 1u);
   k11.shr--;
  }
 
@@ -276,7 +279,7 @@ void estimation_set_parameters(float32_t rsta, float32_t lsyn)
  hhh.shr = 0;
  if(f32a >= 0.0f)
  {
-  while((16383.0f > f32a) && ((uint16_t)OBS_MAXSHIFTS > hhh.shr))
+  while((16383.0f > f32a) && (OBS_MAXSHIFTS > hhh.shr))
   {
    f32a *= 2.0f;
    hhh.shr++;
@@ -284,46 +287,46 @@ void estimation_set_parameters(float32_t rsta, float32_t lsyn)
  }
  else
  {
-  while((-16383.0f < f32a) && ((uint16_t)OBS_MAXSHIFTS > hhh.shr))
+  while((-16383.0f < f32a) && (OBS_MAXSHIFTS > hhh.shr))
   {
    f32a *= 2.0f;
    hhh.shr++;
   }
  }
  hhh.val = (int16_t)f32a;        /* can be negative */
- while((0 == (hhh.val & 0x0001)) && (0 < hhh.shr))
+ while((0u == ((uint16_t)hhh.val & 0x0001u)) && (0u < hhh.shr))
  {
-  hhh.val >>= 1;
+  hhh.val =mcUtils_RightShiftS16(hhh.val, 1u);
   hhh.shr--;
  }
 
  /* intermediate constant (useful in variable coefficients calc) (lll) */
  f32a = f32_syn_ind * f32_k_volam / f32_k_speed;
  lll.shr = 0;
- while((16383.0f > f32a) && ((uint16_t)OBS_MAXSHIFTS > lll.shr))
+ while((16383.0f > f32a) && (OBS_MAXSHIFTS > lll.shr))
  {
   f32a *= 2.0f;
   lll.shr++;
  }
  lll.val = (int16_t)f32a; /* always positive */
- while((0 == (lll.val & 0x0001)) && (0 < lll.shr))
+ while((0u == ((uint16_t)lll.val & 0x0001u)) && (0u < lll.shr))
  {
-  lll.val >>= 1;
+  lll.val = mcUtils_RightShiftS16(lll.val, 1u);
   lll.shr--;
  }
 
  /* intermediate constant (useful in variable coefficients calc) (xxx) */
  f32a = (1.0f / (f32_sam_fre * f32_k_speed));
  xxx.shr = 0;
- while((16383.0f > f32a) && ((uint16_t)OBS_MAXSHIFTS > xxx.shr))
+ while((16383.0f > f32a) && (OBS_MAXSHIFTS > xxx.shr))
  {
   f32a *= 2.0f;
   xxx.shr++;
  }
  xxx.val = (int16_t)f32a; /* always positive */
- while((0 == (xxx.val & 0x0001)) && (0 < xxx.shr))
+ while((0u == ((uint16_t)xxx.val & 0x0001u)) && (0u < xxx.shr))
  {
-  xxx.val >>= 1;
+  xxx.val  = mcUtils_RightShiftS16(xxx.val, 1u);
   xxx.shr--;
  }
 
@@ -349,14 +352,16 @@ void estimation_set_parameters(float32_t rsta, float32_t lsyn)
  obs_e.y = 0;
  bemf.r = 0;
  bemf.t.ang = 0;
- bemf.t.sin = 0;
- bemf.t.cos = (int16_t)BASE_VALUE_INT;
+ bemf.t.sin_th = 0;
+ bemf.t.cos_th = (int16_t)BASE_VALUE_INT;
  #ifdef  CROSS_COUPLING_ENABLED
  debug_cnt1 = 0;
  debug_cnt2 = 0;
  #endif
 }
-
+#pragma coverity compliance end_block "MISRA C-2012 Rule 14.1"
+#pragma GCC diagnostic pop
+/* MISRAC 2012 deviation block end */
 /******************************************************************************
 Function:  obs_coef_calc
 Description: Luenberger observer coefficients calculation
@@ -403,13 +408,13 @@ void obs_coef_calc(int16_t spref)
  n21.shr = xxx.shr;
  while((32767 < s32a) || (OBS_MAXSHIFTS < n21.shr))
  {
-  s32a >>= 1;
+  s32a = mcUtils_RightShiftS32(s32a,1u);
   n21.shr--;   // if negative algo. will fail
  }
  n21.val = (int16_t)s32a;
- while((0 == (n21.val & 0x0001)) && (0 < n21.shr))
+ while((0u == ((uint16_t)n21.val & 0x0001u)) && (0u < n21.shr))
  {
-  n21.val >>= 1;
+  n21.val = mcUtils_RightShiftS16(n21.val, 1u);
   n21.shr--;
  }
 
@@ -418,13 +423,13 @@ void obs_coef_calc(int16_t spref)
  m21.shr = n21.shr + hhh.shr;
  while(((32767 < s32a) || (-32767 > s32a)) || (OBS_MAXSHIFTS < m21.shr))
  {
-  s32a >>= 1;
+  s32a = mcUtils_RightShiftS32(s32a,1u);
   m21.shr--;   // if negative algo. will fail
  }
  m21.val = (int16_t)s32a;
- while((0 == (m21.val & 0x0001)) && (0 < m21.shr))
+ while((0u == ((uint16_t)m21.val & 0x0001u)) && (0u < m21.shr))
  {
-  m21.val >>= 1;
+  m21.val = mcUtils_RightShiftS16(m21.val, 1u);
   m21.shr--;
  }
 
@@ -433,13 +438,13 @@ void obs_coef_calc(int16_t spref)
  k21.shr = lll.shr;
  while((32767 < s32a) || (OBS_MAXSHIFTS < k21.shr))
  {
-  s32a >>= 1;
+  s32a = mcUtils_RightShiftS32(s32a, 1u);
   k21.shr--;   /* if negative algo. will fail */
  }
  k21.val = (int16_t)s32a;
- while((0 == (k21.val & 0x0001)) && (0 < k21.shr))
+ while((0u == ((uint16_t)k21.val & 0x0001u)) && (0u < k21.shr))
  {
-  k21.val >>= 1;
+  k21.val = mcUtils_RightShiftS16(k21.val, 1u);
   k21.shr--;
  }
 
@@ -473,17 +478,20 @@ int32_t shfdw1(int32_t a, uint16_t s)
     optimization is higher in this case.
     compiler ensures it places with an arithmetic shift */
 
- int32_t r;
+    int32_t result;
+    uint32_t u32a;
 
- if(0 > a)
- {
-  r = -((-a) >> s);
- }
- else
- {
-  r = a >> s;
- }
- return (r);
+    if( 0 > a )
+    {
+        u32a = ((uint32_t)(-a ) >> s );
+        result = -(int32_t)u32a;
+    }
+    else
+    {
+        u32a = ((uint32_t)a >> s);
+        result = (int32_t)u32a;
+    }
+    return result;
 }
 
 /*******************************************************************************
@@ -508,7 +516,7 @@ int32_t shfdw2(int32_t a, uint16_t s)
  }
  else
  {
-   r = a >> s;
+   r = mcUtils_RightShiftS32(a, s);
    if(0 == r)
    {
     r = 1;
@@ -529,7 +537,7 @@ static inline int32_t mulshr(int16_t a, const coef_t *c)
 
  r = ((int32_t)a) * ((int32_t)(c->val));
 
- r >>= (c->shr);
+ r = mcUtils_RightShiftS32(r, c->shr);
 
  return (r);
 }
@@ -738,9 +746,9 @@ void speed_filter(void)
  flx_arg_mem = flx_arg;
  if(1 > dph)
  {
-  dph = dph_min;
+  dph = (int16_t)dph_min;
  }
-  dph_global = dph;
+  dph_global = (uint16_t)dph;
  /* first filter (FIR) */
  /* since we use as output the accumulator undivided, the amplification is
   4=2^2 if we calculate the speed over 4 samples; if the speed is
@@ -752,7 +760,7 @@ void speed_filter(void)
  sp_fir_vec[sp_fir_ind] = dph;  /* max speed: pi[rad/s]/Ts[s] */
     sp_fir_ind++;
  /* sp_fir_ind &= 0x07; speed calculated over 8 samples */
- sp_fir_ind &= 0x03; /* speed calculated over 4 samples */
+ sp_fir_ind &= 0x03u; /* speed calculated over 4 samples */
 
  /* now we will apply three IIR in cascade configuration;
   the IIR time constant is ((2^4)-1)*Ts, so the cut-off frequency is Fs/(30pi)
@@ -762,20 +770,20 @@ void speed_filter(void)
  /* since we use as output the filter memory, the amplification is 2^4=16 */
  /*sp_iir1_mem -= shfdw2(sp_iir1_mem, 4);*/ /* sp_iir1_mem -= sp_iir1_mem >> 4; */
 
-    sp_iir1_mem -= sp_iir1_mem >> 4;
+    sp_iir1_mem -= mcUtils_RightShiftS32(sp_iir1_mem, 4u);
  /* sp_iir1_mem += shfdw1(sp_fir_acc, 1); speed calculated over 8 samples */
  sp_iir1_mem += sp_fir_acc; /* speed calculated over 4 samples */
 
  /* third filter (IIR) */
  /* since we use as output the filter memory, the amplification is 2^4=16 */
  /*sp_iir2_mem -= shfdw2(sp_iir2_mem, 4);*/ /* sp_iir2_mem -= sp_iir2_mem >> 4; */
- sp_iir2_mem -= sp_iir2_mem >> 4;
+ sp_iir2_mem -= mcUtils_RightShiftS32(sp_iir2_mem, 4u);
  sp_iir2_mem += sp_iir1_mem;
 
  /* fourth filter (IIR) */
  /* since we use as output the filter memory, the amplification is 2^4=16 */
  /*sp_iir3_mem -= shfdw2(sp_iir3_mem, 4);*/ /* sp_iir3_mem -= sp_iir3_mem >> 4; */
- sp_iir3_mem -= sp_iir3_mem >> 4;
+ sp_iir3_mem -= mcUtils_RightShiftS32(sp_iir3_mem, 4u);
  sp_iir3_mem += sp_iir2_mem;
 
  /* the total amplification is 2^(2+3*4=14); now come back to the internal units */
@@ -816,19 +824,19 @@ void speed_filter_init(int16_t speed)
   speed_sgn = 1;
  }
  sp_iir3_mem = ((int32_t)speed_abs) * ((int32_t)k_spe12);
- sp_iir2_mem = sp_iir3_mem >> 4;
- sp_iir1_mem = sp_iir2_mem >> 4;
- sp_fir_acc = sp_iir1_mem >> 4;
+ sp_iir2_mem = mcUtils_RightShiftS32(sp_iir3_mem, 4u);
+ sp_iir1_mem = mcUtils_RightShiftS32(sp_iir2_mem, 4u);
+ sp_fir_acc = mcUtils_RightShiftS32(sp_iir1_mem, 4u);
 
- temp = (int16_t)(sp_fir_acc >> 2);  /*speed calculated over 4 samples */
+ temp = (int16_t)mcUtils_RightShiftS32(sp_fir_acc, 2u);  /*speed calculated over 4 samples */
  /* temp = (int16_t)(sp_fir_acc >> 3); speed calculated over 8 samples */
  dph_abs_fil = (uint16_t)(temp);
 
- for(sp_fir_ind = 0; sp_fir_ind < 8; sp_fir_ind++)
+ for(sp_fir_ind = 0u; sp_fir_ind < 8u; sp_fir_ind++)
  {
   sp_fir_vec[sp_fir_ind] = (int16_t)dph_abs_fil;
  }
- sp_fir_ind = 0;
+ sp_fir_ind = 0u;
  flx_arg_mem = flx_arg;
 }
 
@@ -855,12 +863,12 @@ uint16_t delay_comp(void)
  {
   if(0 > speed_sgn)
   {
-     s16a = (int16_t)(-(s32a >> SH_BASE_VALUE));
+     s16a = (int16_t)(-mcUtils_RightShiftS32(s32a, SH_BASE_VALUE));
      retval = ((uint16_t)s16a);
   }
   else
   {
-         s16a = (int16_t)((s32a >> SH_BASE_VALUE));
+         s16a = (int16_t)(mcUtils_RightShiftS32(s32a, SH_BASE_VALUE));
          retval = ((uint16_t)s16a);
   }
  }

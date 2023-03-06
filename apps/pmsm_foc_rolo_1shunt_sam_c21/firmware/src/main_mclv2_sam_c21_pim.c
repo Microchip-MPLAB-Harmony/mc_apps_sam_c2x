@@ -53,36 +53,44 @@
 #include "mc_app.h"
 #include "X2CScopeCommunication.h"
 
-uint16_t adc_result_data[2];
-uint8_t start_toggle = 0;
+static uint16_t adc_result_data[2];
+uint8_t start_toggle = 0u;
 uint16_t adc_dc_bus_voltage;
 uint16_t pot_input;
 uint8_t  direction = 0x0U;
 
-uint16_t calibration_sample_count = 0x0000U;
-uint8_t  post_calib_state = 0;
-uint8_t  pwm_cycle = 0;
-uint16_t adc_0_offset = 0;
-uint16_t adc_1_offset = 0;
-volatile uint8_t  overCurrentFaultActive = 0;
-volatile uint32_t overCurrentFaultResetDelayCounter = 0;
+static uint16_t calibration_sample_count = 0x0000U;
+static uint8_t  post_calib_state = 0u;
+static uint8_t  pwm_cycle = 0u;
+static uint16_t adc_0_offset = 0u;
+static uint16_t adc_1_offset = 0u;
+static volatile uint8_t  overCurrentFaultActive = 0u;
+static volatile uint32_t overCurrentFaultResetDelayCounter = 0u;
 
-uint32_t adc_0_sum = 0;
-uint32_t adc_1_sum = 0;
-uint16_t mytestvar1 = 0;
-uint16_t mytestvar2 = 0;
+static uint32_t adc_0_sum = 0u;
+static uint32_t adc_1_sum = 0u;
+static uint16_t mytestvar1 = 0u;
 
-button_response_t button_S2_data;
-button_response_t button_S3_data;
-void ADC_ISR(uintptr_t context);
-void ADC_CALIB_ISR (uintptr_t context);
-void TCC0_PR_ISR (uintptr_t context);
+static button_response_t button_S2_data;
+static button_response_t button_S3_data;
+static uintptr_t dummyforMisra;
+
+void ADC_ISR(ADC_STATUS status, uintptr_t context);
+void ADC_CALIB_ISR (ADC_STATUS status, uintptr_t context);
+void TCC0_PR_ISR ( uint32_t status, uintptr_t context);
 void OC_FAULT_ISR(uintptr_t context);
 void motor_start_stop(void);
 void motor_direction_toggle(void);
 void buttonRespond(button_response_t * buttonResData, void (* buttonJob)(void));
 
-
+// *****************************************************************************
+/* MISRA C-2012 Rule 14.3, and 2.1 deviated below. Deviation record ID -  
+    H3_MISRAC_2012_R_14_3_DR_1, H3_MISRAC_2012_R_2_1_DR_1 */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block \
+(deviate:1 "MISRA C-2012 Rule 14.3" "H3_MISRAC_2012_R_14_3_DR_1" )\
+(deviate:1 "MISRA C-2012 Rule 2.1" "H3_MISRAC_2012_R_2_1_DR_1" )
 // *****************************************************************************
 // *****************************************************************************
 // Section: Main Entry Point
@@ -94,24 +102,24 @@ int main ( void )
     /* Initialize all modules */
     SYS_Initialize ( NULL );
     
-    ADC1_CallbackRegister((ADC_CALLBACK) ADC_CALIB_ISR, (uintptr_t)NULL);
+    ADC1_CallbackRegister((ADC_CALLBACK) ADC_CALIB_ISR, (uintptr_t)dummyforMisra);
     
     ADC0_Enable();
     ADC1_Enable();
     
-    TCC0_REGS->TCC_WAVE |= 0x0700;
+    TCC0_REGS->TCC_WAVE |= 0x0700U;
     
-    mcApp_TCC1DutySet(TCC1_CHANNEL0,1000 );
-    mcApp_TCC1DutySet(TCC1_CHANNEL1,2000 );
+    mcApp_TCC1DutySet(TCC1_CHANNEL0,1000U );
+    mcApp_TCC1DutySet(TCC1_CHANNEL1,2000U );
     
-    TCC0_PWMCallbackRegister((TCC_CALLBACK) TCC0_PR_ISR,(uintptr_t)NULL);
+    TCC0_PWMCallbackRegister((TCC_CALLBACK) TCC0_PR_ISR,(uintptr_t)dummyforMisra);
     
      // TCC0 and TCC1 Event 1 is configured to retrigger on event from TC0 Overflow
     TCC0_REGS->TCC_EVCTRL |= TCC_EVCTRL_TCEI0_Msk | TCC_EVCTRL_EVACT0_START;
     TCC1_REGS->TCC_EVCTRL |= TCC_EVCTRL_TCEI0_Msk | TCC_EVCTRL_EVACT0_START;
    
    
-    EIC_CallbackRegister ((EIC_PIN)EIC_PIN_2, (EIC_CALLBACK) OC_FAULT_ISR,(uintptr_t)NULL);
+    EIC_CallbackRegister ((EIC_PIN)EIC_PIN_2, (EIC_CALLBACK) OC_FAULT_ISR,(uintptr_t)dummyforMisra);
     motorcontrol_vars_init();
 
     TCC0_PWMStart();
@@ -135,7 +143,7 @@ int main ( void )
         X2CScope_Communicate();
         if(0U == syn10ms())
         {
-            if(overCurrentFaultActive == 0)
+            if(overCurrentFaultActive == 0u)
             {
                 speed_ramp(); 
 
@@ -152,8 +160,8 @@ int main ( void )
                 //Clear the Over Current Flag after a delay defined by OVERCURRENT_RESET_DELAY_SEC
                 if(overCurrentFaultResetDelayCounter >= OVERCURRENT_RESET_DELAY_COUNT)
                 {
-                    overCurrentFaultResetDelayCounter = 0;
-                    overCurrentFaultActive = 0;
+                    overCurrentFaultResetDelayCounter = 0u;
+                    overCurrentFaultActive = 0u;
                     
                 }
             }
@@ -167,12 +175,17 @@ int main ( void )
     return ( EXIT_FAILURE );
 }
 
+#pragma coverity compliance end_block "MISRA C-2012 Rule 14.3"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 2.1"
+#pragma GCC diagnostic pop
+/* MISRAC 2012 deviation block end */
+
 void OC_FAULT_ISR(uintptr_t context)
 {
     
     motor_stop(); // Disable TCC output
-    start_toggle=0; // Stop the state machine
-    overCurrentFaultActive = 1; // Set overCurrentFault Flag
+    start_toggle=0u; // Stop the state machine
+    overCurrentFaultActive = 1u; // Set overCurrentFault Flag
     
     syn_cnt = SYN_VAL10MS; // Reset the 10mS counter
     TCC0_REGS->TCC_STATUS = TCC_STATUS_FAULT1(1); // Clear Non Recoverable Fault
@@ -181,18 +194,18 @@ void OC_FAULT_ISR(uintptr_t context)
 }
 
 
-void TCC0_PR_ISR (uintptr_t context)
+void TCC0_PR_ISR ( uint32_t status, uintptr_t context)
 {
 
     TCC0_REGS->TCC_INTFLAG = TCC_INTFLAG_Msk; 
     
-    if(post_calib_state)
+    if(post_calib_state==1u)
         
     {    
         pwm_cycle++;
     
-        if(pwm_cycle >= 4)
-            pwm_cycle = 0;
+        if(pwm_cycle >= 4u){
+            pwm_cycle = 0u;}
 
         if(pwm_cycle == CYCLE_1)
         {
@@ -211,33 +224,36 @@ void TCC0_PR_ISR (uintptr_t context)
         else if(pwm_cycle == CYCLE_0)
         {
             set_pwm_falling_comparevalue();        
-        }          
+        }   
+        else{
+            /*  Do nothing */
+        }
     }
 }
 
 
 /* This ISR calibrates zero crossing point for Phase U and Phase V currents*/
 
-void ADC_CALIB_ISR (uintptr_t context)
+void ADC_CALIB_ISR (ADC_STATUS status, uintptr_t context)
 {
     
     calibration_sample_count++;
-    if(calibration_sample_count <= 1024)   
+    if(calibration_sample_count <= 1024u)   
     {
         adc_0_sum += ADC0_ConversionResultGet();  
         adc_1_sum += ADC1_ConversionResultGet();
     }
     else
     {
-        adc_0_offset = adc_0_sum>>10;  
-        adc_0_sum = 0;
-        adc_1_offset = adc_1_sum>>10;  
-        adc_1_sum = 0;
-        calibration_sample_count = 0;
-        post_calib_state = 1;
+        adc_0_offset = (uint16_t)(adc_0_sum >> 10u);  
+        adc_0_sum = 0u;
+        adc_1_offset = (uint16_t)(adc_1_sum >> 10u);  
+        adc_1_sum = 0u;
+        calibration_sample_count = 0u;
+        post_calib_state = 1u;
 
         ADC1_Disable();
-        ADC1_CallbackRegister((ADC_CALLBACK) ADC_ISR, (uintptr_t)NULL);
+        ADC1_CallbackRegister((ADC_CALLBACK) ADC_ISR, (uintptr_t)dummyforMisra);
         ADC1_Enable(); 
 
         TCC0_REGS->TCC_CTRLBSET = TCC_CTRLBSET_CMD_STOP;
@@ -255,15 +271,15 @@ void ADC_CALIB_ISR (uintptr_t context)
 }
 
 
-void ADC_ISR(uintptr_t context)
+void ADC_ISR(ADC_STATUS status, uintptr_t context)
 {
     adc_result_data[0] = ADC0_ConversionResultGet();
     adc_result_data[1] = ADC1_ConversionResultGet();
     
     // mytestvar1 provides at what pwm_cycle the first ADC interrupt comes after calibration.
     // This info to be used in TCC0_PR_ISR for the correct rise and fall slope compare value and when to get the new dutycycle.
-    if(!mytestvar1)
-    mytestvar1 = pwm_cycle;        
+    if(mytestvar1 != 1u){
+    mytestvar1 = pwm_cycle;  }      
    
  /* Clear all interrupt flags */
     ADC1_REGS->ADC_INTFLAG = ADC_INTFLAG_Msk;
@@ -313,14 +329,14 @@ void ADC_ISR(uintptr_t context)
 
 void motor_start_stop(void)
 {
-    start_toggle = !start_toggle; // Calling this function starts/stops motor
+    start_toggle = (uint8_t)(!(bool)start_toggle); // Calling this function starts/stops motor
 }
 
 void motor_direction_toggle(void)
 {
-    if(!start_toggle) // Calling this function toggles direction of the motor (only if motor is stationary).
+    if(start_toggle != 1U) // Calling this function toggles direction of the motor (only if motor is stationary).
     {
-        direction = !direction; 
+        direction = (uint8_t)(!(bool)direction); 
         LED2_DIRECTION_Toggle();
     }
 }
@@ -343,6 +359,7 @@ void buttonRespond(button_response_t * buttonResData, void (* buttonJob)(void))
             }
             break;
         default:
+            /* Undefined state: Should never come here */
             break;
     }
 }
