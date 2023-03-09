@@ -38,8 +38,7 @@
 * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
  *******************************************************************************/
 //DOM-IGNORE-END
-
-#ifndef USERPARAMS_H 
+#ifndef USERPARAMS_H   /* Guard against multiple inclusion */
 #define USERPARAMS_H
 
 /*Define the Motor Type*/
@@ -98,18 +97,18 @@ Macro definitions
 #define PWM_HPER_TICKS  ( 2400U )  /* 4000 ticks, total period 8000 ticks @48MHz -> 167us */
 /* 2400 ticks , total period 4800 ticks -> 100 micro seconds */
 
-#define HALF_HPER_TICKS  (PWM_HPER_TICKS>>1)
+#define HALF_HPER_TICKS  ((int32_t)PWM_HPER_TICKS/2)
 
 #ifdef  LEADSHINE_EL5_M0400_1_24                      /* LEAD SHINE (EL5-M0400-1-24) */
 #define ISOTROPIC_MOTOR
-#define RATED_FRE_HZ      (   250 )       /* maximum frequency [Hz] - 3000RPM */
+#define RATED_FRE_HZ      (   250u )       /* maximum frequency [Hz] - 3000RPM */
 #ifdef FIELD_WEAKENING
-#define MAX_FRE_HZ          (   416       )     /* maximum frequency [Hz] - 5000RPM                 */
+#define MAX_FRE_HZ          (   416u       )     /* maximum frequency [Hz] - 5000RPM                 */
 #else
 #define MAX_FRE_HZ         RATED_FRE_HZ         /* maximum frequency [Hz] - 3000RPM                 */
 #endif
-#define MIN_FRE_HZ      (    30 )      /* minimum frequency [Hz] - 360 RPM*/
-#define POLAR_COUPLES   (     5 )      /* number of polar couples */
+#define MIN_FRE_HZ      (    30u )      /* minimum frequency [Hz] - 360 RPM*/
+#define POLAR_COUPLES   (     5u )      /* number of polar couples */
 #define R_STA           (     1.375 )  /* stator phase resistance [Ohm] */
 #define L_SYN           (     0.00253 )/* synchronous inductance 0.00192 [Hen] (note: >0!) */
 #define LD_SYN                 (     0.00192 )     /* synchronous inductance  0.032 [Hen]                   */
@@ -135,9 +134,9 @@ Macro definitions
 #endif  /* ifdef LEADSHINE_EL5_M0400_1_24 */
 /* board related parameters */
 /* Note: only one board type has to be selected! */
-
+#define BEMF_CONSTANT 7.24f
 /* Determine air gap flux */
-#define AIR_GAP_FLUX         (float)(  60 * BEMF_CONSTANT / ( 1.414 * 1000 * M_PI )) 
+#define AIR_GAP_FLUX         (float)(  60.0f * BEMF_CONSTANT / ( 1.414f * 1000 * FLOAT_PI )) 
 
 /* dsPICDEM MCLV-2 Board related parameters */
 #ifdef MCLV2
@@ -178,13 +177,13 @@ Macro definitions
 
 /* derived and control parameters */
 /* useful in duty cycle calculation */
-#define HALFPER_NRM     ((uint16_t)((float32_t)PWM_HPER_TICKS * BASE_VALUE_FL / 32768.0f)) 
+#define HALFPER_NRM     (int16_t)((float32_t)((float32_t)PWM_HPER_TICKS * BASE_VALUE_FL / 32768.0f))
 /* useful in voltages re-calculation */
-#define HALFPER_A15     ((uint32_t)((float32_t)PWM_HPER_TICKS * 32768.0f))     
+#define HALFPER_A15     ((int32_t)PWM_HPER_TICKS * 32768)     
 /* 60 ticks @48MHz -> 1.25us (greater than deadtimes!) */
-#define DMIN_TICKS      (DEADT_TICKS + 12U)   
+#define DMIN_TICKS      ((int16_t)DEADT_TICKS + 12)   
 /* max delta duty */
-#define DELMAX_TICKS    (PWM_HPER_TICKS - DMIN_TICKS)    
+#define DELMAX_TICKS    ((int16_t)PWM_HPER_TICKS - DMIN_TICKS)    
 /* converting DELMAX_TICKS to absolute float calculation */
 #define DELMAX_TICKS_FL ((float32_t)PWM_HPER_TICKS - ((float32_t)DEADT_TICKS + 12.0f))    
 /* max ratio of vbus which is possible to obtain with modulation */
@@ -230,13 +229,13 @@ Macro definitions
 /* speed[second internal speed unit] = K_SPEED_L * speed[internal speed unit] */
 
 /* Maximum angle step in internal unit per sample at maximum speed*/
-#define MAX_ANGLE_STEP_PER_SAMPLE  ((uint16_t)((32768/FLOAT_PI)*(BASE_SPEED/SAMPLING_FREQ)))
+#define MAX_ANGLE_STEP_PER_SAMPLE  (uint16_t)((float32_t)((32768.0f/FLOAT_PI)*(BASE_SPEED/SAMPLING_FREQ)))
 
 /* Blanking for 'BEMF_ANGLE_BLANK_COUNT' samples is started after the angle roll over from 2*PI to 0 or 0 to 2*PI
  * This blanking helps in removing an possible noise which would masquerade as angle roll over
  * The blanking count is set at half the number of control samples needed for a true angle roll over at max speed
  * ( 0 -> 65535, translates to 0 -> 2*PI) */
-#define BEMF_ANGLE_BLANK_COUNT ((uint16_t)(65535/(2*MAX_ANGLE_STEP_PER_SAMPLE)))
+#define BEMF_ANGLE_BLANK_COUNT ((uint16_t)(65535u/(2u*MAX_ANGLE_STEP_PER_SAMPLE)))
 
 /* due to chosen base values, the conversion constants from the A/D result to the internal
  representation are particularly simple:
@@ -273,13 +272,13 @@ Macro definitions
 /* time constant is (1<<10)/Fs (=128ms @6kHz) */
 #define SH_MEAS_FIL     ( 10 )  
 /* minimum bus voltage in internal units */
-#define VBUSMIN         ((int16_t)(0.2f * BASE_VALUE_FL))   
+#define VBUSMIN         (int16_t)((float32_t)(0.2f * BASE_VALUE_FL))  
 /* ratio of total available voltage reserved for d axis */
-#define DVOL_MARG       ((int16_t)(0.9f * BASE_VALUE_FL))   
+#define DVOL_MARG       (int16_t)((float32_t)(0.9f * BASE_VALUE_FL))  
  /* max speed [rpm] */
-#define MAX_SPE_RPM     ((uint16_t)(60.0f * (float32_t)MAX_FRE_HZ / (float32_t)POLAR_COUPLES))   
+#define MAX_SPE_RPM     ((uint16_t)(60U * MAX_FRE_HZ / POLAR_COUPLES))   
 /* min speed [rpm] */
-#define MIN_SPE_RPM     ((uint16_t)(60 * MIN_FRE_HZ / POLAR_COUPLES))    
+#define MIN_SPE_RPM     ((uint16_t)(60U * MIN_FRE_HZ / POLAR_COUPLES))    
 /* speed[rpm] = (K_INTSPE2RPM * speed[int]) / BASE_VALUE */
 #define K_INTSPE2RPM    MAX_SPE_RPM     
 /* speed[int] = (speed[rpm] * BASE_VALUE) / K_INTSPE2RPM */
@@ -291,15 +290,15 @@ Macro definitions
 #define MAX_SPE          BASE_VALUE_INT
 #define MAX_SPE_FL       BASE_VALUE_FL
 /* used in position lost alarm management */
-#define MAX_SPE_PLOST   ((uint16_t)(1.25f * BASE_VALUE_FL))        
-#define MIN_SPE         ((uint16_t)(BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED))
+#define MAX_SPE_PLOST   (uint16_t)((float32_t)(1.25f * BASE_VALUE_FL))        
+#define MIN_SPE         ((uint16_t)((float32_t)(BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED)))
 #define MIN_FLYING_START_SPE      ((uint16_t)(BASE_VALUE_FL * MIN_FS_SPE_RS / BASE_SPEED)) 
 /* used in position lost alarm management */
-#define MIN_SPE_PLOST   ((uint16_t)(0.3f * (BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED))) 
+#define MIN_SPE_PLOST   (uint16_t)((float32_t)(0.3f * BASE_VALUE_FL * MIN_SPE_RS / BASE_SPEED)) 
 /* position lost alarm counter limit */
 #define POS_LOST_CNTMX  ( 300 ) 
 /* number of sampling periods for startup acceleration */
-#define STUP_TICKS      ((int16_t)(SAMPLING_FREQ * (float32_t)STUP_ACCTIME_S)) 
+#define STUP_TICKS      ((uint16_t)(SAMPLING_FREQ * (float32_t)STUP_ACCTIME_S)) 
 /* delta speed for each sampling period during startup */
 #define DSPEEDL_STUP    ((uint32_t)(MIN_SPE * K_SPEED_L / STUP_TICKS))   
 /* 333.32 micro second = 1, hence 3 for 1ms */
@@ -318,21 +317,21 @@ Macro definitions
 #define BRAKING_TIME_IU      ((uint32_t)(SAMPLING_FREQ * (float32_t)PASSIVE_BRAKING_TIME_SEC)) 
 
 /*This value provides half the value of expected angle rollovers i.e. 2*PI->0 or 0 -> 2*PI*/
-#define HALF_MIN_ANGLE_ROLLOVER  ((uint16_t)(MIN_FS_FRE_HZ*FLYING_START_TIME_SEC*0.5))
+#define HALF_MIN_ANGLE_ROLLOVER  (uint16_t)((float32_t)((float32_t)MIN_FS_FRE_HZ*FLYING_START_TIME_SEC*0.5f))
 
 /* from the required acceleration ramps in rpm we derive the quantities 
    to add to the reference each main loop (10ms) cycle */
 #define ACC_RAMP        ((int16_t)(((float32_t)ACC_RPM_S * BASE_VALUE_FL / MAX_SPE_RPM_FL) / (float32_t)SAMF_SLOW))
 #define DEC_RAMP        ((int16_t)(((float32_t)DEC_RPM_S * BASE_VALUE_FL / MAX_SPE_RPM_FL) / (float32_t)SAMF_SLOW))
 /* maximum current in internal current units */
-#define MAX_CUR         ((int16_t)((float32_t)MAX_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT))  
-#define MAX_CUR_SQUARED (uint32_t)(MAX_CUR*MAX_CUR)
+#define MAX_CUR         (int16_t)((float32_t)((float32_t)MAX_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT))  
+#define MAX_CUR_SQUARED (int32_t)((int32_t)MAX_CUR*(int32_t)MAX_CUR)
 /* startup current in internal current units */
 #define START_CUR       ((int16_t)((float32_t)START_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
 
 /*Minimum Torque mode reference current*/
 #ifdef TORQUE_MODE
-#define TORQUE_MODE_MIN_CUR       ((int16_t)((float32_t)TORQUE_MODE_MIN_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
+#define TORQUE_MODE_MIN_CUR       (uint16_t)((float32_t)((float32_t)TORQUE_MODE_MIN_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
 #endif
 #define FLYING_START_CUR ((int16_t)((float32_t)FLYING_START_CUR_AMP * BASE_VALUE_FL / BASE_CURRENT)) 
 
@@ -355,7 +354,7 @@ Macro definitions
 /* amplification shifts in current PI calculation */
 #define SH_INTC         (  6U )           
 #define KP_CUR          ((int32_t)(KP_CURPIF * (float32_t)(((uint16_t)1 << (uint16_t)SH_PROC))))
-#define KI_CUR          ((int32_t)(KI_CURPIF * (float32_t)(((uint32_t)1 << (uint32_t)(SH_INTC + SH_PROC)))))
+#define KI_CUR          ((int32_t)(KI_CURPIF * (float32_t)(((uint32_t)1 << (uint32_t)((uint32_t)SH_INTC + (uint32_t)SH_PROC)))))
 /* speed loop proportional gain [int] */
 #define KP_SPEPIF       ((K_CURRENT * (float32_t)KP_AS_R / K_SPEED))       
 /* speed loop integral gain [int] */
@@ -365,7 +364,7 @@ Macro definitions
 /* amplification shifts in speed PI calculation */
 #define SH_INTS         (  6U )           
 #define KP_SPE          ((int16_t)(KP_SPEPIF * (float32_t)(((uint16_t)1 << (uint16_t)SH_PROS))))
-#define KI_SPE          ((int16_t)(KI_SPEPIF * (float32_t)(((uint32_t)1 << (uint32_t)(SH_INTS + SH_PROS)))))
+#define KI_SPE          ((int16_t)(KI_SPEPIF * (float32_t)(((uint32_t)1 << (uint32_t)((uint32_t)SH_INTS + (uint32_t)SH_PROS)))))
 /* conversion constant current[mA] = K_INTCUR2MA * current[internal current unit] */
 #define K_INTCUR2MA     ((uint16_t)(BASE_VALUE_FL * 1000.0f / K_CURRENT))
 /* conversion constant voltage[V/10] = K_INTVOL2DV * voltage[internal voltage unit] */ 
@@ -384,8 +383,8 @@ Macro definitions
 #define CUR_STEP_TIM    ( 0.5 )     
 #define CPT_CNT_VAL     ((uint16_t)(CUR_STEP_TIM * SAMF_SLOW))
 
-#define OVERCURRENT_RESET_DELAY_SEC     3
-#define OVERCURRENT_RESET_DELAY_COUNT  (uint32_t) (OVERCURRENT_RESET_DELAY_SEC*100)  // Delay coun value calculated based 10mS unit.
+#define OVERCURRENT_RESET_DELAY_SEC     3u
+#define OVERCURRENT_RESET_DELAY_COUNT  (uint32_t) ((uint32_t)OVERCURRENT_RESET_DELAY_SEC*100u)  // Delay coun value calculated based 10mS unit.
 
 #if ( defined NON_ISOTROPIC_MOTOR )  && ( defined MTPA )
 #define ENABLE_MTPA
@@ -393,9 +392,9 @@ Macro definitions
 #define PMSM_INDUCTANCE_D_SCALED            (int16_t)(0.5f + (BASE_VALUE_FL * PMSM_INDUCTANCE_D_PHYS / BASE_INDUCTANCE))
 #define PMSM_INDUCTANCE_Q_PHYS                LQ_SYN
 #define PMSM_INDUCTANCE_Q_SCALED           (int16_t)(0.5f + (BASE_VALUE_FL * PMSM_INDUCTANCE_Q_PHYS / BASE_INDUCTANCE))
-#define PMSM_MTPA_CONSTANT1_PHYS           (float)(0.5 * AIR_GAP_FLUX / (PMSM_INDUCTANCE_Q_PHYS - PMSM_INDUCTANCE_D_PHYS))
-#define PMSM_MTPA_CONSTANT1_SCALED       (uint32_t)(PMSM_MTPA_CONSTANT1_PHYS * K_CURRENT )
-#define PMSM_MTPA_CONSTANT2_SCALED       (uint32_t)(PMSM_MTPA_CONSTANT1_SCALED * PMSM_MTPA_CONSTANT1_SCALED )
+#define PMSM_MTPA_CONSTANT1_PHYS           (float)(0.5f * AIR_GAP_FLUX / (PMSM_INDUCTANCE_Q_PHYS - PMSM_INDUCTANCE_D_PHYS))
+#define PMSM_MTPA_CONSTANT1_SCALED       (int32_t)((float)(PMSM_MTPA_CONSTANT1_PHYS * K_CURRENT ))
+#define PMSM_MTPA_CONSTANT2_SCALED       (int32_t)(PMSM_MTPA_CONSTANT1_SCALED * PMSM_MTPA_CONSTANT1_SCALED )
 
 #else
 #undef ENABLE_MTPA
@@ -406,7 +405,7 @@ Macro definitions
 #define BASE_INDUCTANCE                                (float)(BASE_IMPEDENCE/BASE_SPEED)
 
 #define PMSM_RATED_SPEED_PHYS                    (float)(2.0f * FLOAT_PI * (float)RATED_FRE_HZ)
-#define PMSM_RATED_SPEED_SCALED                (int16_t)( 0.5f + K_SPEED * PMSM_RATED_SPEED_PHYS)
+#define PMSM_RATED_SPEED_SCALED                (int16_t)((float)( 0.5f + K_SPEED * PMSM_RATED_SPEED_PHYS))
 
 #define PMSM_RESISTANCE_PHYS                        R_STA
 #define PMSM_RESISTANCE_SCALED                   (int16_t)(0.5f + (BASE_VALUE_FL * R_STA / BASE_IMPEDENCE))

@@ -48,7 +48,7 @@ Macro definitions
 #define	OBS_C0_GAIN			( 1.0f - OBS_H_GAIN )	/* > 0 */
 #define	OBS_MINFREQ_HZ		( 3.0f )
 #define	OBS_MINSPEED_R_S	((float32_t)(2.0f * FLOAT_PI * OBS_MINFREQ_HZ))
-#define OBS_MAXSHIFTS		( 32 )
+#define OBS_MAXSHIFTS		(uint16_t)( 32U )
 
 
 
@@ -70,6 +70,8 @@ extern uint16_t flx_arg_mem;
 extern uint16_t bemf_arg_mem;
 extern uint16_t flx_arg;
 extern uint16_t bemf_arg;
+
+extern uint16_t angle_rollover_count;
 /*******************************************************************************
 Type definitions
 *******************************************************************************/
@@ -273,7 +275,11 @@ Description:	init routine for use of phase estimation
 Input:			nothing (uses global variable bemf vector)
 Output:			nothing (modifies global variable flx_arg)
 *******************************************************************************/
-void bemf_phase_estimation_init(void);
+#ifdef RAM_EXECUTE
+void __ramfunc__ bemf_phase_estimation(void);
+#else
+void bemf_phase_estimation(void);
+#endif
 /*******************************************************************************
 Function:		speed_filter
 Description:	speed estimation, using a fourth order low-pass filter

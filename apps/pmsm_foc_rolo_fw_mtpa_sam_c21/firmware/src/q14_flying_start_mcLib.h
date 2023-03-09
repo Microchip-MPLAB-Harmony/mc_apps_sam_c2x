@@ -40,8 +40,8 @@
 *******************************************************************************/
 // DOM-IGNORE-END 
 
-#ifndef _Q14_FLYING_START_MCLIB_H    /* Guard against multiple inclusion */
-#define _Q14_FLYING_START_MCLIB_H
+#ifndef Q14_FLYING_START_MCLIB_H    /* Guard against multiple inclusion */
+#define Q14_FLYING_START_MCLIB_H
 
 #include <stdint.h>
 #include "config/mclv2_sam_c21_pim/userparams.h"

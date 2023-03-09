@@ -44,6 +44,12 @@
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/tcc/plib_tcc_common.h</itemPath>
             </logicalFolder>
           </logicalFolder>
+          <logicalFolder name="X2CCode" displayName="X2CCode" projectFiles="true">
+            <logicalFolder name="X2CScope" displayName="X2CScope" projectFiles="true">
+              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/inc/X2CScopeCommunication.h</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/inc/X2CScope.h</itemPath>
+            </logicalFolder>
+          </logicalFolder>
           <itemPath>../src/config/mclv2_sam_c21_pim/userparams.h</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/device_cache.h</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/toolchain_specifics.h</itemPath>
@@ -94,6 +100,7 @@
             <itemPath>../src/packs/ATSAMC21J18A_DFP/component/tcc.h</itemPath>
             <itemPath>../src/packs/ATSAMC21J18A_DFP/component/tsens.h</itemPath>
             <itemPath>../src/packs/ATSAMC21J18A_DFP/component/wdt.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/component/fuses.h</itemPath>
           </logicalFolder>
           <logicalFolder name="f3" displayName="instance" projectFiles="true">
             <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/ac.h</itemPath>
@@ -140,6 +147,7 @@
             <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tcc2.h</itemPath>
             <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/tsens.h</itemPath>
             <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/wdt.h</itemPath>
+            <itemPath>../src/packs/ATSAMC21J18A_DFP/instance/fuses.h</itemPath>
           </logicalFolder>
           <logicalFolder name="f2" displayName="pio" projectFiles="true">
             <itemPath>../src/packs/ATSAMC21J18A_DFP/pio/samc21j18a.h</itemPath>
@@ -164,10 +172,6 @@
             </logicalFolder>
           </logicalFolder>
         </logicalFolder>
-      </logicalFolder>
-      <logicalFolder name="f4" displayName="X2C Scope" projectFiles="true">
-        <itemPath>../src/X2CScope.h</itemPath>
-        <itemPath>../src/X2CScopeCommunication.h</itemPath>
       </logicalFolder>
       <itemPath>../src/mc_app.h</itemPath>
     </logicalFolder>
@@ -223,6 +227,12 @@
           <logicalFolder name="f2" displayName="stdio" projectFiles="true">
             <itemPath>../src/config/mclv2_sam_c21_pim/stdio/xc32_monitor.c</itemPath>
           </logicalFolder>
+          <logicalFolder name="X2CCode" displayName="X2CCode" projectFiles="true">
+            <logicalFolder name="X2CScope" displayName="X2CScope" projectFiles="true">
+              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/src/X2CScopeCommunication.c</itemPath>
+              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/src/X2CScope.c</itemPath>
+            </logicalFolder>
+          </logicalFolder>
           <itemPath>../src/config/mclv2_sam_c21_pim/initialization.c</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/interrupts.c</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/exceptions.c</itemPath>
@@ -236,12 +246,9 @@
         <itemPath>../src/q14_generic_mcLib.c</itemPath>
         <itemPath>../src/q14_rolo_mcLib.c</itemPath>
       </logicalFolder>
-      <logicalFolder name="f2" displayName="X2C Scope" projectFiles="true">
-        <itemPath>../src/X2CScope.c</itemPath>
-        <itemPath>../src/X2CScopeCommunication.c</itemPath>
-      </logicalFolder>
       <itemPath>../src/mc_app.c</itemPath>
       <itemPath>../src/main_mclv2_sam_c21_pim.c</itemPath>
+      <itemPath>../src/config/mclv2_sam_c21_pim/pin_configurations.csv</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -280,7 +287,7 @@
         <targetDevice>ATSAMC21J18A</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>noID</platformTool>
+        <platformTool>ICD4Tool</platformTool>
         <languageToolchain>XC32</languageToolchain>
         <languageToolchainVersion>4.00</languageToolchainVersion>
         <platform>3</platform>
@@ -293,8 +300,8 @@
       <compileType>
         <linkerTool>
           <linkerLibItems>
-            <linkerLibFileItem>../src/X2CScopeLib_SAMC21_XC32_215.a</linkerLibFileItem>
             <linkerLibFileItem>../src/lib_SAM_C2x_MC_FLYINGSTART.X.a</linkerLibFileItem>
+            <linkerLibFileItem>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/lib/libCORTEXM0PLUS_X2CScope.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
@@ -369,15 +376,13 @@
       <C32>
         <property key="additional-warnings" value="true"/>
         <property key="addresss-attribute-use" value="false"/>
-        <property key="appendMe"
-                  value="-Wformat=2 -Wundef -Wshadow -Wpointer-arith -Wbad-function-cast -Wwrite-strings -Waggregate-return -Wstrict-prototypes -Wmissing-format-attribute -Wno-deprecated-declarations -Wredundant-decls -Wnested-externs -Winline -Wlong-long -Wunreachable-code -Wmissing-noreturn"/>
         <property key="enable-app-io" value="false"/>
         <property key="enable-omit-frame-pointer" value="false"/>
         <property key="enable-symbols" value="true"/>
         <property key="enable-unroll-loops" value="false"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories"
-                  value="../src;../src/config/mclv2_sam_c21_pim;../src/packs/ATSAMC21J18A_DFP;../src/packs/CMSIS/;../src/packs/CMSIS/CMSIS/Core/Include"/>
+                  value="../src;../src/config/mclv2_sam_c21_pim;../src/config/mclv2_sam_c21_pim/X2CCode;../src/packs/ATSAMC21J18A_DFP;../src/packs/CMSIS/;../src/packs/CMSIS/CMSIS/Core/Include;../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/inc"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
@@ -428,7 +433,6 @@
         <property key="additional-options-use-response-files" value="false"/>
         <property key="additional-options-write-sla" value="false"/>
         <property key="allocate-dinit" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="code-dinit" value="false"/>
         <property key="ebase-addr" value=""/>
         <property key="enable-check-sections" value="false"/>
@@ -468,7 +472,6 @@
       <C32CPP>
         <property key="additional-warnings" value="false"/>
         <property key="addresss-attribute-use" value="false"/>
-        <property key="appendMe" value=""/>
         <property key="check-new" value="false"/>
         <property key="eh-specs" value="true"/>
         <property key="enable-app-io" value="false"/>
@@ -519,6 +522,8 @@
         <property key="ToolFirmwareToolPack"
                   value="Press to select which tool pack to use"/>
         <property key="communication.interface.jtag" value="2wire"/>
+        <property key="debugoptions.debug-startup" value="Use system settings"/>
+        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
         <property key="debugoptions.simultaneous.debug" value="false"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
@@ -536,8 +541,6 @@
         <property key="memories.programmemory" value="true"/>
         <property key="memories.programmemory.ranges" value="0-3ffff"/>
         <property key="poweroptions.powerenable" value="false"/>
-        <property key="programmerToGoFilePath"
-                  value="E:/Harmony3/mc_apps_sam_c2x/apps/pmsm_foc_rolo_fw_mtpa_sam_c21/firmware/mclv2_sam_c21_pim.X/debug/mclv2_sam_c21_pim/mclv2_sam_c21_pim_ptg"/>
         <property key="programoptions.donoteraseauxmem" value="false"/>
         <property key="programoptions.eraseb4program" value="true"/>
         <property key="programoptions.ledbrightness" value="5"/>
@@ -555,6 +558,7 @@
         <property key="programoptions.preserveprogram.ranges" value=""/>
         <property key="programoptions.preserveprogramrange" value="false"/>
         <property key="programoptions.preserveuserid" value="false"/>
+        <property key="programoptions.program.otpconfig" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
         <property key="programoptions.programuserotp" value="false"/>
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
@@ -1037,6 +1041,8 @@
         <property key="ToolFirmwareToolPack"
                   value="Press to select which tool pack to use"/>
         <property key="communication.interface.jtag" value="2wire"/>
+        <property key="debugoptions.debug-startup" value="Use system settings"/>
+        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
         <property key="debugoptions.simultaneous.debug" value="false"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
         <property key="hwtoolclock.frcindebug" value="false"/>
@@ -1073,6 +1079,7 @@
         <property key="programoptions.preserveprogram.ranges" value=""/>
         <property key="programoptions.preserveprogramrange" value="false"/>
         <property key="programoptions.preserveuserid" value="false"/>
+        <property key="programoptions.program.otpconfig" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
         <property key="programoptions.programuserotp" value="false"/>
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>

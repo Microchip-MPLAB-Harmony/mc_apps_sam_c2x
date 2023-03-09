@@ -55,54 +55,48 @@
 #include "X2CScopeCommunication.h"
 #include <sys/attribs.h>
 #include "q14_flying_start_mcLib.h"
-uint16_t adc_result1;   
-uint16_t adc_result2;
+#include "q14_rolo_mcLib.h"  
+
 #ifndef CTRL_PWM_1_1
 static uint8_t  adc_interrupt_counter = 0U;
 #endif
-uint16_t adc_result_data[2];
+static uint16_t adc_result_data[2];
 uint8_t start_toggle = 0;
 uint16_t adc_dc_bus_voltage;
 uint16_t pot_input;
-uint16_t set_speed = 0;
 uint8_t  direction = 0;
-uint8_t direction_change_flag = 0;
+static uint8_t direction_change_flag = 0;
 uint8_t phaseindex[3] = {0,1,2};
 
-extern uint32_t state_count;
-extern uint16_t state_flying_start;
-extern uint16_t state_stopped;
-extern uint16_t state_start;
-extern uint16_t state_align;
-extern uint16_t state_closingloop;
-extern uint16_t state_closedloop;
-extern uint16_t flx_arg;
-extern uint16_t flx_arg_mem;
-extern uint16_t bemf_arg;
-extern uint16_t bemf_arg_mem;
 
-
-
-uint16_t calibration_sample_count = 0x0000U;
-uint16_t adc_0_offset = 0;
-uint16_t adc_1_offset = 0;
-uint8_t  overCurrentFaultActive = 0;
+static uint16_t calibration_sample_count = 0x0000U;
+static uint16_t adc_0_offset = 0u;
+static uint16_t adc_1_offset = 0u;
+static uint8_t  overCurrentFaultActive = 0u;
 /*initializing the fault delay counter to final value to avoid any overcurrent 
 reset delay in case an OC fault is triggered upon board power up*/
-uint32_t    overCurrentFaultResetDelayCounter = OVERCURRENT_RESET_DELAY_COUNT;
+static uint32_t    overCurrentFaultResetDelayCounter = OVERCURRENT_RESET_DELAY_COUNT;
 
-uint32_t adc_0_sum = 0;
-uint32_t adc_1_sum = 0;
-
-button_response_t button_S2_data;
-button_response_t button_S3_data;
-void ADC_ISR(uintptr_t context);
-void ADC_CALIB_ISR (uintptr_t context);
+static uint32_t adc_0_sum = 0u;
+static uint32_t adc_1_sum = 0u;
+static uintptr_t dummyforMisra;
+static button_response_t button_S2_data;
+static button_response_t button_S3_data;
+void ADC_ISR(ADC_STATUS status,uintptr_t context);
+void ADC_CALIB_ISR (ADC_STATUS status, uintptr_t context);
 void OC_FAULT_ISR(uintptr_t context);
 void motor_start_stop(void);
 void motor_direction_toggle(void);
 void buttonRespond(button_response_t * buttonResData, void (* buttonJob)(void));
 
+// *****************************************************************************
+/* MISRA C-2012 Rule 14.3, and 2.1 deviated below. Deviation record ID -  
+    H3_MISRAC_2012_R_14_3_DR_1, H3_MISRAC_2012_R_2_1_DR_1 */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunknown-pragmas"
+#pragma coverity compliance block \
+(deviate:1 "MISRA C-2012 Rule 14.3" "H3_MISRAC_2012_R_14_3_DR_1" )\
+(deviate:1 "MISRA C-2012 Rule 2.1" "H3_MISRAC_2012_R_2_1_DR_1" )
 // *****************************************************************************
 // *****************************************************************************
 // Section: Main Entry Point
@@ -114,7 +108,7 @@ int main ( void )
 
 /* Initialize all modules */
     SYS_Initialize ( NULL );
-    ADC0_CallbackRegister((ADC_CALLBACK) ADC_CALIB_ISR, (uintptr_t)NULL);
+    ADC0_CallbackRegister((ADC_CALLBACK) ADC_CALIB_ISR, (uintptr_t)dummyforMisra);
     motorcontrol_vars_init();
     ADC0_Enable();
     state_run = 0;
@@ -122,7 +116,7 @@ int main ( void )
     MCCTRL_InitializeFlyingStartControl();
     TCC0_PWMStart();
     motor_stop();
-    EIC_CallbackRegister ((EIC_PIN)EIC_PIN_2, (EIC_CALLBACK) OC_FAULT_ISR,(uintptr_t)NULL);
+    EIC_CallbackRegister ((EIC_PIN)EIC_PIN_2, (EIC_CALLBACK) OC_FAULT_ISR,(uintptr_t)dummyforMisra);
 
     while ( true )
     {
@@ -133,14 +127,14 @@ int main ( void )
         X2CScope_Communicate();
         if(0U == syn10ms())
         {
-            if(overCurrentFaultActive == 0)
+            if(overCurrentFaultActive == 0u)
             {
                 /* This if loop ensures that when the motor direction is changed, 
                  * the PWM is disabled for 10mS before re-starting the state machine
                  * state to avoid current spike*/
-                if(direction_change_flag == 1) 
+                if(direction_change_flag == 1u) 
                 {
-                    if(start_toggle)
+                    if(start_toggle==1u)
                     {
                         motor_start();
                    }
@@ -159,8 +153,8 @@ int main ( void )
                 //Clear the Over Current Flag after a delay defined by OVERCURRENT_RESET_DELAY_SEC
                 if(overCurrentFaultResetDelayCounter >= OVERCURRENT_RESET_DELAY_COUNT)
                 {
-                    overCurrentFaultResetDelayCounter = 0;
-                    overCurrentFaultActive = 0;
+                    overCurrentFaultResetDelayCounter = 0u;
+                    overCurrentFaultActive = 0u;
                     
                 }
             }
@@ -173,11 +167,16 @@ int main ( void )
 
     return ( EXIT_FAILURE );
 }
+
+#pragma coverity compliance end_block "MISRA C-2012 Rule 14.3"
+#pragma coverity compliance end_block "MISRA C-2012 Rule 2.1"
+#pragma GCC diagnostic pop
+/* MISRAC 2012 deviation block end */
 void OC_FAULT_ISR(uintptr_t context)
 {
     motor_stop(); // Disable TCC output
-    start_toggle=0; // Stop the state machine
-    overCurrentFaultActive = 1; // Set overCurrentFault Flag
+    start_toggle=0u; // Stop the state machine
+    overCurrentFaultActive = 1u; // Set overCurrentFault Flag
     TCC0_REGS->TCC_CTRLBSET = TCC_CTRLBSET_CMD(TCC_CTRLBSET_CMD_RETRIGGER_Val); // Clear the COUNT value
     syn_cnt = SYN_VAL10MS; // Reset the 10mS counter
     TCC0_REGS->TCC_STATUS = TCC_STATUS_FAULT0(1); // Clear Non Recoverable Fault
@@ -185,22 +184,22 @@ void OC_FAULT_ISR(uintptr_t context)
        
 }
 /* This ISR calibrates zero crossing point for Phase U and Phase V currents*/
-void ADC_CALIB_ISR (uintptr_t context)
+void ADC_CALIB_ISR (ADC_STATUS status, uintptr_t context)
 {
     
     X2CScope_Update();
     calibration_sample_count++;
-    if(calibration_sample_count <= 4096)
+    if(calibration_sample_count <= 4096u)
     {
         adc_0_sum += ADC0_ConversionResultGet();    
         adc_1_sum += ADC1_ConversionResultGet();
     }
     else
     {
-        adc_0_offset = adc_0_sum>>12;
-        adc_1_offset = adc_1_sum>>12;
+        adc_0_offset = (uint16_t)(adc_0_sum>>12u);
+        adc_1_offset = (uint16_t)(adc_1_sum>>12u);
         ADC0_Disable();
-        ADC0_CallbackRegister((ADC_CALLBACK) ADC_ISR, (uintptr_t)NULL);
+        ADC0_CallbackRegister((ADC_CALLBACK) ADC_ISR, (uintptr_t)dummyforMisra);
         ADC0_Enable();
 
     }
@@ -211,7 +210,7 @@ void ADC_CALIB_ISR (uintptr_t context)
 }
 
 #ifdef CTRL_PWM_1_1
-void ADC_ISR(uintptr_t context)
+void ADC_ISR(ADC_STATUS status, uintptr_t context)
 {
          adc_result_data[0] = ADC0_ConversionResultGet();
          adc_result_data[1] = ADC1_ConversionResultGet();
@@ -239,10 +238,12 @@ void ADC_ISR(uintptr_t context)
 	/* motor control */
 	motorcontrol();
 		 
-	while(ADC0_REGS->ADC_INTFLAG != ADC_INTFLAG_RESRDY_Msk);
+	while(ADC0_REGS->ADC_INTFLAG != ADC_INTFLAG_RESRDY_Msk){
+        /* Wait state*/
+    }
                        
          /* Read the ADC result value */
-         adc_dc_bus_voltage =  ADC0_ConversionResultGet();
+    adc_dc_bus_voltage =  ADC0_ConversionResultGet();
 	pot_input = ADC1_ConversionResultGet();
   
          /* select the next ADC channel for conversion */
@@ -257,7 +258,7 @@ void ADC_ISR(uintptr_t context)
          return;
 }
 #else
-void ADC_ISR(uintptr_t context)
+void ADC_ISR(ADC_STATUS status, uintptr_t context)
 {
          adc_result_data[0] = ADC0_ConversionResultGet();
          adc_result_data[1] = ADC1_ConversionResultGet();
@@ -299,7 +300,7 @@ void ADC_ISR(uintptr_t context)
 	else
 	{
 		
-      
+      /* undefined condition*/
 
 	}
          X2CScope_Update();
@@ -311,22 +312,27 @@ void ADC_ISR(uintptr_t context)
 void motor_start_stop(void) //Calling this function, starts/stops the motor
 {
 
-     start_toggle =!start_toggle;
+     start_toggle =(uint8_t)(!(bool)start_toggle);
      
-     if(!start_toggle)
+     if(start_toggle !=1U)
      {
         motor_stop();
-        state_count = 1;
+        state_count = 1u;
+        #ifdef FLYING_START_ENABLE 
         state_flying_start = 0;
-        state_stopped = 0;
-        state_align = 0;
-        state_start = 0;
-        state_closingloop = 0;
-        state_closedloop = 0;
-        angle_rollover_count = 0;
-        motor_status = STOPPED;
+        #endif
+
+        state_stopped = 0u;
+        state_align = 0u;
+        state_start = 0u;
+        state_closingloop = 0u;
+        state_closedloop = 0u;
+        angle_rollover_count = 0u;
+
 #ifdef FLYING_START_ENABLE
         motor_status = FLYING_START;
+#else
+        motor_status = STOPPED;
 #endif 
         elespeed = 0;
         flx_arg = 0;
@@ -334,7 +340,7 @@ void motor_start_stop(void) //Calling this function, starts/stops the motor
         flx_arg_mem = 0;
         bemf_arg_mem = 0;
 
-        if(direction ==0)
+        if(direction ==0u)
         {
             spe_ref_sgn = 1;
         }
@@ -351,26 +357,30 @@ void motor_start_stop(void) //Calling this function, starts/stops the motor
 
 void motor_direction_toggle(void) //Calling this function, toggles the direction of the motor
 {
-    if(!start_toggle)
+    if(start_toggle !=1u)
     {
         motor_stop(); 
-        direction = !direction; // toggle direction 
+        direction = (uint8_t)(!(bool)direction); // toggle direction 
         LED2_DIRECTION_Toggle();
-        state_count = 1;
+        state_count = 1u;
+        #ifdef FLYING_START_ENABLE 
         state_flying_start = 0;
-        state_stopped = 0;
-        state_align = 0;
-        state_start = 0;
-        state_closingloop = 0;
-        state_closedloop = 0;
-        angle_rollover_count = 0;
-        motor_status = STOPPED;
+        #endif
+        state_stopped = 0u;
+        state_align = 0u;
+        state_start = 0u;
+        state_closingloop = 0u;
+        state_closedloop = 0u;
+        angle_rollover_count = 0u;
+
 #ifdef FLYING_START_ENABLE
         motor_status = FLYING_START;
+#else
+        motor_status = STOPPED; 
 #endif 
-        direction_change_flag = 1;
+        direction_change_flag = 1u;
         trigger = 0;
-        if(direction == 0)
+        if(direction == 0u)
         {
             spe_ref_sgn = 1;
         }
@@ -400,6 +410,7 @@ void buttonRespond(button_response_t * buttonResData, void (* buttonJob)(void))
             }
             break;
         default:
+            /* Undefined state: Should never come here */
             break;
     }
 }

@@ -125,6 +125,16 @@ extern uint8_t phaseindex[3];
 extern uint16_t adc_dc_bus_voltage;
 extern uint16_t pot_input;
 extern uint32_t trigger;
+extern uint32_t state_count;
+#ifdef FLYING_START_ENABLE 
+extern uint16_t state_flying_start;
+#endif
+
+extern uint16_t state_stopped;
+extern uint16_t state_start;
+extern uint16_t state_align;
+extern uint16_t state_closingloop;
+extern uint16_t state_closedloop;
 /*******************************************************************************
 Private variables definition
 *******************************************************************************/
@@ -200,11 +210,6 @@ extern int32_t
 extern uint16_t assert_active_vector;
 extern int16_t  elespeed;    /* (estimated or imposed) electrical speed [internal speed unit] */
 
-extern uint16_t angle_rollover_count;
-#ifdef  CURPI_TUN
-uint16_t
-    cpt_cnt;
-#endif  // ifdef CURPI_TUN
 
 /*Debug variables; One time write variables */
 #ifdef	MACRO_DEBUG
@@ -238,8 +243,6 @@ void macro_debug(void);
 Public functions prototypes
 *******************************************************************************/
 
-/* debug function which toggles an output port */
-void timedebug_toggle(void);
 
 /******************************************************************************
 Function:		syn10ms
