@@ -1,6 +1,0 @@
-format_version: v1.0
-type: UniqueComponent
-attributes: {id: divas}
-children:
-- type: ElementPosition
-  attributes: {x: '22', y: '98', id: divas}
