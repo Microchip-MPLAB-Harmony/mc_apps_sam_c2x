@@ -138,7 +138,9 @@ bool TCC1_PWM24bitPeriodSet(uint32_t period);
 
 uint32_t TCC1_PWM24bitPeriodGet(void);
 
-void TCC1_PWM24bitCounterSet(uint32_t count);
+void TCC1_PWM24bitCounterSet(uint32_t countVal);
+
+uint32_t TCC1_PWM24bitCounterGet(void);
 
 __STATIC_INLINE bool TCC1_PWM24bitDutySet(TCC1_CHANNEL_NUM channel, uint32_t duty)
 {

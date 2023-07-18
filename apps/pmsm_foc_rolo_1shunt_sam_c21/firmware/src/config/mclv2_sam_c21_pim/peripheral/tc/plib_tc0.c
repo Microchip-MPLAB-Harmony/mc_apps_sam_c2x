@@ -90,7 +90,7 @@ void TC0_TimerInitialize( void )
     /* Configure timer one shot mode */
     TC0_REGS->COUNT16.TC_CTRLBSET = (uint8_t)TC_CTRLBSET_ONESHOT_Msk;
     /* Configure timer period */
-    TC0_REGS->COUNT16.TC_CC[0U] = 1200U;
+    TC0_REGS->COUNT16.TC_CC[0U] = 1199U;
 
     /* Clear all interrupt flags */
     TC0_REGS->COUNT16.TC_INTFLAG = (uint8_t)TC_INTFLAG_Msk;
@@ -141,7 +141,7 @@ void TC0_TimerCommandSet(TC_COMMAND command)
     while((TC0_REGS->COUNT16.TC_SYNCBUSY) != 0U)
     {
         /* Wait for Write Synchronization */
-    }    
+    }
 }
 
 /* Get the current timer counter value */

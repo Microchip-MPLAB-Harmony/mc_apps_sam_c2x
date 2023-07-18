@@ -66,9 +66,11 @@ void TCC1_PWMInitialize(void)
         /* Wait for sync */
     }
     /* Clock prescaler */
-    TCC1_REGS->TCC_CTRLA = TCC_CTRLA_PRESCALER_DIV1 ;
+    TCC1_REGS->TCC_CTRLA = TCC_CTRLA_PRESCALER_DIV1 
+                            | TCC_CTRLA_PRESCSYNC_PRESC ;
 
     TCC1_REGS->TCC_WAVE = TCC_WAVE_WAVEGEN_DSBOTTOM;
+
 
     /* Configure duty cycle values */
     TCC1_REGS->TCC_CC[0] = 1000U;
@@ -143,10 +145,31 @@ bool TCC1_PWMPatternSet(uint8_t pattern_enable, uint8_t pattern_output)
 }
 
 
-/* Set the counter*/
-void TCC1_PWM24bitCounterSet (uint32_t count)
+
+/* Get the current counter value */
+uint32_t TCC1_PWM24bitCounterGet( void )
 {
-    TCC1_REGS->TCC_COUNT = count & 0xFFFFFFU;
+    /* Write command to force COUNT register read synchronization */
+    TCC1_REGS->TCC_CTRLBSET |= (uint8_t)TCC_CTRLBSET_CMD_READSYNC;
+
+    while((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_CTRLB_Msk) == TCC_SYNCBUSY_CTRLB_Msk)
+    {
+        /* Wait for Write Synchronization */
+    }
+
+    while((TCC1_REGS->TCC_CTRLBSET & TCC_CTRLBSET_CMD_Msk) != 0U)
+    {
+        /* Wait for CMD to become zero */
+    }
+
+    /* Read current count value */
+    return TCC1_REGS->TCC_COUNT;
+}
+
+/* Set the counter*/
+void TCC1_PWM24bitCounterSet (uint32_t countVal)
+{
+    TCC1_REGS->TCC_COUNT = countVal & 0xFFFFFFU;
     while ((TCC1_REGS->TCC_SYNCBUSY & TCC_SYNCBUSY_COUNT_Msk) != 0U)
     {
         /* Wait for sync */
