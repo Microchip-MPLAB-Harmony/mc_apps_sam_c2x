@@ -341,7 +341,7 @@ void Hall_UpdateCommutation_ISR(void)
 {
     uint16_t timeelapsed;
     bool Hall_Input= false;
-    uint8_t status;
+    uint8_t status = 0u;
     bool pwm_flag;
     if((bool)Motor_StateParams.state_run)
     {        

@@ -1,4 +1,4 @@
-<config configName="mclv2_sam_c21_pim" projectName="bldc_bc_hall_sam_c21" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.4.4">
+<config configName="mclv2_sam_c21_pim" projectName="bldc_bc_hall_sam_c21" configVersion="1.1" device="ATSAMC21J18A" deviceLibraryClass="com.microchip.mcc.harmony.Harmony3Library" coreVersion="5.5.7">
    <usedPackages class="java.util.ArrayList"/>
    <usedClasses class="java.util.TreeMap">
       <entry>
@@ -5639,7 +5639,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\clock\plib_clock.c</file>
-         <hash>708a9fe838a9862ecc79fb5aa56f8fa9545b59069555138a277de04e6ae928e6</hash>
+         <hash>ef433dfb46cb127f828d38301eca324379209b8142804fe2939778e4d9f726f8</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\fuses.h</file>
@@ -5659,7 +5659,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\sercom\usart\plib_sercom_usart_common.h</file>
-         <hash>3feca67a173d19d45961676a16f6153a6d849ecac98e906b62a343258c8bf43b</hash>
+         <hash>f19dafabe0928d60dd83d7e19f35889f200e3fbadff09e2f42523d320acf780a</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\dmac.h</file>
@@ -5667,7 +5667,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\interrupts.c</file>
-         <hash>d5cbb4624bc065fd83a705f181ca8fb69a4fafd5902f678509f2c6a6714c74e0</hash>
+         <hash>f19e2cfca75dfaecd07c38d73ffb399456c69377a723caeb9db5c835d9de8163</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\adc1.h</file>
@@ -5675,7 +5675,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\definitions.h</file>
-         <hash>24b5fb644fd39ad987d2cf4e310e84cf4a450500fdbfa6029824a44babb65f03</hash>
+         <hash>932bfb6f78da6e8f0cbfc85a28db92ecafd7adc385bf16e34c41e2ba3451636c</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\osc32kctrl.h</file>
@@ -5695,7 +5695,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\pin_configurations.csv</file>
-         <hash>e443fba7c15f390067ecfb6c4bb5eea2f5a0f36c9bbf10fbf5c4e222922b1d94</hash>
+         <hash>4e2071b327a80f2f7a23ca612df68af317c2ccc4b4c48208fb75bd27aab6aff8</hash>
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\interrupts.h</file>
@@ -5707,7 +5707,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\nvic\plib_nvic.c</file>
-         <hash>f94288c3c313524827a6bd63f17bc0872fd61c51ddf550c2d7a686a0addb1704</hash>
+         <hash>141e7112b30eccdd5e0e1acea2ad909e1a830d4ea879213a369fc7589256e2dd</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\sercom3.h</file>
@@ -5739,7 +5739,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\initialization.c</file>
-         <hash>a3f043eda8fb4f09b421c8ae2e0e856ce4d8e6f9e4f50b641c301da6da4fed9e</hash>
+         <hash>5ae0430aebdde78474192618538d7e9aa8d1c57f4993b0dd4b33340d950c278e</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tcc0.h</file>
@@ -5751,7 +5751,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\nvmctrl\plib_nvmctrl.c</file>
-         <hash>ab6f363dc6978fa96d7ac0736f1647d98df6474db7a58f3e2a2e83bf8ba4c282</hash>
+         <hash>1fb8d05a455e4b5ec9a5e2fdfe11470cbde614fa7df8a005b0f0110a95f071bc</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\adc.h</file>
@@ -5795,7 +5795,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\toolchain_specifics.h</file>
-         <hash>0322d8a252c0047ffd9e533cc76c470158ed1f3ac5193e63b507fe5eb6e1855f</hash>
+         <hash>a4f1774c6f1f8c6cd522567536c9e9d75ca63259b868015ac9b0fb0aeeffe1f4</hash>
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\nvmctrl\plib_nvmctrl.h</file>
@@ -5819,7 +5819,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\exceptions.c</file>
-         <hash>b850253aacaae1bddfcb426c2dc11e0688900afffe9b22c60d0ab16298701118</hash>
+         <hash>5efbe5a64a17c496d2f5b177bc9cd66a7f0f80323d9558e220c073a13570a2a7</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\port.h</file>
@@ -5831,7 +5831,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\eic\plib_eic.c</file>
-         <hash>017b527b6d2aebcd4b595f9254cc7d18090915f2402f563e2e38d38b1ef011e3</hash>
+         <hash>dd6f99e159f72965641c8467ba28fdd8ab1cc15bf3905c7b738cba4e685d9e29</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\pm.h</file>
@@ -5863,7 +5863,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\X2CCode\X2CScope\inc\X2CScope.h</file>
-         <hash>c4c1e8964b703295e7b65ce331295da2a5b143aa63b8960f48c1e62c59fa9d07</hash>
+         <hash>d9ee6e53198dda1c1cf2982d9769cfd8f011538aa7c38304a324110cc32f8f04</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\divas.h</file>
@@ -5871,7 +5871,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\X2CCode\X2CScope\src\X2CScope.c</file>
-         <hash>8dcc8745b5a12a4c35c2893d601be3df1cfb4d522d7cb0d37627a2c3b629e7e0</hash>
+         <hash>bb60724b6946a3d5e51f5f7f227a304cabcecba3851d7e6d40a1a04306a45a2e</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\sercom2.h</file>
@@ -5883,7 +5883,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\X2CCode\X2CScope\inc\X2CScopeCommunication.h</file>
-         <hash>363b149004ecc8edb607ce172f49e7c3dc7c40fc4cec7369dd596c26519604ef</hash>
+         <hash>fd5facc76afd74c7321055a89ed98ce225e492356a6f31fb95b5f2d332de3d4a</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\dsu.h</file>
@@ -5919,7 +5919,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\adc\plib_adc0.c</file>
-         <hash>80989ff9e4d68558a9fa26093de994b5adbf5da3f4c83ec96918d4759b749821</hash>
+         <hash>05ec05ff5440e42d2756173d2311e31a6fce5b8c3a79d86c234cda03d05057b8</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\mclk.h</file>
@@ -6011,7 +6011,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\startup_xc32.c</file>
-         <hash>1e21579834d44c4e28eb15942a3d53793aedfaa7dcdf53e8e0cbd5b1bc07bcc0</hash>
+         <hash>6b73f68a3f402202d7405702269e85ed96d0a878ee80c3826dd61a9d43766996</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\dmac.h</file>
@@ -6027,7 +6027,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\tcc\plib_tcc0.h</file>
-         <hash>dc9c1da5d7f03dc5dfdca87ffdc693a64fa8a1374862aebfc567629ebbc681f9</hash>
+         <hash>81f7d4577b88b3b9113e4e29151b4d5e8f528334ae653924dd9a6ce364147c25</hash>
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\evsys\plib_evsys.h</file>
@@ -6051,11 +6051,11 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\tcc\plib_tcc0.c</file>
-         <hash>503fd6acdd122825538777b0430b769b47b0645724ce742931e4ca884ca91c1c</hash>
+         <hash>aa104b89d5e4abc5d9d251a0df20b3e1518c6b38c64015bb0cac3dd6e2686ff3</hash>
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\adc\plib_adc1.c</file>
-         <hash>63efbf89b78fd73926f5f170f24a299d1754c35a1c796e623f7013fcb7a078b0</hash>
+         <hash>78be88ee2f489c5fd2d3d1a8bc87f22c47456eb2585617d04d75806f064f6fc2</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\osc32kctrl.h</file>
@@ -6071,7 +6071,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\tc\plib_tc3.c</file>
-         <hash>d6648f8b9b471512397e8d360b03fb0b9ef8d01484cf4d32de2818a3a81859b1</hash>
+         <hash>78174014858f6d4f56f3bad3991ea3d9117f0b391638dfb0d9903738b12d7e9d</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\ccl.h</file>
@@ -6107,11 +6107,11 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\X2CCode\X2CScope\src\X2CScopeCommunication.c</file>
-         <hash>c1b99f87153cf9c4b3792e4f77eed420fc5665b9534ab8f13d7996e22305b0d7</hash>
+         <hash>6bfc6d51bac56e177fcda3920e68aae7d87cc7cff77e8a24a9927622eef7cdd8</hash>
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\sercom\usart\plib_sercom3_usart.h</file>
-         <hash>1562a17a4068682763baf98fc159410cbd074a4083b0a2a566ea5b74d25eb1fe</hash>
+         <hash>38bd5f257a7dfce1144c3375178920ba13770e7ec6283d7e5014f8af56aeb1bc</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\supc.h</file>
@@ -6135,7 +6135,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\sercom\usart\plib_sercom3_usart.c</file>
-         <hash>bcfa7123f8228e7e3722a7bc3fc4a0c0b04faecb32c6b3f463f10b6d0765249f</hash>
+         <hash>157404d773c75b3d1b5bf28c1342819bbc709c3e38f47038086bafbe3b3fadc9</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\component\nvmctrl.h</file>
@@ -6147,7 +6147,7 @@
       </entry>
       <entry>
          <file>..\src\config\mclv2_sam_c21_pim\peripheral\tc\plib_tc4.c</file>
-         <hash>7e6e7d04f0750423d12c55341bb99fdbb5fb5e97eecc92e3374d5ed0bbfba3b1</hash>
+         <hash>e4d01a0541af3bc2a8f032f8f9dd218136e6efd3c01cb7495f974b34c810cd2c</hash>
       </entry>
       <entry>
          <file>..\src\packs\ATSAMC21J18A_DFP\instance\tcc1.h</file>
