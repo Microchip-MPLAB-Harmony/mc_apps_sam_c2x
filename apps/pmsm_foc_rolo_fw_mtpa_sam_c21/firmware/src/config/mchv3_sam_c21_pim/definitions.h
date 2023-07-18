@@ -51,8 +51,8 @@
 #include "peripheral/sercom/usart/plib_sercom3_usart.h"
 #include "X2CCode/X2CScope/inc/X2CScope.h"
 #include "peripheral/nvmctrl/plib_nvmctrl.h"
-#include "peripheral/tcc/plib_tcc0.h"
 #include "peripheral/evsys/plib_evsys.h"
+#include "peripheral/tcc/plib_tcc0.h"
 #include "peripheral/adc/plib_adc0.h"
 #include "peripheral/port/plib_port.h"
 #include "peripheral/clock/plib_clock.h"
@@ -68,6 +68,12 @@ extern "C" {
 
 #endif
 // DOM-IGNORE-END
+
+/* Device Information */
+#define DEVICE_NAME			 "ATSAMC21J18A"
+#define DEVICE_ARCH			 "CORTEX-M0PLUS"
+#define DEVICE_FAMILY		 "SAMC"
+#define DEVICE_SERIES		 "SAMC21"
 
 /* CPU clock frequency */
 #define CPU_CLOCK_FREQUENCY 48000000
