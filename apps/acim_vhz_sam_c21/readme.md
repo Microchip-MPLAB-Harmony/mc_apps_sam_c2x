@@ -20,7 +20,7 @@ Key features enabled in this project are:
 - VHz Control
 
 
-## MHC Project Configurations
+## MCC Project Configurations
 
 ![MHC Project Graph](images/acim_vhz_project_graph.bmp)
 

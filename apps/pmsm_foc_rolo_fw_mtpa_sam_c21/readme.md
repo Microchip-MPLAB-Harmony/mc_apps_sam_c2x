@@ -24,7 +24,7 @@ Key features enabled in this project are:
 
 
 
-## MHC Project Configurations
+## MCC Project Configurations
 
 ![MHC Project Graph](images/pmsm_foc_rolo_sam_c21_config.bmp)
 

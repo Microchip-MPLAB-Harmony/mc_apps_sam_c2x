@@ -22,7 +22,7 @@ Key features enabled in this project are:
 
 ## MHC Project Configurations
 
-![MHC Project Graph](images/bldc_hall_project_graph.jpg)
+![MCC Project Graph](images/bldc_hall_project_graph.jpg)
 
 
 - **ADC0-ADC1 Peripheral**: 

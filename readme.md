@@ -32,16 +32,6 @@ notes and licensing information.
 | docs       | Contains documentation in html format for offline viewing (to be used only after cloning this repository onto a local machine). Use [github pages](https://microchip-mplab-harmony.github.io/mc_apps_sam_c2x/) of this repository for viewing it online.                   |
 |||
 
-
-## Configurable Motor Control Examples (MHC code-genaration)
-
-The following applications are provided to demonstrate the typical or interesting usage models of motor control algorithms.
-These applications are generated using PMSM_FOC component and are fully configurable. 
-
-| Name | Description|Control Board|Inverter Board|
-|:-----|:-----------|:------------|:-------------|
-|[PMSM FOC using Reduced Order Luenberger Observer](apps/pmsm_foc_rolo_sam_c21/readme.md)| Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer (ROLO) | [ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206)| [dsPICDEM™ MCLV-2 Support](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2) <br  />[dsPICDEM™ MCHV-3 Support](https://www.microchip.com/developmenttools/ProductDetails/dm330023-3) |
-
 ## Static Motor Control Examples
 
 These applications contain static algorithm code and peripherals are configured using MHC. Configurations can be changed in userparam.h file. 
