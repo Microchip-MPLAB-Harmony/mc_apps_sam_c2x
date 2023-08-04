@@ -12,4 +12,4 @@ package:
       version: "3.17.0"
     - name: "x2c"
       type: "package"
-      version: "x2c_scope_update"
+      version: "v1.4.0"
