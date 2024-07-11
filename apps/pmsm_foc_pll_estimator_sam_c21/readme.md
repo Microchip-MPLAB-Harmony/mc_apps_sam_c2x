@@ -1,30 +1,28 @@
 ---
 parent: Microchip MPLAB® Harmony 3 Motor Control Application Examples for SAM C2x family
-title: PMSM FOC using Reduced Order Leuenberger Observer (ROLO)
+title: PMSM FOC using PLL Estimator
 has_children: false
 has_toc: false
 ---
 
 [![MCHP](https://www.microchip.com/ResourcePackages/Microchip/assets/dist/images/logo.png)](https://www.microchip.com)
 
-# PMSM FOC using Reduced Order Luenberger Observer
+# PMSM FOC using PLL Estimator
 
-This application implements the sensorless field oriented control (FOC) of a permanent magnet synchronous motor (PMSM). It estimates rotor position from measured phase currents and a reduced order luenberger observer (ROLO). This algorithm is implemented on a SAMC21J18A MCU.
+This application implements the sensorless field oriented control (FOC) of a permanent magnet synchronous motor (PMSM). It estimates rotor position from measured phase currents and a PLL estimator. This algorithm is implemented on a SAMC21J18A MCU. It uses MCLV-48V-300W motor control development board.
 
 ## Description
 
-Permanent Magnet Synchronous Motor (PMSM) is controlled using Field Oriented Control (FOC). Rotor position and speed is determined using Reduced Order Luenberger Observer. Motor start/stop operation is controlled by the switch and motor speed can be changed by the on-board potentiometer. Waveforms and variables can be monitored runtime using X2CScope. 
+Permanent Magnet Synchronous Motor (PMSM) is controlled using Field Oriented Control (FOC). Rotor position and speed is determined using a PLL estimator. Motor start/stop operation is controlled by the switch and motor speed can be changed by the on-board potentiometer. Waveforms and variables can be monitored runtime using X2CScope. 
 
 Key features enabled in this project are:
-
 - Dual shunt current measurement
 - Speed control loop
 
 
+## MCC Project Configurations
 
-## MHC Project Configurations
-
-![MHC Project Graph](images/pmsm_foc_rolo_project_graph.jpg)
+![MCC Project Graph](images/pmsm_foc_pll_project_graph.jpg)
 
 - **PMSM_FOC**:
 
@@ -41,9 +39,7 @@ Key features enabled in this project are:
 
   Configured to generate three pairs of complimentary PWM signals at a frequency of 10 kHz in "Dual Slope PWM with interrupt/event when counter = ZERO" a.k.a. "Center Aligned Mode".
   - Event output is enabled which is generated when the counter reaches ZERO.
-  - Dead-time is enabled and set to
-     - mchv3_sam_c21_pim.X. - 2uS
-     - mclv2_sam_c21_pim.X. - 1uS
+  - Dead-time is enabled and set
   - Non-recoverable Fault is enabled on EV0. When an event is detected on EV0, all PWM channels are held low.
 
   
@@ -64,59 +60,22 @@ Key features enabled in this project are:
   - This USART channel is used by the X2CScope plugin to plot or watch global variables in run-time. Refer to X2C Scope Plugin section for more details on how to install and use the X2CScope.
 
 ## Control Algorithm
-
-This section briefly explains the FOC control algorithm, software design and implementation. Refer to [Application note AN2590](http://ww1.microchip.com/downloads/en/Appnotes/00002590B.pdf) for the ROLO based estimator based sensor-less FOC technique in detail. 
-
-Field Oriented Control is the technique used to achieve the decoupled control of torque and flux. This is done by transforming the stator current quantities (phase currents) from stationary reference frame to torque and flux producing currents components in rotating reference frame using mathematical transformations. The Field Oriented Control is done as follows: 
-
-1. Measure the motor phase currents. 
-2. Transform them into the two phase system (a, b) using the Clarke transformation. 
-3. Measure the rotor position angle. 
-4. Transform stator currents into the d,q-coordinate system using the Park transformation. 
-5. The stator current torque (iq) and flux (id) producing components are controlled separately by the controllers. 
-6. The output stator voltage space vector is transformed back from the d,q-coordinate system into the two phase system fixed with the stator by the Inverse Park transformation. 
-7. Using the space vector modulation, the three-phase output voltage is generated. 
-
-
-The following block diagram shows the software realization of the FOC algorithm.
-
-![Block Diagram](images/sensorless_foc_block_diagram.jpg)
-
-## Software Design
-
-Please refer to [PMSM_FOC Library](https://microchip-mplab-harmony.github.io/motor_control/) for state machine, flow charts and detailed software design. 
-
+This project has been created using Harmony QSpin Tool. For details refer [Harmony QSpin](https://microchip-mplab-harmony.github.io/motor_control/index.html)
 
 ## Development Kits
 
 
-### MCLV2 with SAMC21 Family Motor Control PIM
+### MCLV-48V-300W with SAMC21 Family Motor Control PIM
 #### Downloading and building the application
 
 To clone or download this application from Github, go to the [main page of this repository](https://github.com/Microchip-MPLAB-Harmony/mc_apps_sam_c2x) and then click **Clone** button to clone this repository or download as zip file.
 This content can also be downloaded using content manager by following these [instructions](https://github.com/Microchip-MPLAB-Harmony/contentmanager/wiki).
 
-Path of the application within the repository is **apps/pmsm_foc_rolo_sam_c21** .
+Path of the application within the repository is **apps/pmsm_foc_pll_estimator_sam_c21** .
 
 To build the application, refer to the following table and open the project using its IDE.
 
 | Project Name            | Description                                    | Demo User Guide |
 | ----------------------- | ---------------------------------------------- |--------------------|
-| mclv2_sam_c21_pim.X | MPLABX project for MCLV2 board with SAMC21 PIM |[MCLV2 with SAMC21 PIM](../docs/mclv2_samc21_pim_sensorless.md)|
-||||
-
-
-### MCHV3 with SAMC21 Family Motor Control PIM
-#### Downloading and building the application
-
-To clone or download this application from Github, go to the [main page of this repository](https://github.com/Microchip-MPLAB-Harmony/mc_apps_sam_c2x) and then click **Clone** button to clone this repository or download as zip file.
-This content can also be downloaded using content manager by following these [instructions](https://github.com/Microchip-MPLAB-Harmony/contentmanager/wiki).
-
-Path of the application within the repository is **apps/pmsm_foc_rolo_sam_c21** .
-
-To build the application, refer to the following table and open the project using its IDE.
-
-| Project Name            | Description                                    | Demo User Guide |
-| ----------------------- | ---------------------------------------------- |--------------------|
-| mchv3_sam_c21_pim.X | MPLABX project for MCHV3 board with SAMC21 PIM |[MCHV3 with SAMC21 PIM](../docs/mchv3_samc21_pim_sensorless.md)|
+| qspin_pmsm_foc.X | MPLABX project for MCLV-48V-300W board with SAMC21 PIM |[MCLV-48V-300W with SAMC21 DIM](../docs/mclv_samc21_dim_sensorless.md)|
 ||||
