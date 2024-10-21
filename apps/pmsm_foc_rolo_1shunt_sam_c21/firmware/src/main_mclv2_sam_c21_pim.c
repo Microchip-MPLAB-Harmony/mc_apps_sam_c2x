@@ -49,9 +49,9 @@
 #include <stdbool.h>                    // Defines true
 #include <stdlib.h>                     // Defines EXIT_FAILURE
 #include "definitions.h"                // SYS function prototypes
-#include "X2CScope.h"
+#include "X2Cscope.h"
 #include "mc_app.h"
-#include "X2CScopeCommunication.h"
+#include "X2CscopeComm.h"
 
 static uint16_t adc_result_data[2];
 uint8_t start_toggle = 0u;
@@ -132,7 +132,6 @@ int main ( void )
     TCC1_PWM24bitCounterSet(0U);
     
 
-    X2CScope_Init();
     TC0_TimerStart();                     
 
     while ( true )
@@ -140,7 +139,7 @@ int main ( void )
         
         /* Maintain state machines of all polled MPLAB Harmony modules. */
         SYS_Tasks ( );
-        X2CScope_Communicate();
+        X2Cscope_Communicate();
         if(0U == syn10ms())
         {
             if(overCurrentFaultActive == 0u)
@@ -302,8 +301,6 @@ void ADC_ISR(ADC_STATUS status, uintptr_t context)
         
         ADC0_REGS->ADC_SWTRIG |= ADC_SWTRIG_START_Msk; 
         ADC1_REGS->ADC_SWTRIG |= ADC_SWTRIG_START_Msk; 
-         
-//  motor control 
         
 		motorcontrol();
         
@@ -313,7 +310,7 @@ void ADC_ISR(ADC_STATUS status, uintptr_t context)
         ADC0_ChannelSelect(ADC_POSINPUT_AIN8,ADC_NEGINPUT_GND); // Phase U to ADC0
         ADC1_ChannelSelect(ADC_POSINPUT_AIN10,ADC_NEGINPUT_GND); // Phase V to ADC1
         
-        X2CScope_Update(); 
+        X2Cscope_Update(); 
         
         if(0U < syn_cnt)
         {
