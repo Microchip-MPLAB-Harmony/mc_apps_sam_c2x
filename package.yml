@@ -1,7 +1,7 @@
 package:
   format-version: "1.0.0"
   name: "mc_apps_sam_c2x"
-  version: "v3.3.1"
+  version: "v3.4.0"
   type: "application"
   status: "production"
   required: false
@@ -9,7 +9,10 @@ package:
   dependencies:
     - name: "csp"
       type: "package"
-      version: "v3.17.0"
-    - name: "x2c"
+      version: "v3.20.0"
+    - name: "dev_packs"
       type: "package"
-      version: "v1.4.0"
+      version: "v3.18.1"
+    - name: "motor_control"
+      type: "package"
+      version: "v3.10.1"
