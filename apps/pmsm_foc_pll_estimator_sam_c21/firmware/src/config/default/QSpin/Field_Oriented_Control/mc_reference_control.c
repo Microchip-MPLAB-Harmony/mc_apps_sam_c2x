@@ -100,22 +100,27 @@ Private Functions
  */
 void  mcRefI_ReferenceControlInit( tmcRef_Parameters_s * const pParameters )
 {
+    float32_t  temp;
+
     /** Link state variable structure to the module */
     pParameters->pStatePointer = (void *)&mcRef_State_mds;
 
     /** Set parameters */
     mcRefI_ParametersSet(pParameters);
 
-    mcRef_State_mds.lowerLimit = K_SPEED * pParameters->minimumRpm;
-    mcRef_State_mds.upperLimit = K_SPEED * pParameters->maximumRpm;
+    temp = ( K_SPEED * pParameters->minimumRpm ) + 0.5f;
+    mcRef_State_mds.lowerLimit = (int16_t)temp;
 
-    mcRef_State_mds.scaledLowerLimit = mcRef_State_mds.lowerLimit << 15U;
-    mcRef_State_mds.scaledUpperLimit = mcRef_State_mds.upperLimit << 15U;
+    temp = ( K_SPEED * pParameters->maximumRpm ) + 0.5f;
+    mcRef_State_mds.upperLimit = (int16_t)temp;
+
+    mcRef_State_mds.scaledLowerLimit = Q_LEFT_SHIFT((int32_t)mcRef_State_mds.lowerLimit, 15u );
+    mcRef_State_mds.scaledUpperLimit = Q_LEFT_SHIFT((int32_t)mcRef_State_mds.upperLimit, 15u );
 
 
     /** Update state variables */
-    float32_t f32a = (float32_t)( (float32_t)Q_SCALE( pParameters->rpmPerSecond / BASE_SPEED_IN_RPM ) ) /  PWM_FREQUENCY;
-    mcRef_State_mds.scaledRampRate =  Q_SCALE( f32a );
+    temp = (float32_t)( (float32_t)Q_SCALE( pParameters->rpmPerSecond / BASE_SPEED_IN_RPM ) ) /  PWM_FREQUENCY;
+    mcRef_State_mds.scaledRampRate =  Q_SCALE( temp );
     mcRef_State_mds.initDone = true;
 }
 
@@ -199,7 +204,7 @@ void mcRefI_ReferenceControl(  tmcRef_Parameters_s * const pParameters,
         /** Execute reference control */
 
         /** Execute reference control */
-        int32_t scaledCommand = (int32_t)command << 15U;
+        int32_t scaledCommand = Q_LEFT_SHIFT((int32_t)command, 15u );
         if( (  pState->scaledReference + pState->scaledRampRate )  < scaledCommand )
         {
             pState->scaledReference += pState->scaledRampRate;
@@ -214,7 +219,7 @@ void mcRefI_ReferenceControl(  tmcRef_Parameters_s * const pParameters,
         }
 
         UTIL_ApplyClampS32( &pState->scaledReference, pState->scaledUpperLimit, pState->scaledLowerLimit);
-        pState->reference = pState->scaledReference >> 15U;
+        pState->reference = (int16_t)mcUtils_RightShiftS32(pState->scaledReference, 15 );
         *pOut = pState->reference;
     }
     else
@@ -237,6 +242,7 @@ void mcRefI_ReferenceControlReset( tmcRef_Parameters_s * const pParameters )
     tmcRef_State_s * pState;
     pState = (tmcRef_State_s *)pParameters->pStatePointer;
 
-    pState->reference = 0;
-    pState->scaledReference = 0;
+    /** Reset reference control state variables  */
+    pState->reference = pState->lowerLimit;
+    pState->scaledReference = Q_LEFT_SHIFT((int32_t)pState->lowerLimit, 15u );
 }

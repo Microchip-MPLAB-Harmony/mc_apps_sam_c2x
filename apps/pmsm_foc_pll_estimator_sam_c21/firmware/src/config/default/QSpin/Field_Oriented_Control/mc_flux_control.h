@@ -66,6 +66,8 @@ typedef struct
     float32_t Ki;                    /**< Integral gain for PI controller */
     float32_t dt;                    /**< Sampling time */
 
+
+
     void * pStatePointer;            /**< Pointer to the state structure */
 } tmcFlx_Parameters_s;
 
@@ -86,9 +88,9 @@ typedef struct
  */
 __STATIC_INLINE void mcFlxI_ParametersSet(tmcFlx_Parameters_s * const pParameters)
 {
-    pParameters->Kp = (float32_t)0;
+    pParameters->Kp = (float32_t)0.016776;
     pParameters->Ki = (float32_t)17.366188;
-    pParameters->dt = (float32_t)0.000063;
+    pParameters->dt = (float32_t)0.00005;
 
 
 }

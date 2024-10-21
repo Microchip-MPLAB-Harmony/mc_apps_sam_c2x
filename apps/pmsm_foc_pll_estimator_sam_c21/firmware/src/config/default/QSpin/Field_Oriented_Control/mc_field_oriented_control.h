@@ -74,7 +74,7 @@ Type Definition
 typedef struct
 {
     tmcTypes_ABC_s  iABC;       /**< Motor phase currents */
-    int16_t uBus;               /**< Bus voltage */
+    uint16_t uBus;               /**< Bus voltage */
     int16_t reference;          /**< Reference value for control (e.g., speed or torque) */
 } tmcFoc_Input_s;
 
@@ -115,6 +115,7 @@ typedef struct
 *******************************************************************************/
 extern tmcFocI_ModuleData_s mcFocI_ModuleData_gds;
 
+
 /*******************************************************************************
  Static Interface Functions
 *******************************************************************************/
@@ -132,7 +133,7 @@ extern tmcFocI_ModuleData_s mcFocI_ModuleData_gds;
 __STATIC_INLINE void mcFocI_InputsRead(tmcFoc_Input_s * const pInput)
 {
     pInput->iABC = mcCurI_ModuleData_gds.dOutput.iABC;
-    pInput->uBus = mcVolI_ModuleData_gds.pOutput.uBus;
+    pInput->uBus = mcVolI_ModuleData_gds.dOutput.uBus;
     pInput->reference = Qx_NORMALIZE( Q12, mcHalI_Potentiometer_gdu16 );
 }
 

@@ -74,11 +74,11 @@ Refer to the following tables for switch and LED details:
         </thead>
         <tbody>
             <tr>
-                <td>Switch SW1</td>
+                <td>Switch SW2</td>
                 <td>To start or stop the motor</td>
             </tr>
             <tr>
-                <td>Switch SW2</td>
+                <td>Switch SW1</td>
                 <td>To change the direction of rotation. <br>Direction toggle command is accepted only when the motor is stationary.</td>
             </tr>
         </tbody>

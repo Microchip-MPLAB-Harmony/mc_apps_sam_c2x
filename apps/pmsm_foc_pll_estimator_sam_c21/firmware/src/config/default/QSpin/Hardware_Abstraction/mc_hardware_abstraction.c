@@ -114,7 +114,7 @@ void mcHalI_InverterPwmDisable( void )
  */
 void mcHal_DirectionIndication( void )
 {
-    LED_02_Toggle();
+    PORT_PinToggle( PORT_PIN_PB13);
 }
 
 /**
@@ -125,7 +125,7 @@ void mcHal_DirectionIndication( void )
  */
 void mcHal_FaultIndicationSet( void )
 {
-   LED_01_Set();
+    PORT_PinSet( PORT_PIN_PB12);
 }
 
 /**
@@ -195,7 +195,7 @@ void mcHalI_PwmCallbackRegister( TCC_CALLBACK callback, uintptr_t context )
  */
 bool mcHalI_StartStopButtonState( void )
 {
-    return (bool)BUTTON_02_Get();
+    return  PORT_PinRead( PORT_PIN_PB31);
 }
 
 /**
@@ -208,6 +208,6 @@ bool mcHalI_StartStopButtonState( void )
  */
 bool mcHalI_DirectionButtonState( void )
 {
-     return (bool)BUTTON_01_Get();
+    return  PORT_PinRead( PORT_PIN_PB16);
 }
 

@@ -68,7 +68,10 @@ typedef struct
     /** BEMF observer parameters */
     float32_t Ke;              /**< BEMF observer gain */
     float32_t dt;              /**< Sampling time */
+
+    /** PLL observer parameters */
     float32_t calibTimeInSec;  /**< Offset calibration time */
+    float32_t foInHertz;  /**< PLL cut-off frequency */
     void * pStatePointer;      /**< Pointer to module state */
 } tmcRpe_Parameters_s;
 
@@ -96,8 +99,11 @@ __STATIC_INLINE void mcRpeI_ParametersSet( tmcRpe_Parameters_s * const pParamete
 
     /** BEMF observer parameters */
     pParameters->Ke = (float32_t)4.764254;
-    pParameters->dt = (float32_t)0.000063;
+    pParameters->dt = (float32_t)0.00005;
     pParameters->calibTimeInSec = (float32_t)(1.0);
+
+    /** PLL parameters */
+    pParameters->foInHertz = (float32_t)40;
 }
 
 /*******************************************************************************

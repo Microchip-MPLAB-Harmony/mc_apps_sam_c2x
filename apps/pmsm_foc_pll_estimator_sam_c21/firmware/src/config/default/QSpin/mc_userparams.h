@@ -54,17 +54,17 @@
  * Per unit scaling
 *******************************************************************************/
 
-#define PWM_FREQUENCY                       (float32_t)( 16000 ) /**< PWM switching frequency */
-#define BASE_SPEED_IN_RPM                   (float32_t)( 1.50 * 3600 ) /**< Base speed in RPM */
-#define MAXIMUM_BOARD_CURRENT               (float32_t)( 2048 * 0.010742) /**< Maximum board current */
+#define PWM_FREQUENCY                       (float32_t)( 10000 ) /**< PWM switching frequency */
+#define BASE_SPEED_IN_RPM                   (float32_t)( 1.50 * (float32_t)3400 ) /**< Base speed in RPM */
+#define MAXIMUM_BOARD_CURRENT               (float32_t)( 2048.0f * (float32_t)0.010742) /**< Maximum board current */
 #define BASE_CURRENT_IN_AMPS                (float32_t)( MAXIMUM_BOARD_CURRENT) /**< Base current in Amperes */
 
 #define VOLTAGE_DIVIDER_RATIO               (float32_t)( 0.043478) /**< Voltage divider ratio */
 #define MAXIMUM_MEASURABLE_VOLTAGE          (float32_t)( 3.30f / VOLTAGE_DIVIDER_RATIO) /**< Maximum measurable voltage */
-#define BASE_VOLTAGE_IN_VOLTS               (float32_t)( 1.50f * 24 ) /**< Base voltage in Volts */
+#define BASE_VOLTAGE_IN_VOLTS               (float32_t)( 1.50f * (float32_t)24 ) /**< Base voltage in Volts */
 #define BASE_IMPEDENCE_IN_OHMS              (float32_t)( BASE_VOLTAGE_IN_VOLTS / BASE_CURRENT_IN_AMPS ) /**< Base impedance in Ohms */
-#define K_SPEED                             (float32_t)( Q_SCALE_FACTOR / BASE_SPEED_IN_RPM ) /**< Speed scaling factor */
-#define K_CURRENT                           (float32_t)( Q_SCALE_FACTOR / BASE_CURRENT_IN_AMPS ) /**< Current scaling factor */
-#define K_TIME                              (float32_t)( 65535 * BASE_SPEED_IN_RPM * 5.0f / (60.0f * Q_SCALE_FACTOR * PWM_FREQUENCY )) /**< Time scaling factor */
+#define K_SPEED                             (float32_t)( (float32_t)Q_SCALE_FACTOR / BASE_SPEED_IN_RPM ) /**< Speed scaling factor */
+#define K_CURRENT                           (float32_t)( (float32_t)Q_SCALE_FACTOR / BASE_CURRENT_IN_AMPS ) /**< Current scaling factor */
+#define K_TIME                              (float32_t)( 65535.0f * BASE_SPEED_IN_RPM * 5.0f / (60.0f * (float32_t)Q_SCALE_FACTOR * PWM_FREQUENCY )) /**< Time scaling factor */
 
 #endif // USERPARAMS_H

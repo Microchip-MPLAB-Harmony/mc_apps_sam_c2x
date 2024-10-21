@@ -90,7 +90,7 @@ __STATIC_INLINE void mcRefI_ParametersSet(tmcRef_Parameters_s * const pParameter
     pParameters->maximumRpm = (float32_t)2804;
 
     pParameters->rpmPerSecond = (float32_t)(300);
-    pParameters->dt = (float32_t)(0.000063);
+    pParameters->dt = (float32_t)(0.00005);
 }
 
 /*******************************************************************************

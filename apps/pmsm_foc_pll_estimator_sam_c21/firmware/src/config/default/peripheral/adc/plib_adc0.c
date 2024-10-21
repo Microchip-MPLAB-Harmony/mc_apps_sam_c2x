@@ -101,7 +101,7 @@ void ADC0_Initialize( void )
     ADC0_REGS->ADC_REFCTRL = (uint8_t)ADC_REFCTRL_REFSEL_INTVCC2;
 
     /* Input pin */
-    ADC0_REGS->ADC_INPUTCTRL = (uint16_t) ADC_POSINPUT_AIN9;
+    ADC0_REGS->ADC_INPUTCTRL = (uint16_t) ADC_POSINPUT_AIN2;
 
     /* Resolution & Operation Mode */
     ADC0_REGS->ADC_CTRLC = (uint16_t)(ADC_CTRLC_RESSEL_12BIT | ADC_CTRLC_WINMODE(0UL) );
