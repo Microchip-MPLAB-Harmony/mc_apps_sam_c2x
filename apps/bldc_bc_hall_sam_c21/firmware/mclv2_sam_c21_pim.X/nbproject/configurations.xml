@@ -46,11 +46,9 @@
               <itemPath>../src/config/mclv2_sam_c21_pim/peripheral/tcc/plib_tcc_common.h</itemPath>
             </logicalFolder>
           </logicalFolder>
-          <logicalFolder name="X2CCode" displayName="X2CCode" projectFiles="true">
-            <logicalFolder name="X2CScope" displayName="X2CScope" projectFiles="true">
-              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/inc/X2CScope.h</itemPath>
-              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/inc/X2CScopeCommunication.h</itemPath>
-            </logicalFolder>
+          <logicalFolder name="X2Cscope" displayName="X2Cscope" projectFiles="true">
+            <itemPath>../src/config/mclv2_sam_c21_pim/X2Cscope/X2CscopeComm.h</itemPath>
+            <itemPath>../src/config/mclv2_sam_c21_pim/X2Cscope/X2Cscope.h</itemPath>
           </logicalFolder>
           <itemPath>../src/config/mclv2_sam_c21_pim/userparams.h</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/device_cache.h</itemPath>
@@ -173,6 +171,32 @@
         </logicalFolder>
       </logicalFolder>
     </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="true">
+      <logicalFolder name="f1"
+                     displayName="mclv2_sam_c21_pim.mhc"
+                     projectFiles="true">
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/adc0.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/adc1.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/cmsis.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/core.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/dfp.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/eic.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/evsys.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/GraphSettings.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/nvmctrl.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/project.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/sercom3.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/settings.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/tc3.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/tc4.yml</itemPath>
+        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/tcc0.yml</itemPath>
+      </logicalFolder>
+      <itemPath>Makefile</itemPath>
+      <itemPath>../src/config/mclv2_sam_c21_pim/harmony-manifest-success.yml</itemPath>
+      <itemPath>bldc_bc_hall_sam_c21.mc3</itemPath>
+    </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
                    projectFiles="true">
@@ -226,11 +250,9 @@
           <logicalFolder name="f2" displayName="stdio" projectFiles="true">
             <itemPath>../src/config/mclv2_sam_c21_pim/stdio/xc32_monitor.c</itemPath>
           </logicalFolder>
-          <logicalFolder name="X2CCode" displayName="X2CCode" projectFiles="true">
-            <logicalFolder name="X2CScope" displayName="X2CScope" projectFiles="true">
-              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/src/X2CScopeCommunication.c</itemPath>
-              <itemPath>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/src/X2CScope.c</itemPath>
-            </logicalFolder>
+          <logicalFolder name="X2Cscope" displayName="X2Cscope" projectFiles="true">
+            <itemPath>../src/config/mclv2_sam_c21_pim/X2Cscope/X2Cscope.c</itemPath>
+            <itemPath>../src/config/mclv2_sam_c21_pim/X2Cscope/X2CscopeComm.c</itemPath>
           </logicalFolder>
           <itemPath>../src/config/mclv2_sam_c21_pim/initialization.c</itemPath>
           <itemPath>../src/config/mclv2_sam_c21_pim/interrupts.c</itemPath>
@@ -246,32 +268,6 @@
       <itemPath>../src/main_mclv2_sam_c21_pim.c</itemPath>
       <itemPath>../src/config/mclv2_sam_c21_pim/pin_configurations.csv</itemPath>
     </logicalFolder>
-    <logicalFolder name="ExternalFiles"
-                   displayName="Important Files"
-                   projectFiles="false">
-      <logicalFolder name="f1"
-                     displayName="mclv2_sam_c21_pim.mhc"
-                     projectFiles="true">
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/adc0.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/adc1.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/cmsis.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/core.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/dfp.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/eic.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/evsys.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/GraphSettings.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/nvmctrl.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/project.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/sercom3.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/settings.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/tc3.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/tc4.yml</itemPath>
-        <itemPath>../src/config/mclv2_sam_c21_pim/mclv2_sam_c21_pim.mhc/tcc0.yml</itemPath>
-      </logicalFolder>
-      <itemPath>Makefile</itemPath>
-      <itemPath>../src/config/mclv2_sam_c21_pim/harmony-manifest-success.yml</itemPath>
-      <itemPath>bldc_bc_hall_sam_c21.mc3</itemPath>
-    </logicalFolder>
   </logicalFolder>
   <sourceRootList>
     <Elem>../src</Elem>
@@ -284,21 +280,20 @@
         <targetDevice>ATSAMC21J18A</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>ICD4Tool</platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XC32</languageToolchain>
-        <languageToolchainVersion>4.00</languageToolchainVersion>
+        <languageToolchainVersion>4.45</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="SAMC21_DFP" vendor="Microchip" version="3.6.101"/>
+        <pack name="SAMC21_DFP" vendor="Microchip" version="3.8.119"/>
       </packs>
       <ScriptingSettings>
       </ScriptingSettings>
       <compileType>
         <linkerTool>
           <linkerLibItems>
-            <linkerLibFileItem>../src/X2CScopeLib_SAMC21_XC32_215.a</linkerLibFileItem>
-            <linkerLibFileItem>../src/config/mclv2_sam_c21_pim/X2CCode/X2CScope/lib/libCORTEXM0PLUS_X2CScope.a</linkerLibFileItem>
+            <linkerLibFileItem>../src/config/mclv2_sam_c21_pim/X2Cscope/libx2cscope2-cm0-elf.a</linkerLibFileItem>
           </linkerLibItems>
         </linkerTool>
         <archiverTool>
@@ -356,7 +351,7 @@
         <property key="enable-unroll-loops" value="false"/>
         <property key="exclude-floating-point" value="false"/>
         <property key="extra-include-directories"
-                  value="../src;../src/config/mclv2_sam_c21_pim;../src/config/mclv2_sam_c21_pim/X2CCode;../src/packs/ATSAMC21J18A_DFP;../src/packs/CMSIS/;../src/packs/CMSIS/CMSIS/Core/Include"/>
+                  value="../src;../src/config/mclv2_sam_c21_pim;../src/config/mclv2_sam_c21_pim/X2CCode;../src/config/mclv2_sam_c21_pim/X2Cscope;../src/packs/ATSAMC21J18A_DFP;../src/packs/CMSIS/;../src/packs/CMSIS/CMSIS/Core/Include"/>
         <property key="generate-16-bit-code" value="false"/>
         <property key="generate-micro-compressed-code" value="false"/>
         <property key="isolate-each-function" value="true"/>
@@ -497,9 +492,19 @@
                   value="ToolFirmwareOption.UseLatest"/>
         <property key="ToolFirmwareToolPack"
                   value="Press to select which tool pack to use"/>
+        <property key="communication.activationmode" value="nohv"/>
+        <property key="communication.interface" value="swd"/>
         <property key="communication.interface.jtag" value="2wire"/>
+        <property key="communication.speed" value="2.000"/>
+        <property key="debugoptions.debug-startup" value="Use system settings"/>
+        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
+        <property key="debugoptions.simultaneous.debug" value="false"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="event.recorder.debugger.behavior" value="Running"/>
+        <property key="event.recorder.enabled" value="false"/>
+        <property key="event.recorder.scvd.files" value=""/>
         <property key="hwtoolclock.frcindebug" value="false"/>
+        <property key="lastid" value=""/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
         <property key="memories.configurationmemory" value="true"/>
@@ -531,14 +536,17 @@
         <property key="programoptions.preserveprogram.ranges" value="0-20007fff"/>
         <property key="programoptions.preserveprogramrange" value="false"/>
         <property key="programoptions.preserveuserid" value="false"/>
+        <property key="programoptions.program.otpconfig" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
         <property key="programoptions.programuserotp" value="false"/>
+        <property key="programoptions.smart.program" value="When debugging only"/>
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="toolpack.updateoptions"
                   value="toolpack.updateoptions.uselatestoolpack"/>
         <property key="toolpack.updateoptions.packversion"
                   value="Press to select which tool pack to use"/>
         <property key="voltagevalue" value="5.0"/>
+        <property key="x.erase.clearprot" value="true"/>
       </ICD4Tool>
       <Simulator>
         <property key="codecoverage.enabled" value="Disable"/>
@@ -974,9 +982,19 @@
                   value="ToolFirmwareOption.UseLatest"/>
         <property key="ToolFirmwareToolPack"
                   value="Press to select which tool pack to use"/>
+        <property key="communication.activationmode" value="nohv"/>
+        <property key="communication.interface" value="swd"/>
         <property key="communication.interface.jtag" value="2wire"/>
+        <property key="communication.speed" value="2.000"/>
+        <property key="debugoptions.debug-startup" value="Use system settings"/>
+        <property key="debugoptions.reset-behaviour" value="Use system settings"/>
+        <property key="debugoptions.simultaneous.debug" value="false"/>
         <property key="debugoptions.useswbreakpoints" value="false"/>
+        <property key="event.recorder.debugger.behavior" value="Running"/>
+        <property key="event.recorder.enabled" value="false"/>
+        <property key="event.recorder.scvd.files" value=""/>
         <property key="hwtoolclock.frcindebug" value="false"/>
+        <property key="lastid" value=""/>
         <property key="memories.aux" value="false"/>
         <property key="memories.bootflash" value="true"/>
         <property key="memories.configurationmemory" value="true"/>
@@ -1008,14 +1026,17 @@
         <property key="programoptions.preserveprogram.ranges" value="0-20007fff"/>
         <property key="programoptions.preserveprogramrange" value="false"/>
         <property key="programoptions.preserveuserid" value="false"/>
+        <property key="programoptions.program.otpconfig" value="false"/>
         <property key="programoptions.programcalmem" value="false"/>
         <property key="programoptions.programuserotp" value="false"/>
+        <property key="programoptions.smart.program" value="When debugging only"/>
         <property key="programoptions.testmodeentrymethod" value="VDDFirst"/>
         <property key="toolpack.updateoptions"
                   value="toolpack.updateoptions.uselatestoolpack"/>
         <property key="toolpack.updateoptions.packversion"
                   value="Press to select which tool pack to use"/>
         <property key="voltagevalue" value="5.0"/>
+        <property key="x.erase.clearprot" value="true"/>
       </Tool>
     </conf>
   </confs>

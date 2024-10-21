@@ -50,7 +50,7 @@ Headers inclusions
 #include "definitions.h"
 #include <sys/attribs.h>
 #include "userparams.h"
-#include "X2CCode/X2CScope/inc/X2CScope.h"
+#include "X2Cscope.h"
 
 /*******************************************************************************
 Variables
@@ -303,7 +303,7 @@ void __ramfunc__ ADC_ISR(ADC_STATUS status, uintptr_t context)
 void ADC_ISR(ADC_STATUS status, uintptr_t context)
 #endif
 {
-    X2CScope_Update();
+    X2Cscope_Update();
     /* Read the ADC result value */
     Motor_BCParams.speed_ref_pot = ADC1_ConversionResultGet();
     Motor_BCParams.motor_current = ADC0_ConversionResultGet();

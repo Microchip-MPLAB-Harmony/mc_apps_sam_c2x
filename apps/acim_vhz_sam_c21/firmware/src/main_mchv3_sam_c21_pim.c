@@ -49,9 +49,9 @@
 #include <stdbool.h>                    // Defines true
 #include <stdlib.h>                     // Defines EXIT_FAILURE
 #include "definitions.h"                // SYS function prototypes
-#include "X2CScope.h"
+#include "X2Cscope.h"
 #include "mc_app.h"
-#include "X2CScopeCommunication.h"
+#include "X2CscopeComm.h"
 
 
 uint8_t  switch_state = 0;
@@ -80,7 +80,7 @@ int main ( void )
     EIC_CallbackRegister ((EIC_PIN)EIC_PIN_11, (EIC_CALLBACK) motor_start_stop,(uintptr_t)dummyforMisra);
     motorcontrol_vars_init();
     ADC1_Enable();
-    X2CScope_Init();
+
     TCC0_PWMStart(); 
     PWM_Output_Disable();    
 
@@ -90,7 +90,7 @@ int main ( void )
         
         /* Maintain state machines of all polled MPLAB Harmony modules. */
         SYS_Tasks ( );
-        X2CScope_Communicate();
+        X2Cscope_Communicate();
        
     }
 
@@ -118,7 +118,7 @@ void ADC_ISR(ADC_STATUS status,uintptr_t context)
     /* Read the ADC result value */
  	speed_ref_pot = ADC1_ConversionResultGet();
       
-    X2CScope_Update();
+    X2Cscope_Update();
   
     /* Clear all interrupt flags */
     ADC1_REGS->ADC_INTFLAG = ADC_INTFLAG_Msk;

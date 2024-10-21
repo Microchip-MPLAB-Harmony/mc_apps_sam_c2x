@@ -156,9 +156,9 @@ void SYS_Initialize ( void* data )
 
     NVMCTRL_Initialize( );
 
-    TCC0_PWMInitialize();
-
     EVSYS_Initialize();
+
+    TCC0_PWMInitialize();
 
 
     ADC1_Initialize();
@@ -177,7 +177,7 @@ void SYS_Initialize ( void* data )
 
 
 
-    X2CScope_Init();
+    X2Cscope_Init();
 
     #pragma coverity compliance end_block "MISRA C-2012 Rule 11.3"
     #pragma coverity compliance end_block "MISRA C-2012 Rule 11.8"
