@@ -7,12 +7,6 @@ package:
   required: false
 
   dependencies:
-    - name: "csp"
-      type: "package"
-      version: "v3.20.0"
-    - name: "dev_packs"
-      type: "package"
-      version: "v3.18.1"
     - name: "motor_control"
       type: "package"
-      version: "v3.10.1"
+      version: "fixed_point_dev_imprv"

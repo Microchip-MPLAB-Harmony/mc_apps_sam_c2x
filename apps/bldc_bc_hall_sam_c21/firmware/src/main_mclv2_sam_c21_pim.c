@@ -51,7 +51,7 @@
 #include "definitions.h"                // SYS function prototypes
 #include "X2Cscope.h"
 #include "mc_app.h"
-#include "X2CScopeComm.h"
+#include "X2CscopeComm.h"
 
 motor_state_params_t    Motor_StateParams;
 
