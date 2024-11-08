@@ -29,9 +29,16 @@ notes and licensing information.
 | Folder     | Description                                               |
 |------------|-----------------------------------------------------------|
 | apps       | Demonstration applications for Motor Control              |
-| docs       | Contains documentation in html format for offline viewing (to be used only after cloning this repository onto a local machine). Use [github pages](https://microchip-mplab-harmony.github.io/mc_apps_sam_c2x/) of this repository for viewing it online.                   |
 |||
 
+## Documentation
+
+Click [here](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MC_APPS_SAM_C2X_INTRODUCTION&redirect=true) to view the online documentation of code examples hosted in this repository.
+
+To view the documentation offline, follow these steps:
+ - Download the publication as a zip file from [here](https://onlinedocs.microchip.com/download/GUID-686B08E8-FD18-4AAD-87B9-32B527406A88?type=webhelp).
+ - Extract the zip file into a folder.
+ - Navigate to the folder and open **index.html** in a web browser of your choice.
 ## Configurable Motor Control Examples (MCC with Harmony QSpin Motor Control )
 
 The following applications are provided to demonstrate the usage of Harmony QSpin to generate motor control application with Microchip's 32-bit MCUs.
@@ -39,8 +46,8 @@ The following applications are provided to demonstrate the usage of Harmony QSpi
 
 | Name | Description|Control Board|Inverter Board|
 |:-----|:-----------|:------------|:-------------|
-| [PMSM FOC using PLL Estimator](apps/pmsm_foc_pll_estimator_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using PLL Estimator | [ATSAMC21 Motor Control DIM](https://www.microchip.com/en-us/development-tool/EV74G56A) | [MCLV-48V-300W Development Board](https://www.microchip.com/en-us/development-tool/ev18h47a) |
-| [PMSM FOC using ROLO Estimator](apps/pmsm_foc_rolo_fw_mtpa_sam_c21/readme.md) | Sensorless Field Oriented Control of PMSM using ROLO Estimator | [ATSAMC21 Motor Control DIM](https://www.microchip.com/en-us/development-tool/EV74G56A) | [MCLV-48V-300W Development Board](https://www.microchip.com/en-us/development-tool/ev18h47a) |
+| [PMSM FOC using PLL Estimator](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MC_APPS_SAM_C2X_PMSM_FOC_PLL&redirect=true) | Sensorless Field Oriented Control of PMSM using PLL Estimator | [ATSAMC21 Motor Control DIM](https://www.microchip.com/en-us/development-tool/EV74G56A) | [MCLV-48V-300W Development Board](https://www.microchip.com/en-us/development-tool/ev18h47a) |
+| [PMSM FOC using ROLO Estimator](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MC_APPS_SAM_C2X_PMSM_FOC_REDUCED_ORDER_LUENBERGER_OBSERVER_FIELD_WEAKENING_MTPA&redirect=true) | Sensorless Field Oriented Control of PMSM using ROLO Estimator | [ATSAMC21 Motor Control DIM](https://www.microchip.com/en-us/development-tool/EV74G56A) | [MCLV-48V-300W Development Board](https://www.microchip.com/en-us/development-tool/ev18h47a) |
 
 ## Static Motor Control Examples
 
@@ -49,9 +56,9 @@ These applications contain static algorithm code and peripherals are configured 
 
 | Name | Description|Control Board|Inverter Board|
 |:-----|:-----------|:------------|:-------------|
-| [ACIM Open Loop V/Hz](apps/acim_vhz_sam_c21/readme.md) | Open Loop V/Hz Control of ACIM |[ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206) |[dsPICDEM™ MCHV-3 Support](https://www.microchip.com/developmenttools/ProductDetails/dm330023-3)|
-| [BLDC Block Commutation using Hall Sensors](apps/bldc_bc_hall_sam_c21/readme.md) | Block Commutation Control of BLDC motors using Hall Sensors |[ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206) |[dsPICDEM™ MCLV-2 Support](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2) |
-|[PMSM FOC using Reduced Order Luenberger Observer with Single Shunt](apps/pmsm_foc_rolo_1shunt_sam_c21/readme.md)| Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer with Single Shunt Current Sense | [ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206)|[dsPICDEM™ MCLV-2 Support](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2)|
+| [ACIM Open Loop V/Hz](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MC_APPS_SAM_C2X_ACIM_VHZ_CONTROL&redirect=true) | Open Loop V/Hz Control of ACIM |[ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206) |[dsPICDEM™ MCHV-3 Support](https://www.microchip.com/developmenttools/ProductDetails/dm330023-3)|
+| [BLDC Block Commutation using Hall Sensors](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MC_APPS_SAM_C2X_BLDC_BLOCK_COMMUTATION_HALL_SENSOR&redirect=true) | Block Commutation Control of BLDC motors using Hall Sensors |[ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206) |[dsPICDEM™ MCLV-2 Support](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2) |
+|[PMSM FOC using Reduced Order Luenberger Observer with Single Shunt](https://onlinedocs.microchip.com/v2/keyword-lookup?keyword=MC_APPS_SAM_C2X_PMSM_FOC_SINGLE_SHUNT_CURRENT_RECONSTRUCTION&redirect=true)| Sensorless Field Oriented Control of PMSM using Reduced Order Luenberger Observer with Single Shunt Current Sense | [ATSAMC21 Motor Control Plugin Module](https://www.microchip.com/DevelopmentTools/ProductDetails/PartNO/MA320206)|[dsPICDEM™ MCLV-2 Support](https://www.microchip.com/DevelopmentTools/ProductDetails/DM330021-2)|
 
 
 [![License](https://img.shields.io/badge/license-Harmony%20license-orange.svg)](https://github.com/Microchip-MPLAB-Harmony/mc/blob/master/mplab_harmony_license.md)
